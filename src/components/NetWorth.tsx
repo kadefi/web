@@ -27,6 +27,7 @@ const NetWorth = (props: Props) => {
         Net Worth
       </Typography>
       <TypographyNeon fontSize={"48px"} sx={{ pl: "1rem", mb: "1rem" }}>
+        $
         {netWorth !== null && (
           <CountUp end={netWorth} decimals={2} duration={0.3} />
         )}
