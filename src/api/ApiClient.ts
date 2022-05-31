@@ -1,9 +1,6 @@
 import axios, { AxiosError } from "axios";
 
-// const API_URL = "https://kadefi-api.herokuapp.com/api/v1"
-const API_URL = "http://localhost:3001/api/v1";
-
-const ApiClient = axios.create({ baseURL: API_URL });
+const ApiClient = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL });
 
 ApiClient.interceptors.response.use((res) => res, interceptErrorResponse);
 
