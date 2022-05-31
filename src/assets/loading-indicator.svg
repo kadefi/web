@@ -1,0 +1,30 @@
+<svg id="esHcFWYB0371" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 618 618" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  <defs>
+    <linearGradient id="esHcFWYB0372-fill" x1="618" y1="309" x2="0" y2="309" spreadMethod="pad"
+      gradientUnits="userSpaceOnUse" gradientTransform="translate(0 0)">
+      <stop id="esHcFWYB0372-fill-0" offset="0%" stop-color="#ff87c3" />
+      <stop id="esHcFWYB0372-fill-1" offset="29.1667%" stop-color="#ff007f" />
+      <stop id="esHcFWYB0372-fill-2" offset="100%" stop-color="#b02e6f" />
+    </linearGradient>
+    <linearGradient id="esHcFWYB0373-fill" x1="0" y1="-100" x2="0" y2="100" spreadMethod="pad"
+      gradientUnits="userSpaceOnUse" gradientTransform="translate(0 0)">
+      <stop id="esHcFWYB0373-fill-0" offset="0%" stop-color="#1fe" />
+      <stop id="esHcFWYB0373-fill-1" offset="100%" stop-color="rgba(17,255,238,0.43)" />
+    </linearGradient>
+    <linearGradient id="esHcFWYB0374-fill" x1="0" y1="-75" x2="0" y2="75" spreadMethod="pad"
+      gradientUnits="userSpaceOnUse" gradientTransform="translate(0 0)">
+      <stop id="esHcFWYB0374-fill-0" offset="0%" stop-color="#ffc600" />
+      <stop id="esHcFWYB0374-fill-1" offset="100%" stop-color="rgba(255,198,0,0.6)" />
+    </linearGradient>
+  </defs>
+  <path id="esHcFWYB0372"
+    d="M573,283.019c20,11.547,20,40.415,0,51.962L199.5,550.621c-20,11.547-45-2.887-45-25.981v-431.2803c0-23.094,25-37.5278,45-25.9808L573,283.019Z"
+    transform="translate(-59.702611-25.243993)" fill="url(#esHcFWYB0372-fill)" />
+  <path id="esHcFWYB0373"
+    d="M-100,0c0-55.228475,44.771525-100,100-100s100,44.771525,100,100-44.771525,100-100,100-100-44.771525-100-100Z"
+    transform="matrix(.860484 0.509477-.509477 0.860484 270.78922 261.176967)" fill="url(#esHcFWYB0373-fill)" />
+  <path id="esHcFWYB0374"
+    d="M-75,0c0-41.421356,33.578644-75,75-75s75,33.578644,75,75-33.578644,75-75,75-75-33.578644-75-75Z"
+    transform="matrix(.860484 0.509477-.509477 0.860484 210.252946 347.225385)" fill="url(#esHcFWYB0374-fill)" />
+</svg>

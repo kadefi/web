@@ -1,0 +1,49 @@
+{
+  "projectName": "KDSwap",
+  "fiatValue": 4.162964225018433,
+  "sections": [
+    {
+      "sectionName": "Liquidity Pool",
+      "headers": ["Amount", "Value"],
+      "rows": [
+        [
+          {
+            "id": "Amount",
+            "type": "pool",
+            "balance": 1.77325495541,
+            "token0": {
+              "balance": 1.0013193395012063,
+              "name": "Kadena",
+              "ticker": "KDA",
+              "address": "coin",
+              "source": {
+                "type": "COINGECKO",
+                "address": "kadena"
+              },
+              "price": 2.08
+            },
+            "token1": {
+              "balance": 3.154238057400947,
+              "name": "Flux",
+              "ticker": "FLUX",
+              "address": "runonflux.flux",
+              "source": {
+                "type": "COINGECKO",
+                "address": "zelcash"
+              },
+              "price": 0.6595
+            },
+            "fiatValue": 4.162964225018433
+          },
+          {
+            "id": "Value",
+            "type": "number",
+            "value": 4.162964225018433
+          }
+        ]
+      ],
+      "fiatValue": 4.162964225018433
+    }
+  ],
+  "error": null
+}

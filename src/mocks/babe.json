@@ -1,0 +1,52 @@
+{
+  "projectName": "Babena Finance",
+  "fiatValue": 29137.935270575417,
+  "sections": [
+    {
+      "sectionName": "KDA Lock",
+      "headers": ["Amount", "Rewards", "Unlock Time", "Value"],
+      "rows": [
+        [
+          {
+            "id": "Amount",
+            "type": "token",
+            "balance": 7000,
+            "name": "Kadena",
+            "ticker": "KDA",
+            "address": "coin",
+            "source": {
+              "type": "COINGECKO",
+              "address": "kadena"
+            },
+            "price": 2.07
+          },
+          {
+            "id": "Rewards",
+            "type": "token",
+            "balance": 34934.7198,
+            "name": "Babena",
+            "ticker": "BABE",
+            "address": "free.babena",
+            "source": {
+              "type": "DEX",
+              "address": "kdlaunch.kdswap-exchange"
+            },
+            "price": 0.41929448280777165
+          },
+          {
+            "id": "Unlock Time",
+            "type": "string",
+            "value": "2022-12-05T19:00:43.324064Z"
+          },
+          {
+            "id": "Value",
+            "type": "number",
+            "value": 29137.935270575417
+          }
+        ]
+      ],
+      "fiatValue": 29137.935270575417
+    }
+  ],
+  "error": null
+}
