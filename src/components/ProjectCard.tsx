@@ -3,21 +3,37 @@ import TypographyNeon from "./commons/TypographyNeon";
 import { styled } from "@mui/material/styles";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
-import { Section } from "../types/DashboardData.type";
+import { NetWorthMap, Section } from "../types/DashboardData.type";
 import { getRowDisplay } from "../utils/Table.util";
 import { formatFiatValue } from "../utils/Number.util";
 import { PROJECT_KEY } from "../types/Project.type";
 import { useGetProjectData } from "../api/Project.api";
+import LoadingTableSkeleton from "./LoadingTableSkeleton";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 type Props = {
   walletAddress: string;
   projectKey: PROJECT_KEY;
+  setNetWorthMap: Dispatch<SetStateAction<NetWorthMap>>;
 };
 
 const ProjectCard = (props: Props) => {
-  const { walletAddress, projectKey } = props;
+  const { walletAddress, projectKey, setNetWorthMap } = props;
 
-  const { data: projectData } = useGetProjectData(walletAddress, projectKey);
+  const { data: projectData, isLoading } = useGetProjectData(
+    walletAddress,
+    projectKey
+  );
+
+  useEffect(() => {
+    if (!isLoading && projectData) {
+      setNetWorthMap((netWorthMap) => ({ ...netWorthMap, [projectKey]: projectData.fiatValue }));
+    }
+  }, [isLoading, projectData]);
+
+  if (isLoading) {
+    return <LoadingTableSkeleton />;
+  }
 
   if (!projectData || projectData.error) {
     return null;

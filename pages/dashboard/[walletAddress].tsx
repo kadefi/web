@@ -2,55 +2,52 @@ import type { NextPage } from "next";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import Image from "next/image";
-import Logo from "../../src/assets/logo.png";
 import NetWorth from "../../src/components/NetWorth";
 import WalletCard from "../../src/components/WalletCard";
 import ProjectCard from "../../src/components/ProjectCard";
-import { WalletData } from "../../src/types/DashboardData.type";
+import { NetWorthMap, WalletData } from "../../src/types/DashboardData.type";
 import { useGetWalletTokens } from "../../src/api/Wallet.api";
 import { PROJECT_KEY } from "../../src/types/Project.type";
 import SearchWalletInput from "../../src/components/SearchWalletInput";
 import { useRouter } from "next/router";
-import LoadingIndicator from "../../src/components/LoadingIndicator";
 import Header from "../../src/components/Header";
+import { useState } from "react";
 
 const PROJECTS = [PROJECT_KEY.KD_SWAP, PROJECT_KEY.BABENA];
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
+  const [netWorthMap, setNetWorthMap] = useState<NetWorthMap>({
+    wallet: null,
+    [PROJECT_KEY.KD_SWAP]: null,
+    [PROJECT_KEY.BABENA]: null,
+  });
 
   const walletAddress = router.query.walletAddress as string;
-
-  const { data: walletData, isLoading } = useGetWalletTokens(walletAddress);
 
   return (
     <Background>
       <Content maxWidth="md">
         <Header />
         <SearchWalletInput initialWalletAddress={walletAddress} />
-        {isLoading ? (
-          <LoadingIndicatorContainer>
-            <LoadingIndicator width={"120px"} />
-          </LoadingIndicatorContainer>
-        ) : (
-          <>
-            <NetWorth />
-            {walletData && walletData.length > 0 && (
-              <WalletCard walletData={walletData as WalletData} />
-            )}
-            {walletAddress &&
-              PROJECTS.map((projectKey) => {
-                return (
-                  <ProjectCard
-                    key={projectKey}
-                    walletAddress={walletAddress}
-                    projectKey={projectKey}
-                  />
-                );
-              })}
-          </>
+        <NetWorth netWorthMap={netWorthMap}/>
+        {walletAddress && (
+          <WalletCard
+            walletAddress={walletAddress}
+            setNetWorthMap={setNetWorthMap}
+          />
         )}
+        {walletAddress &&
+          PROJECTS.map((projectKey) => {
+            return (
+              <ProjectCard
+                key={projectKey}
+                walletAddress={walletAddress}
+                projectKey={projectKey}
+                setNetWorthMap={setNetWorthMap}
+              />
+            );
+          })}
       </Content>
     </Background>
   );

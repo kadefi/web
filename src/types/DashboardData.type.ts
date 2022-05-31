@@ -1,3 +1,5 @@
+import { PROJECT_KEY } from "./Project.type";
+
 export enum CELL_TYPE {
   TOKEN = "token",
   POOL = "pool",
@@ -64,3 +66,9 @@ export type ProjectData = {
 };
 
 export type WalletData = TokenCellType[];
+
+export type NetWorthMap = {
+  wallet: number | null,
+  [PROJECT_KEY.KD_SWAP]: number | null,
+  [PROJECT_KEY.BABENA]: number | null,
+}

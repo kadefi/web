@@ -3,23 +3,43 @@ import CustomTable from "./commons/CustomTable";
 import CustomPaper from "./commons/CustomPaper";
 import TypographyNeon from "./commons/TypographyNeon";
 import { styled } from "@mui/material/styles";
-import { TokenCellType, WalletData } from "../types/DashboardData.type";
-import { useMemo } from "react";
+import { NetWorthMap, TokenCellType } from "../types/DashboardData.type";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { formatFiatValue, roundToDecimal } from "../utils/Number.util";
+import { useGetWalletTokens } from "../api/Wallet.api";
+import LoadingTableSkeleton from "./LoadingTableSkeleton";
 
 const HEADERS = ["TOKEN", "BALANCE", "PRICE", "VALUE"];
 
 type Props = {
-  walletData: WalletData;
+  walletAddress: string;
+  setNetWorthMap: Dispatch<SetStateAction<NetWorthMap>>;
 };
 
 const WalletCard = (props: Props) => {
-  const { walletData } = props;
+  const { walletAddress, setNetWorthMap } = props;
 
-  const totalValue = useMemo(
-    () => walletData.reduce((prev, current) => prev + current.fiatValue, 0),
-    [walletData]
-  );
+  const { data: walletData, isLoading } = useGetWalletTokens(walletAddress);
+  const [walletValue, setWalletValue] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!isLoading && walletData) {
+      const total = walletData.reduce(
+        (prev, current) => prev + current.fiatValue,
+        0
+      );
+      setNetWorthMap((netWorthMap) => ({ ...netWorthMap, wallet: total }));
+      setWalletValue(total);
+    }
+  }, [isLoading, walletData]);
+
+  if (isLoading) {
+    return <LoadingTableSkeleton />;
+  }
+
+  if (!walletData) {
+    return null;
+  }
 
   const walletDataRows = walletData.map((tokenData: TokenCellType) => {
     const { ticker, balance, price, fiatValue } = tokenData;
@@ -36,7 +56,9 @@ const WalletCard = (props: Props) => {
     <CardWrapper>
       <Container>
         <WalletHeader>Wallet</WalletHeader>
-        <WalletTotalValue>{formatFiatValue(totalValue)}</WalletTotalValue>
+        {walletValue && (
+          <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>
+        )}
       </Container>
       <CustomTable tableKey="Wallet" headers={HEADERS} rows={walletDataRows} />
     </CardWrapper>
