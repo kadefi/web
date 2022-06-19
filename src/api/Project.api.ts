@@ -10,3 +10,8 @@ export const getProjectData = async (
   );
   return response.data as ProjectData;
 };
+
+export const getIntegratedProjects = async (): Promise<string[]> => {
+  const response = await ApiClient.get(`projects`);
+  return response.data;
+};

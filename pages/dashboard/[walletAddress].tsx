@@ -1,4 +1,8 @@
-import type { NextPage } from "next";
+import type {
+  NextPage,
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+} from "next";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -8,20 +12,26 @@ import { ProjectData, WalletData } from "../../src/types/DashboardData.type";
 import SearchWalletInput from "../../src/components/SearchWalletInput";
 import { useRouter } from "next/router";
 import Header from "../../src/components/Header";
-import { PROJECT_KEYS } from "../../src/constants/Project.constant";
 import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
 import { UseQueryResult } from "react-query";
 import { Typography } from "@mui/material";
 import CountUp from "react-countup";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
+import { getIntegratedProjects } from "../../src/api/Project.api";
 
-const Dashboard: NextPage = () => {
+const Dashboard: NextPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
+  const { projects } = props;
   const router = useRouter();
 
   const walletAddress = router.query.walletAddress as string;
 
-  const [walletQuery, ...projectsQuery] = useGetDashboardData(walletAddress);
+  const [walletQuery, ...projectsQuery] = useGetDashboardData(
+    walletAddress,
+    projects
+  );
 
   const isDashboardLoading =
     walletQuery.isLoading &&
@@ -59,7 +69,7 @@ const Dashboard: NextPage = () => {
           projectsQuery.map((projectQuery, i) => {
             return (
               <ProjectCard
-                key={PROJECT_KEYS[i]}
+                key={projects[i]}
                 projectQuery={projectQuery as UseQueryResult<ProjectData>}
               />
             );
@@ -67,6 +77,13 @@ const Dashboard: NextPage = () => {
       </Content>
     </Background>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const projects = await getIntegratedProjects();
+  return {
+    props: { projects }, // will be passed to the page component as props
+  };
 };
 
 const LoadingIndicatorContainer = styled(Box)({
