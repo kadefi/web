@@ -1,10 +1,13 @@
 import { useQueries } from "react-query";
-import { PROJECT_KEYS, WALLET_KEY } from "../../constants/Project.constant";
+import { WALLET_KEY } from "../../constants/Project.constant";
 import { ProjectData, WalletData } from "../../types/DashboardData.type";
 import { getProjectData } from "../Project.api";
 import { getWalletTokens } from "../Wallet.api";
 
-export const useGetDashboardData = (walletAddress: string) => {
+export const useGetDashboardData = (
+  walletAddress: string,
+  projects: string[]
+) => {
   const queries: {
     queryKey: string[];
     queryFn: () => Promise<WalletData | ProjectData>;
@@ -15,7 +18,7 @@ export const useGetDashboardData = (walletAddress: string) => {
     },
   ];
 
-  PROJECT_KEYS.forEach((projectKey) => {
+  projects.forEach((projectKey) => {
     queries.push({
       queryKey: [projectKey, walletAddress],
       queryFn: () => getProjectData(projectKey, walletAddress),
