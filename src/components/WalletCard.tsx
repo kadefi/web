@@ -3,43 +3,30 @@ import CustomTable from "./commons/CustomTable";
 import CustomPaper from "./commons/CustomPaper";
 import TypographyNeon from "./commons/TypographyNeon";
 import { styled } from "@mui/material/styles";
-import { NetWorthMap, TokenCellType } from "../types/DashboardData.type";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { TokenCellType, WalletData } from "../types/DashboardData.type";
 import { formatFiatValue, roundToDecimal } from "../utils/Number.util";
-import { useGetWalletTokens } from "../api/Wallet.api";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
+import { UseQueryResult } from "react-query";
+import { getWalletTotalValue } from "../utils/NetWorth.util";
 
 const HEADERS = ["TOKEN", "BALANCE", "PRICE", "VALUE"];
 
 type Props = {
-  walletAddress: string;
-  setNetWorthMap: Dispatch<SetStateAction<NetWorthMap>>;
+  walletQuery: UseQueryResult<WalletData>;
 };
 
 const WalletCard = (props: Props) => {
-  const { walletAddress, setNetWorthMap } = props;
+  const { walletQuery } = props;
 
-  const { data: walletData, isLoading } = useGetWalletTokens(walletAddress);
-  const [walletValue, setWalletValue] = useState<number | null>(null);
+  if (!walletQuery) return null;
 
-  useEffect(() => {
-    if (!isLoading && walletData) {
-      const total = walletData.reduce(
-        (prev, current) => prev + current.fiatValue,
-        0
-      );
-      setNetWorthMap((netWorthMap) => ({ ...netWorthMap, wallet: total }));
-      setWalletValue(total);
-    }
-  }, [isLoading, walletData]);
+  const { isLoading, data: walletData } = walletQuery;
 
-  if (isLoading) {
-    return <LoadingTableSkeleton />;
-  }
+  if (isLoading) return <LoadingTableSkeleton />;
 
-  if (!walletData) {
-    return null;
-  }
+  if (!walletData) return null;
+
+  const walletValue = getWalletTotalValue(walletData);
 
   const walletDataRows = walletData.map((tokenData: TokenCellType) => {
     const { ticker, balance, price, fiatValue } = tokenData;

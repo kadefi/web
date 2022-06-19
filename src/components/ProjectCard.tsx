@@ -3,43 +3,28 @@ import TypographyNeon from "./commons/TypographyNeon";
 import { styled } from "@mui/material/styles";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
-import { NetWorthMap, Section } from "../types/DashboardData.type";
+import { ProjectData, Section } from "../types/DashboardData.type";
 import { getRowDisplay } from "../utils/Table.util";
 import { formatFiatValue } from "../utils/Number.util";
-import { PROJECT_KEY } from "../types/Project.type";
-import { useGetProjectData } from "../api/Project.api";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { UseQueryResult } from "react-query";
 
 type Props = {
-  walletAddress: string;
-  projectKey: PROJECT_KEY;
-  setNetWorthMap: Dispatch<SetStateAction<NetWorthMap>>;
+  projectQuery: UseQueryResult<ProjectData>;
 };
 
 const ProjectCard = (props: Props) => {
-  const { walletAddress, projectKey, setNetWorthMap } = props;
+  const { projectQuery } = props;
 
-  const { data: projectData, isLoading } = useGetProjectData(
-    walletAddress,
-    projectKey
-  );
+  if (!projectQuery) return null;
 
-  useEffect(() => {
-    if (!isLoading && projectData) {
-      setNetWorthMap((netWorthMap) => ({ ...netWorthMap, [projectKey]: projectData.fiatValue }));
-    }
-  }, [isLoading, projectData]);
+  const { data: projectData, isLoading } = projectQuery;
 
-  if (isLoading) {
-    return <LoadingTableSkeleton />;
-  }
+  if (isLoading) return <LoadingTableSkeleton />;
 
-  if (!projectData || projectData.error) {
-    return null;
-  }
+  if (!projectData) return null;
 
-  const { projectName, fiatValue, sections } = projectData || {};
+  const { projectName, fiatValue, sections } = projectData;
 
   const getSectionDisplay = (section: Section) => {
     const { sectionName, fiatValue, headers, rows } = section;
