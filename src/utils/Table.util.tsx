@@ -25,8 +25,14 @@ export const getRowDisplay = (rowData: TableRowData) => {
     }
 
     if (rowCell.type === CELL_TYPE.TOKEN) {
+      const { balance, ticker, fiatValue } = rowCell;
       return (
-        <div>{`${roundToDecimal(rowCell.balance, 2)} ${rowCell.ticker}`}</div>
+        <div>
+          <div>
+            {roundToDecimal(balance, 2)} {ticker}
+          </div>
+          <div>{formatFiatValue(fiatValue)}</div>
+        </div>
       );
     }
 
