@@ -38,6 +38,10 @@ export const getRowDisplay = (rowData: TableRowData) => {
       return <div>{rowCell.value}</div>;
     }
 
+    if (rowCell.type === CELL_TYPE.FIAT) {
+      return <div>{formatFiatValue(rowCell.value)}</div>;
+    }
+
     return null;
   });
 };

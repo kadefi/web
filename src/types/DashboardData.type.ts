@@ -5,6 +5,7 @@ export enum CELL_TYPE {
   POOL = "pool",
   STRING = "string",
   NUMBER = "number",
+  FIAT = "fiat",
 }
 
 export type PoolCellType = {
@@ -44,11 +45,18 @@ export type NumberCellType = {
   value: number;
 };
 
+export type FiatCellType = {
+  id?: string;
+  type: CELL_TYPE.FIAT;
+  value: number;
+};
+
 export type TableRowData = (
   | PoolCellType
   | TokenCellType
   | NumberCellType
   | StringCellType
+  | FiatCellType
 )[];
 
 export type Section = {
@@ -68,7 +76,7 @@ export type ProjectData = {
 export type WalletData = TokenCellType[];
 
 export type NetWorthMap = {
-  wallet: number | null,
-  [PROJECT_KEY.KD_SWAP]: number | null,
-  [PROJECT_KEY.BABENA]: number | null,
-}
+  wallet: number | null;
+  [PROJECT_KEY.KD_SWAP]: number | null;
+  [PROJECT_KEY.BABENA]: number | null;
+};
