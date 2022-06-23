@@ -2,7 +2,9 @@ import CustomTextField from "./commons/CustomTextField";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import { useRouter } from "next/router";
 import CustomCircularProgress from "./commons/CustomCircularProgress";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { isValidWalletAddress } from "../utils/String.util";
+import SnackBarAlert from "./commons/SnackBarAlert";
 
 type Props = {
   initialWalletAddress?: string;
@@ -12,21 +14,34 @@ type Props = {
 const SearchWalletInput = (props: Props) => {
   const { initialWalletAddress, isLoading = false } = props;
 
+  const [isErrorNotiOpen, setIsErrorNotiOpen] = useState(false);
+
   const router = useRouter();
   const ref = useRef<HTMLInputElement>();
 
   const handleSearchWallet = (value: string) => {
+    const cleanedAddress = value.toLowerCase().trim();
+
+    if (!isValidWalletAddress(cleanedAddress)) {
+      setIsErrorNotiOpen(true);
+      return;
+    }
+
     if (ref.current) {
       ref.current.blur();
     }
 
-    router.push(`/dashboard/${value}`);
+    router.push(`/dashboard/${cleanedAddress}`);
   };
 
   const handleWalletInputEnter = (e: any) => {
     if (e && e.target && e.key == "Enter") {
       handleSearchWallet(e.target.value);
     }
+  };
+
+  const handleErrorNotiClose = () => {
+    setIsErrorNotiOpen(false);
   };
 
   const endIconComponent = isLoading ? (
@@ -36,18 +51,26 @@ const SearchWalletInput = (props: Props) => {
   );
 
   return (
-    <CustomTextField
-      inputRef={ref}
-      disabled={isLoading}
-      initialValue={initialWalletAddress}
-      onKeyDown={handleWalletInputEnter}
-      fullWidth
-      placeholder="Enter your wallet address"
-      endIcon={{
-        component: endIconComponent,
-        onClick: handleSearchWallet,
-      }}
-    />
+    <>
+      <CustomTextField
+        inputRef={ref}
+        disabled={isLoading}
+        initialValue={initialWalletAddress}
+        onKeyDown={handleWalletInputEnter}
+        fullWidth
+        placeholder="Enter your wallet address"
+        endIcon={{
+          component: endIconComponent,
+          onClick: handleSearchWallet,
+        }}
+      />
+      <SnackBarAlert
+        isOpen={isErrorNotiOpen}
+        handleClose={handleErrorNotiClose}
+        message="Wallet address syntax looks invalid"
+        severity="error"
+      />
+    </>
   );
 };
 
