@@ -37,30 +37,34 @@ const CustomTextField = (props: CustomTextFieldProps) => {
     };
   }
 
-  return <StyledTextField value={input} onChange={(e) => setInput(e.target.value)} {...additionalTextFieldProps} />;
+  return (
+    <StyledTextField
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      disabled={additionalTextFieldProps.disabled}
+      {...additionalTextFieldProps}
+    />
+  );
 };
 
-const StyledTextField = styled(MuiTextField)({
-  "& .MuiInputBase-root": {
-    background: "rgba(34, 0, 35, 0.7)",
-  },
-  "& .MuiInputBase-input": {
-    padding: "0.8em 1em",
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      border: "none",
-    },
-    "&:hover fieldset": {
-      borderBottom: "1px solid rgba(255, 198, 0, 0.5)",
-      borderRight: "1px solid rgba(255, 198, 0, 0.5)",
-    },
-    "&.Mui-focused fieldset": {
-      borderBottom: "1px solid rgba(255, 198, 0, 0.5)",
-      borderRight: "1px solid rgba(255, 198, 0, 0.5)",
-    },
-  },
-});
+type StyledProps = {
+  disabled?: boolean;
+};
+
+const StyledTextField = styled(MuiTextField)<StyledProps>`
+  opacity: ${(props) => (props.disabled ? 0.9 : 1)};
+  & .MuiInputBase-root {
+    background: rgba(34, 0, 35, 0.7);
+  }
+  & .MuiInputBase-input {
+    padding: 0.8em 1em;
+  }
+  & .MuiOutlinedInput-root {
+    & fieldset {
+      border: none;
+    }
+  }
+`;
 
 const StyledInputAdornment = styled(InputAdornment)({
   cursor: "pointer",

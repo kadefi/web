@@ -1,12 +1,19 @@
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+
+  const handleLogoClick = () => {
+    router.push("/");
+  };
+
   return (
     <Container>
       <ImageContainer>
-        <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" />
+        <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" onClick={handleLogoClick} />
       </ImageContainer>
     </Container>
   );
@@ -30,4 +37,5 @@ const ImageContainer = styled(Box)({
   width: "5rem",
   height: "100%",
   left: "-11px",
+  cursor: "pointer",
 });

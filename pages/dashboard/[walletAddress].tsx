@@ -23,7 +23,7 @@ const Dashboard: NextPage = () => {
 
   const [walletQuery, ...projectsQuery] = useGetDashboardData(walletAddress);
 
-  const isDashboardLoading = walletQuery.isLoading && projectsQuery.every((projectQuery) => projectQuery.isLoading);
+  const isDashboardLoading = walletQuery.isLoading || projectsQuery.some((projectQuery) => projectQuery.isLoading);
 
   const netWorth = !isDashboardLoading
     ? getNetWorth(walletQuery as UseQueryResult<WalletData>, projectsQuery as UseQueryResult<ProjectData>[])
@@ -33,7 +33,7 @@ const Dashboard: NextPage = () => {
     <Background>
       <Content maxWidth="md">
         <Header />
-        <SearchWalletInput initialWalletAddress={walletAddress} />
+        <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
         <Typography fontSize="24px" fontWeight="bold" sx={{ pl: "1rem", mt: "1rem" }}>
           Net Worth
         </Typography>
