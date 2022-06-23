@@ -18,7 +18,7 @@ const ImageWrap = styled.div`
 const CustomImage = (props: ImageProps) => {
   return (
     <ImageWrap>
-      <Image {...props} quality={70} />
+      <Image {...props} quality={70} alt="" />
     </ImageWrap>
   );
 };

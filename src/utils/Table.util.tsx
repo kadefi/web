@@ -1,8 +1,4 @@
-import {
-  CELL_TYPE,
-  TableRowData,
-  TokenCellType,
-} from "../types/DashboardData.type";
+import { CELL_TYPE, TableRowData, TokenCellType } from "../types/DashboardData.type";
 import { formatFiatValue, roundToDecimal } from "./Number.util";
 
 export const getRowDisplay = (rowData: TableRowData) => {

@@ -1,0 +1,36 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "18.1.0"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "extends": ["next/core-web-vitals", "eslint-config-prettier"],
+  "env": {
+    "es6": true,
+    "jest": true,
+    "browser": true,
+    "commonjs": true
+  },
+  "plugins": ["@typescript-eslint", "import"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": ["error", { "args": "none", "ignoreRestSiblings": true }],
+    "prefer-const": "error",
+    "react/jsx-handler-names": ["error", { "eventHandlerPrefix": "handle", "eventHandlerPropPrefix": "on" }],
+    "react/no-unused-prop-types": "error",
+    "react/no-unused-state": "error",
+    "react/jsx-boolean-value": "error",
+    "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "never" }]
+  }
+}

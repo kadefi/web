@@ -1,8 +1,4 @@
-import type {
-  NextPage,
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-} from "next";
+import type { NextPage } from "next";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -18,30 +14,19 @@ import { Typography } from "@mui/material";
 import CountUp from "react-countup";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
-import { getIntegratedProjects } from "../../src/api/Project.api";
+import { PROJECT_KEY } from "../../src/types/Project.type";
 
-const Dashboard: NextPage = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
-  const { projects } = props;
+const Dashboard: NextPage = () => {
   const router = useRouter();
 
   const walletAddress = router.query.walletAddress as string;
 
-  const [walletQuery, ...projectsQuery] = useGetDashboardData(
-    walletAddress,
-    projects
-  );
+  const [walletQuery, ...projectsQuery] = useGetDashboardData(walletAddress);
 
-  const isDashboardLoading =
-    walletQuery.isLoading &&
-    projectsQuery.every((projectQuery) => projectQuery.isLoading);
+  const isDashboardLoading = walletQuery.isLoading && projectsQuery.every((projectQuery) => projectQuery.isLoading);
 
   const netWorth = !isDashboardLoading
-    ? getNetWorth(
-        walletQuery as UseQueryResult<WalletData>,
-        projectsQuery as UseQueryResult<ProjectData>[]
-      )
+    ? getNetWorth(walletQuery as UseQueryResult<WalletData>, projectsQuery as UseQueryResult<ProjectData>[])
     : null;
 
   return (
@@ -49,27 +34,18 @@ const Dashboard: NextPage = (
       <Content maxWidth="md">
         <Header />
         <SearchWalletInput initialWalletAddress={walletAddress} />
-        <Typography
-          fontSize={"24px"}
-          fontWeight={"bold"}
-          sx={{ pl: "1rem", mt: "1rem" }}
-        >
+        <Typography fontSize="24px" fontWeight="bold" sx={{ pl: "1rem", mt: "1rem" }}>
           Net Worth
         </Typography>
-        <TypographyNeon fontSize={"48px"} sx={{ pl: "1rem", mb: "1rem" }}>
-          $
-          {netWorth !== null && (
-            <CountUp end={netWorth} decimals={2} duration={0.3} />
-          )}
+        <TypographyNeon fontSize="48px" sx={{ pl: "1rem", mb: "1rem" }}>
+          ${netWorth !== null && <CountUp end={netWorth} decimals={2} duration={0.3} />}
         </TypographyNeon>
-        {walletQuery && (
-          <WalletCard walletQuery={walletQuery as UseQueryResult<WalletData>} />
-        )}
+        {walletQuery && <WalletCard walletQuery={walletQuery as UseQueryResult<WalletData>} />}
         {projectsQuery &&
           projectsQuery.map((projectQuery, i) => {
             return (
               <ProjectCard
-                key={projects[i]}
+                key={Object.values(PROJECT_KEY)[i]}
                 projectQuery={projectQuery as UseQueryResult<ProjectData>}
               />
             );
@@ -78,20 +54,6 @@ const Dashboard: NextPage = (
     </Background>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const projects = await getIntegratedProjects();
-  return {
-    props: { projects }, // will be passed to the page component as props
-  };
-};
-
-const LoadingIndicatorContainer = styled(Box)({
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  marginTop: "5rem",
-});
 
 const Content = styled(Container)({
   marginTop: "32px",

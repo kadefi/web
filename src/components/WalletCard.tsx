@@ -28,14 +28,14 @@ const WalletCard = (props: Props) => {
 
   const walletValue = getWalletTotalValue(walletData);
 
-  const walletDataRows = walletData.map((tokenData: TokenCellType) => {
+  const walletDataRows = walletData.map((tokenData: TokenCellType, i: number) => {
     const { ticker, balance, price, fiatValue } = tokenData;
 
     return [
-      <div>{ticker}</div>,
-      <div>{roundToDecimal(balance, 4)}</div>,
-      <div>{formatFiatValue(price)}</div>,
-      <div>{formatFiatValue(fiatValue)}</div>,
+      <div key={`ticker-${i}`}>{ticker}</div>,
+      <div key={`balance-${i}`}>{roundToDecimal(balance, 4)}</div>,
+      <div key={`price-${i}`}>{formatFiatValue(price)}</div>,
+      <div key={`fiat-${i}`}>{formatFiatValue(fiatValue)}</div>,
     ];
   });
 
@@ -43,9 +43,7 @@ const WalletCard = (props: Props) => {
     <CardWrapper>
       <Container>
         <WalletHeader>Wallet</WalletHeader>
-        {walletValue && (
-          <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>
-        )}
+        {walletValue && <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>}
       </Container>
       <CustomTable tableKey="Wallet" headers={HEADERS} rows={walletDataRows} />
     </CardWrapper>

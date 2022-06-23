@@ -37,11 +37,7 @@ const ProjectCard = (props: Props) => {
           <SectionName>{sectionName}</SectionName>
           <SectionTotalValue>{formatFiatValue(fiatValue)}</SectionTotalValue>
         </SectionHeader>
-        <CustomTable
-          tableKey={`${section}-table`}
-          headers={headers}
-          rows={rowComponents}
-        />
+        <CustomTable tableKey={`${section}-table`} headers={headers} rows={rowComponents} />
       </Box>
     );
   };

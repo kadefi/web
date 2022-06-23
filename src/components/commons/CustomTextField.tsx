@@ -1,9 +1,4 @@
-import {
-  InputAdornment,
-  styled,
-  TextField as MuiTextField,
-  TextFieldProps,
-} from "@mui/material";
+import { InputAdornment, styled, TextField as MuiTextField, TextFieldProps } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
 
 type CustomTextFieldProps = {
@@ -15,7 +10,7 @@ type CustomTextFieldProps = {
 } & TextFieldProps;
 
 const CustomTextField = (props: CustomTextFieldProps) => {
-  let { endIcon, initialValue, ...textFieldProps } = props;
+  const { endIcon, initialValue, ...textFieldProps } = props;
   const [input, setInput] = useState<string>("");
 
   useEffect(() => {
@@ -28,8 +23,9 @@ const CustomTextField = (props: CustomTextFieldProps) => {
     }
   };
 
+  let additionalTextFieldProps = { ...textFieldProps };
   if (endIcon) {
-    textFieldProps = {
+    additionalTextFieldProps = {
       ...textFieldProps,
       InputProps: {
         endAdornment: (
@@ -41,13 +37,7 @@ const CustomTextField = (props: CustomTextFieldProps) => {
     };
   }
 
-  return (
-    <StyledTextField
-      value={input}
-      onChange={(e) => setInput(e.target.value)}
-      {...textFieldProps}
-    />
-  );
+  return <StyledTextField value={input} onChange={(e) => setInput(e.target.value)} {...additionalTextFieldProps} />;
 };
 
 const StyledTextField = styled(MuiTextField)({

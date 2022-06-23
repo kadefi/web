@@ -15,12 +15,11 @@ interface NextLinkComposedProps
   linkAs?: NextLinkProps["as"];
 }
 
-export const NextLinkComposed = React.forwardRef<
-  HTMLAnchorElement,
-  NextLinkComposedProps
->(function NextLinkComposed(props, ref) {
-  const { to, linkAs, replace, scroll, shallow, prefetch, locale, ...other } =
-    props;
+export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComposedProps>(function NextLinkComposed(
+  props,
+  ref,
+) {
+  const { to, linkAs, replace, scroll, shallow, prefetch, locale, ...other } = props;
 
   return (
     <NextLink
@@ -49,10 +48,7 @@ export type LinkProps = {
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/api-reference/next/link
-const CustomLink = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-  props,
-  ref
-) {
+const CustomLink = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
   const {
     activeClassName = "active",
     as,
@@ -75,9 +71,7 @@ const CustomLink = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(
     [activeClassName]: router.pathname === pathname && activeClassName,
   });
 
-  const isExternal =
-    typeof href === "string" &&
-    (href.indexOf("http") === 0 || href.indexOf("mailto:") === 0);
+  const isExternal = typeof href === "string" && (href.indexOf("http") === 0 || href.indexOf("mailto:") === 0);
 
   if (isExternal) {
     if (noLinkStyle) {
@@ -99,25 +93,10 @@ const CustomLink = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   };
 
   if (noLinkStyle) {
-    return (
-      <NextLinkComposed
-        className={className}
-        ref={ref}
-        {...nextjsProps}
-        {...other}
-      />
-    );
+    return <NextLinkComposed className={className} ref={ref} {...nextjsProps} {...other} />;
   }
 
-  return (
-    <MuiLink
-      component={NextLinkComposed}
-      className={className}
-      ref={ref}
-      {...nextjsProps}
-      {...other}
-    />
-  );
+  return <MuiLink component={NextLinkComposed} className={className} ref={ref} {...nextjsProps} {...other} />;
 });
 
 export default CustomLink;

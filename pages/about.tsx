@@ -23,12 +23,7 @@ const About: NextPage = () => {
           MUI v5 + Next.js with TypeScript example
         </Typography>
         <Box maxWidth="sm">
-          <Button
-            variant="contained"
-            component={CustomLink}
-            noLinkStyle
-            href="/"
-          >
+          <Button variant="contained" component={CustomLink} noLinkStyle href="/">
             Go to the home page
           </Button>
         </Box>

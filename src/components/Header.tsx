@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Image from "next/image";
-import TypographyNeon from "./commons/TypographyNeon";
 
 const Header = () => {
   return (
     <Container>
       <ImageContainer>
-        <Image src={"/assets/logo.png"} layout={"fill"} objectFit={"contain"} />
+        <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" />
       </ImageContainer>
     </Container>
   );

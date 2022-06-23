@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "lint": "next lint && yarn run format:check",
+    "lint:fix": "next lint --fix && yarn run format:fix",
+    "format:check": "prettier --check '{,!(node_modules)/**/}*.{ts,tsx,json}'",
+    "format:fix": "prettier --write '{,!(node_modules)/**/}*.{ts,tsx,json}'"
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
@@ -26,8 +28,14 @@
   "devDependencies": {
     "@types/node": "^17.0.35",
     "@types/react": "^18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
     "eslint": "^8.16.0",
     "eslint-config-next": "^12.1.6",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.7.1",
     "typescript": "^4.7.2"
   }
 }

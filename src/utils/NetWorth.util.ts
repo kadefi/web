@@ -5,10 +5,7 @@ export const getWalletTotalValue = (data: WalletData) => {
   return data.reduce((prev, current) => prev + current.fiatValue, 0);
 };
 
-export const getNetWorth = (
-  walletQuery: UseQueryResult<WalletData>,
-  projectsQuery: UseQueryResult<ProjectData>[]
-) => {
+export const getNetWorth = (walletQuery: UseQueryResult<WalletData>, projectsQuery: UseQueryResult<ProjectData>[]) => {
   const { data: walletData } = walletQuery;
 
   let netWorth = 0;

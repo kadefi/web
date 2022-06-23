@@ -1,10 +1,7 @@
 import { styled } from "@mui/material/styles";
 import MuiTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, {
-  tableCellClasses,
-  TableCellProps,
-} from "@mui/material/TableCell";
+import TableCell, { tableCellClasses, TableCellProps } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -44,12 +41,7 @@ const CustomTable = (props: Props) => {
           // Change to <th> for first cell
           if (j === 0) {
             return (
-              <StyledTableCell
-                key={`${tableKey}-cell-${j}`}
-                component="th"
-                scope="row"
-                align={align}
-              >
+              <StyledTableCell key={`${tableKey}-cell-${j}`} component="th" scope="row" align={align}>
                 {rowCell}
               </StyledTableCell>
             );
@@ -72,7 +64,7 @@ const CustomTable = (props: Props) => {
 
   return (
     <StyledTableContainer>
-      <MuiTable size={"small"} aria-label="customized table">
+      <MuiTable size="small" aria-label="customized table">
         <TableHead>
           <TableRow>{headerTableCells}</TableRow>
         </TableHead>
