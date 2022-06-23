@@ -1,4 +1,4 @@
-import { useQueries } from "react-query";
+import { useQueries, UseQueryResult } from "react-query";
 import { WALLET_KEY } from "../../constants/Project.constant";
 import { ProjectData, WalletData } from "../../types/DashboardData.type";
 import { PROJECT_KEY } from "../../types/Project.type";
@@ -23,5 +23,10 @@ export const useGetDashboardData = (walletAddress: string) => {
     });
   });
 
-  return useQueries(queries);
+  const [walletQuery, ...projectsQuery] = useQueries(queries);
+
+  return { walletQuery, projectsQuery } as {
+    walletQuery: UseQueryResult<WalletData>;
+    projectsQuery: UseQueryResult<ProjectData>[];
+  };
 };

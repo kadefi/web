@@ -4,13 +4,11 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import WalletCard from "../../src/components/WalletCard";
 import ProjectCard from "../../src/components/ProjectCard";
-import { ProjectData, WalletData } from "../../src/types/DashboardData.type";
 import SearchWalletInput from "../../src/components/SearchWalletInput";
 import { useRouter } from "next/router";
 import Header from "../../src/components/Header";
 import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
-import { UseQueryResult } from "react-query";
-import { Typography } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
 import CountUp from "react-countup";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
@@ -21,39 +19,65 @@ const Dashboard: NextPage = () => {
 
   const walletAddress = router.query.walletAddress as string;
 
-  const [walletQuery, ...projectsQuery] = useGetDashboardData(walletAddress);
+  const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);
 
   const isDashboardLoading = walletQuery.isLoading || projectsQuery.some((projectQuery) => projectQuery.isLoading);
 
-  const netWorth = !isDashboardLoading
-    ? getNetWorth(walletQuery as UseQueryResult<WalletData>, projectsQuery as UseQueryResult<ProjectData>[])
-    : null;
+  let walletCard = null;
+  if (walletQuery) {
+    walletCard = <WalletCard walletQuery={walletQuery} />;
+  }
+
+  let projectCards = null;
+  if (projectsQuery) {
+    projectCards = projectsQuery.map((projectQuery, i) => {
+      return <ProjectCard key={Object.values(PROJECT_KEY)[i]} projectQuery={projectQuery} />;
+    });
+  }
+
+  const netWorth = (
+    <>
+      <NetWorthTitle>Net Worth</NetWorthTitle>
+      <NetWorthAmount>
+        {isDashboardLoading ? (
+          <NetWorthAmountSkeleton />
+        ) : (
+          <span>
+            $
+            <CountUp end={getNetWorth(walletQuery, projectsQuery)} decimals={2} duration={0.3} />
+          </span>
+        )}
+      </NetWorthAmount>
+    </>
+  );
 
   return (
     <Background>
       <Content maxWidth="md">
         <Header />
         <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
-        <Typography fontSize="24px" fontWeight="bold" sx={{ pl: "1rem", mt: "1rem" }}>
-          Net Worth
-        </Typography>
-        <TypographyNeon fontSize="48px" sx={{ pl: "1rem", mb: "1rem" }}>
-          ${netWorth !== null && <CountUp end={netWorth} decimals={2} duration={0.3} />}
-        </TypographyNeon>
-        {walletQuery && <WalletCard walletQuery={walletQuery as UseQueryResult<WalletData>} />}
-        {projectsQuery &&
-          projectsQuery.map((projectQuery, i) => {
-            return (
-              <ProjectCard
-                key={Object.values(PROJECT_KEY)[i]}
-                projectQuery={projectQuery as UseQueryResult<ProjectData>}
-              />
-            );
-          })}
+        {netWorth}
+        {walletCard}
+        {projectCards}
       </Content>
     </Background>
   );
 };
+
+const NetWorthAmountSkeleton = styled(Skeleton)({
+  width: "10rem",
+});
+
+const NetWorthAmount = styled(TypographyNeon)({
+  fontSize: "48px",
+  marginBottom: "1rem",
+});
+
+const NetWorthTitle = styled(Typography)({
+  fontSize: "24px",
+  fontWeight: "bold",
+  marginTop: "1rem",
+});
 
 const Content = styled(Container)({
   marginTop: "32px",
