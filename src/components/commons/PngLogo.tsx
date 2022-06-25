@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
-import { StaticImageData } from "next/image";
 import Image from "next/image";
 
 type Props = {
-  src: StaticImageData;
+  src: string;
   isCircular?: boolean;
   size?: number;
   backgroundColor?: string;
