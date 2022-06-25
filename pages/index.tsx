@@ -32,7 +32,7 @@ const Home: NextPage = () => {
               </Typography>
             </Title>
             <Subtitle>
-              <Typography textAlign="center" fontWeight={700}>
+              <Typography textAlign="center" fontWeight={500}>
                 View all your Kadena&apos;s DeFi investments in a single dashboard
               </Typography>
             </Subtitle>
@@ -71,8 +71,8 @@ const LandingPageContent = styled.div`
   justify-content: center;
   width: 100%;
   flex-grow: 1;
-  top: -120px;
   position: relative;
+  top: -80px;
 `;
 
 const Background = styled(Box)({

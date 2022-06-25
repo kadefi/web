@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import TwitterButton from "./commons/SocialButtons/TwitterButton";
 
 const Header = () => {
   const router = useRouter();
@@ -13,12 +13,16 @@ const Header = () => {
 
   return (
     <Container>
-      <ImageContainer>
-        <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" onClick={handleLogoClick} />
-      </ImageContainer>
-      <CustomLink target="__blank" href="https://twitter.com/kadefi_money/">
-        <TwitterIcon fontSize="large" />
-      </CustomLink>
+      <ProjectNameContainer onClick={handleLogoClick}>
+        <ImageContainer>
+          <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" />
+        </ImageContainer>
+        <div>
+          <ProjectName>KADEFI</ProjectName>
+          <ProjectName color="#FF007F">.MONEY</ProjectName>
+        </div>
+      </ProjectNameContainer>
+      <TwitterButton />
     </Container>
   );
 };
@@ -34,22 +38,25 @@ const Container = styled(Box)({
   height: "4rem",
   marginBottom: "1rem",
   gap: "1rem",
+  zIndex: 1,
 });
+
+const ProjectNameContainer = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+const ProjectName = styled(Typography)`
+  display: inline;
+  font-weight: 700;
+  font-size: 20px;
+`;
 
 const ImageContainer = styled(Box)({
   position: "relative",
-  width: "5rem",
+  width: "2.5rem",
   height: "100%",
-  left: "-11px",
-  cursor: "pointer",
 });
-
-const CustomLink = styled.a`
-  z-index: 1;
-  color: inherit;
-  transform: scale(1.3);
-  margin-right: 10px;
-  @media (max-width: 768px) {
-    transform: scale(1.2);
-  }
-`;
