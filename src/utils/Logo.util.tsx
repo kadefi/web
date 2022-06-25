@@ -8,13 +8,13 @@ import KDSWAP_LOGO from "../images/projects/kdswap.png";
 import BABENA_LOGO from "../images/projects/babena.png";
 
 // Token icons
-import BABE_TOKEN from "../images/crypto/BABE.png";
-import ADK_TOKEN from "../images/crypto/ADK.png";
-import FLUX_TOKEN from "../images/crypto/FLUX.png";
-import HYPE_TOKEN from "../images/crypto/HYPE.png";
-import KDA_TOKEN from "../images/crypto/KDA.png";
-import KDL_TOKEN from "../images/crypto/KDL.png";
-import KDS_TOKEN from "../images/crypto/KDS.png";
+import BABE_TOKEN from "../images/tokens/BABE.png";
+import ADK_TOKEN from "../images/tokens/ADK.png";
+import FLUX_TOKEN from "../images/tokens/FLUX.png";
+import HYPE_TOKEN from "../images/tokens/HYPE.png";
+import KDA_TOKEN from "../images/tokens/KDA.png";
+import KDL_TOKEN from "../images/tokens/KDL.png";
+import KDS_TOKEN from "../images/tokens/KDS.png";
 
 const PROJECT_LOGO_MAP = {
   [PROJECT_KEY.BABENA]: BABENA_LOGO,
