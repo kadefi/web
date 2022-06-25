@@ -25,10 +25,8 @@ const WalletCard = (props: Props) => {
   const { isLoading, data: walletData } = walletQuery;
   if (isLoading) return <LoadingTableSkeleton />;
 
-  if (!walletData) return null;
-  const { data: tokens } = walletData;
+  const tokens = walletData ? walletData.data : [];
 
-  if (tokens.length === 0) return null;
   const walletValue = getWalletTotalValue(tokens);
 
   const walletDataRows = tokens.map((tokenData: TokenCellType, i: number) => {
@@ -51,7 +49,7 @@ const WalletCard = (props: Props) => {
           <PngLogo src="/assets/projects/wallet.png" size={1.75} />
           <WalletHeader>Wallet</WalletHeader>
         </WalletHeaderContainer>
-        {walletValue && <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>}
+        <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>
       </Container>
       <CustomTable tableKey="Wallet" headers={HEADERS} rows={walletDataRows} />
     </CardWrapper>

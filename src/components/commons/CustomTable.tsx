@@ -62,17 +62,29 @@ const CustomTable = (props: Props) => {
     ));
   }, [tableKey, rows]);
 
+  const tableContent = tableRows.length === 0 ? <EmptyTable length={headerTableCells.length} /> : tableRows;
   return (
     <StyledTableContainer>
       <MuiTable size="small" aria-label="customized table">
         <TableHead>
           <TableRow>{headerTableCells}</TableRow>
         </TableHead>
-        <StyledTableBody>{tableRows}</StyledTableBody>
+        <StyledTableBody>{tableContent}</StyledTableBody>
       </MuiTable>
     </StyledTableContainer>
   );
 };
+
+type EmptyTableProps = {
+  length: number;
+};
+const EmptyTable = ({ length }: EmptyTableProps) => (
+  <StyledTableRow>
+    <StyledTableCell style={{ height: "200px" }} colSpan={length} component="td" scope="row" align="center">
+      Your wallet is empty
+    </StyledTableCell>
+  </StyledTableRow>
+);
 
 const StyledTableBody = styled(TableBody)({
   backgroundColor: "transparent",
