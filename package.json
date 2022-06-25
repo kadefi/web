@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "yarn run typecheck && next lint && yarn run format:check",
     "lint:fix": "next lint --fix && yarn run format:fix",
-    "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,json}'",
-    "format:fix": "prettier --write '**/*.{js,jsx,ts,tsx,json}'",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
+    "format:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
     "typecheck": "tsc --noEmit",
     "prepare": "husky install"
   },

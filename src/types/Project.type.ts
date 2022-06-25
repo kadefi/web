@@ -4,3 +4,8 @@ export enum PROJECT_KEY {
   KD_LAUNCH = "kdlaunch",
   KADDEX = "kaddex",
 }
+
+export type ProjectInfoType = {
+  name: string;
+  module: string;
+};

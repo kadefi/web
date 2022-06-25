@@ -3,7 +3,7 @@ import TypographyNeon from "./commons/TypographyNeon";
 import { styled } from "@mui/material/styles";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
-import { ProjectData, Section } from "../types/DashboardData.type";
+import { ProjectData, ProjectResponse, Section } from "../types/DashboardData.type";
 import { getRowDisplay } from "../utils/Table.util";
 import { formatFiatValue } from "../utils/Number.util";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
@@ -18,13 +18,13 @@ const ProjectCard = (props: Props) => {
 
   if (!projectQuery) return null;
 
-  const { data: projectData, isLoading } = projectQuery;
+  const { data: projectData, isLoading, isError } = projectQuery;
 
   if (isLoading) return <LoadingTableSkeleton />;
+  if (!projectData || isError) return null;
 
-  if (!projectData) return null;
-
-  const { projectName, fiatValue, sections } = projectData;
+  const projectResponse = projectData as ProjectResponse;
+  const { projectName, fiatValue, sections } = projectResponse;
 
   const getSectionDisplay = (section: Section) => {
     const { sectionName, fiatValue, headers, rows } = section;

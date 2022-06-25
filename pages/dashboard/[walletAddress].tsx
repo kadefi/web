@@ -13,6 +13,7 @@ import CountUp from "react-countup";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
 import { PROJECT_KEY } from "../../src/types/Project.type";
+import DashboardErrorFab from "../../src/components/DashboardErrorFab";
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
@@ -60,6 +61,7 @@ const Dashboard: NextPage = () => {
         {walletCard}
         {projectCards}
       </Content>
+      <DashboardErrorFab loading={isDashboardLoading} walletQuery={walletQuery} projectsQuery={projectsQuery} />
     </Background>
   );
 };
