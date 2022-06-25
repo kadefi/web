@@ -61,8 +61,8 @@ const DashboardErrorFab = ({ loading, walletQuery, projectsQuery }: DashboardErr
 
 const FabContainer = styled(Box)({
   position: "fixed",
-  bottom: 30,
-  right: 65,
+  bottom: 20,
+  right: 30,
 });
 
 type ErrorsTooltipProps = {

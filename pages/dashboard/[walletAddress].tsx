@@ -88,6 +88,7 @@ const NetWorthTitle = styled(Typography)({
 
 const Content = styled(Container)({
   marginTop: "32px",
+  marginBottom: "80px",
 });
 
 const Background = styled(Box)({
