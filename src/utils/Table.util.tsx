@@ -1,36 +1,17 @@
-import { CELL_TYPE, TableRowData, TokenCellType } from "../types/DashboardData.type";
+import { CELL_TYPE, TableRowData } from "../types/DashboardData.type";
 import { formatFiatValue, roundToDecimal } from "./Number.util";
 import toDate from "date-fns/toDate";
+import TokenDisplay from "../components/commons/TokenDisplay";
+import TokenPoolDisplay from "../components/commons/TokenPoolDisplay";
 
 export const getRowDisplay = (rowData: TableRowData) => {
   return rowData.map((rowCell) => {
     if (rowCell.type === CELL_TYPE.POOL) {
-      const { token0, token1, fiatValue } = rowCell;
-
-      const tokenDisplay = (token: TokenCellType) => {
-        return `${roundToDecimal(token.balance, 2)} ${token.ticker}`;
-      };
-
-      return (
-        <div>
-          <div>
-            {tokenDisplay(token0)} + {tokenDisplay(token1)}
-          </div>
-          <div>{formatFiatValue(fiatValue)}</div>
-        </div>
-      );
+      return <TokenPoolDisplay token0={rowCell.token0} token1={rowCell.token1} fiatValue={rowCell.fiatValue} />;
     }
 
     if (rowCell.type === CELL_TYPE.TOKEN) {
-      const { balance, ticker, fiatValue } = rowCell;
-      return (
-        <div>
-          <div>
-            {roundToDecimal(balance, 2)} {ticker}
-          </div>
-          <div>{formatFiatValue(fiatValue)}</div>
-        </div>
-      );
+      return <TokenDisplay balance={rowCell.balance} ticker={rowCell.ticker} fiatValue={rowCell.fiatValue} />;
     }
 
     if (rowCell.type === CELL_TYPE.NUMBER) {

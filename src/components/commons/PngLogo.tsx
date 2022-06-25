@@ -42,7 +42,7 @@ type BackgroundProps = {
 };
 
 const Background = styled.div<TokenProps & BackgroundProps>`
-  /* border: 1px solid #fff; */
+  border: 1px solid #aeabb1;
   background-color: ${(props) => props.color};
   border-radius: 5rem;
   height: ${(props) => props.size};
