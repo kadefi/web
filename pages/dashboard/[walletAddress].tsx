@@ -44,8 +44,13 @@ const Dashboard: NextPage = () => {
           <NetWorthAmountSkeleton />
         ) : (
           <span>
-            $
-            <CountUp end={getNetWorth(walletQuery, projectsQuery)} decimals={2} duration={0.3} />
+            <CountUp
+              end={getNetWorth(walletQuery, projectsQuery)}
+              prefix="$ "
+              separator=","
+              decimals={2}
+              duration={0.3}
+            />
           </span>
         )}
       </NetWorthAmount>
