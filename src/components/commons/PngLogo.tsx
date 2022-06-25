@@ -10,8 +10,8 @@ type Props = {
   padding?: number;
 };
 
-const PngLogoContainer = (props: Props) => {
-  const { src, isCircular = false, size = 2, backgroundColor = "#000000", padding = 0.5 } = props;
+const PngLogo = (props: Props) => {
+  const { src, isCircular = false, size = 1, backgroundColor = "#000000", padding = 0.5 } = props;
 
   const backgroundSize = `${size}rem`;
   const imageSize = `${isCircular ? size - padding : size}rem`;
@@ -59,4 +59,4 @@ const LogoContainer = styled.div<TokenProps>`
   width: ${(props) => props.size};
 `;
 
-export default PngLogoContainer;
+export default PngLogo;

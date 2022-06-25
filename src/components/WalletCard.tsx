@@ -9,7 +9,7 @@ import { UseQueryResult } from "react-query";
 import { getWalletTotalValue } from "../utils/NetWorth.util";
 import styled from "@emotion/styled";
 import walletLogo from "../images/projects/wallet.png";
-import PngLogoContainer from "../logos/PngLogoContainer";
+import PngLogo from "./commons/PngLogo";
 import { getTokenLogo } from "../utils/Logo.util";
 
 const HEADERS = ["TOKEN", "BALANCE", "PRICE", "VALUE"];
@@ -49,7 +49,7 @@ const WalletCard = (props: Props) => {
     <CardWrapper>
       <Container>
         <WalletHeaderContainer>
-          <PngLogoContainer src={walletLogo} />
+          <PngLogo src={walletLogo} size={1.75} />
           <WalletHeader>Wallet</WalletHeader>
         </WalletHeaderContainer>
         {walletValue && <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>}

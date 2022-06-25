@@ -1,10 +1,13 @@
-import BabenaLogo from "../logos/BabenaLogo";
-import PngLogoContainer from "../logos/PngLogoContainer";
+import PngLogo from "../components/commons/PngLogo";
 import { PROJECT_KEY, TOKEN_TICKER } from "../types/Project.type";
-import kaddexLogo from "../images/projects/kaddex.png";
-import kdLaunchLogo from "../images/projects/kdlaunch.png";
-import kdSwapLogo from "../images/projects/kdswap.png";
 
+// Project Logos
+import KADDEX_LOGO from "../images/projects/kaddex.png";
+import KDLAUNCH_LOGO from "../images/projects/kdlaunch.png";
+import KDSWAP_LOGO from "../images/projects/kdswap.png";
+import BABENA_LOGO from "../images/projects/babena.png";
+
+// Token icons
 import BABE_TOKEN from "../images/crypto/BABE.png";
 import ADK_TOKEN from "../images/crypto/ADK.png";
 import FLUX_TOKEN from "../images/crypto/FLUX.png";
@@ -14,26 +17,26 @@ import KDL_TOKEN from "../images/crypto/KDL.png";
 import KDS_TOKEN from "../images/crypto/KDS.png";
 
 const PROJECT_LOGO_MAP = {
-  [PROJECT_KEY.BABENA]: <BabenaLogo />,
-  [PROJECT_KEY.KADDEX]: <PngLogoContainer src={kaddexLogo} />,
-  [PROJECT_KEY.KD_LAUNCH]: <PngLogoContainer src={kdLaunchLogo} />,
-  [PROJECT_KEY.KD_SWAP]: <PngLogoContainer src={kdSwapLogo} />,
+  [PROJECT_KEY.BABENA]: BABENA_LOGO,
+  [PROJECT_KEY.KADDEX]: KADDEX_LOGO,
+  [PROJECT_KEY.KD_LAUNCH]: KDLAUNCH_LOGO,
+  [PROJECT_KEY.KD_SWAP]: KDSWAP_LOGO,
 };
 
 export const getProjectLogo = (module: PROJECT_KEY) => {
-  return PROJECT_LOGO_MAP[module];
+  return <PngLogo size={1.75} src={PROJECT_LOGO_MAP[module]} />;
 };
 
 const TOKEN_LOGO_MAP = {
-  [TOKEN_TICKER.BABE]: <PngLogoContainer src={BABE_TOKEN} isCircular padding={0.5} />,
-  [TOKEN_TICKER.ADK]: <PngLogoContainer src={ADK_TOKEN} isCircular />,
-  [TOKEN_TICKER.FLUX]: <PngLogoContainer src={FLUX_TOKEN} isCircular />,
-  [TOKEN_TICKER.HYPE]: <PngLogoContainer src={HYPE_TOKEN} isCircular />,
-  [TOKEN_TICKER.KDA]: <PngLogoContainer src={KDA_TOKEN} isCircular padding={0.5} />,
-  [TOKEN_TICKER.KDL]: <PngLogoContainer src={KDL_TOKEN} isCircular />,
-  [TOKEN_TICKER.KDS]: <PngLogoContainer src={KDS_TOKEN} isCircular />,
+  [TOKEN_TICKER.BABE]: BABE_TOKEN,
+  [TOKEN_TICKER.ADK]: ADK_TOKEN,
+  [TOKEN_TICKER.FLUX]: FLUX_TOKEN,
+  [TOKEN_TICKER.HYPE]: HYPE_TOKEN,
+  [TOKEN_TICKER.KDA]: KDA_TOKEN,
+  [TOKEN_TICKER.KDL]: KDL_TOKEN,
+  [TOKEN_TICKER.KDS]: KDS_TOKEN,
 };
 
 export const getTokenLogo = (token: TOKEN_TICKER) => {
-  return TOKEN_LOGO_MAP[token];
+  return <PngLogo src={TOKEN_LOGO_MAP[token]} isCircular size={1.5} />;
 };
