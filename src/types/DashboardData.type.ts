@@ -1,4 +1,4 @@
-import { ProjectInfoType } from "./Project.type";
+import { ProjectErrorResponse, PROJECT_KEY, TOKEN_TICKER } from "./Project.type";
 
 export enum CELL_TYPE {
   TOKEN = "token",
@@ -24,7 +24,7 @@ export type TokenCellType = {
   type: CELL_TYPE.TOKEN;
   fiatValue: number;
   name: string;
-  ticker: string;
+  ticker: TOKEN_TICKER;
   balance: number;
   address: string;
   source: {
@@ -76,12 +76,12 @@ export type Section = {
 
 export type ProjectResponse = {
   projectName: string;
+  module: PROJECT_KEY;
   fiatValue: number;
   sections: Section[];
-  error?: string;
 };
 
-export type ProjectData = ProjectResponse | ProjectInfoType;
+export type ProjectData = ProjectResponse | ProjectErrorResponse;
 
 export type WalletData = {
   data: TokenCellType[];

@@ -5,7 +5,17 @@ export enum PROJECT_KEY {
   KADDEX = "kaddex",
 }
 
-export type ProjectInfoType = {
+export enum TOKEN_TICKER {
+  BABE = "BABE",
+  KDA = "KDA",
+  KDL = "KDL",
+  KDS = "KDS",
+  FLUX = "FLUX",
+  ADK = "ADK",
+  HYPE = "HYPE",
+}
+
+export type ProjectErrorResponse = {
   name: string;
-  module: string;
+  module: PROJECT_KEY;
 };

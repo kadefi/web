@@ -6,7 +6,7 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import { ProjectData, TokenCellType, WalletData } from "../types/DashboardData.type";
-import { ProjectInfoType } from "../types/Project.type";
+import { ProjectErrorResponse } from "../types/Project.type";
 import { UseQueryResult } from "react-query";
 import { getDashboardErrors } from "../utils/DashboardError.util";
 import { Fab } from "@mui/material";
@@ -67,7 +67,7 @@ const FabContainer = styled(Box)({
 
 type ErrorsTooltipProps = {
   tokenErrors: TokenCellType[] | null;
-  projectErrors: ProjectInfoType[];
+  projectErrors: ProjectErrorResponse[];
   hasError: boolean;
 };
 

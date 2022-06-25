@@ -5,7 +5,6 @@ import SearchWalletInput from "../src/components/SearchWalletInput";
 import Header from "../src/components/Header";
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
-import TypographyNeon from "../src/components/commons/TypographyNeon";
 
 const Home: NextPage = () => {
   const titleProps = {
@@ -25,9 +24,9 @@ const Home: NextPage = () => {
               <Typography variant="h3" {...titleProps}>
                 Unlocking{" "}
               </Typography>
-              <TypographyNeon variant="h3" color="#FF007F" {...titleProps}>
+              <Typography variant="h3" color="#FF007F" {...titleProps}>
                 DeFi{" "}
-              </TypographyNeon>
+              </Typography>
               <Typography variant="h3" {...titleProps}>
                 Insights
               </Typography>

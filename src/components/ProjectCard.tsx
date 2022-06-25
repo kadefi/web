@@ -8,6 +8,7 @@ import { getRowDisplay } from "../utils/Table.util";
 import { formatFiatValue } from "../utils/Number.util";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
 import { UseQueryResult } from "react-query";
+import { getProjectLogo } from "../utils/Logo.util";
 
 type Props = {
   projectQuery: UseQueryResult<ProjectData>;
@@ -24,7 +25,7 @@ const ProjectCard = (props: Props) => {
   if (!projectData || isError) return null;
 
   const projectResponse = projectData as ProjectResponse;
-  const { projectName, fiatValue, sections } = projectResponse;
+  const { projectName, module, fiatValue, sections } = projectResponse;
 
   const getSectionDisplay = (section: Section) => {
     const { sectionName, fiatValue, headers, rows } = section;
@@ -45,7 +46,10 @@ const ProjectCard = (props: Props) => {
   return (
     <CardWrapper>
       <CardHeader>
-        <ProjectHeader>{projectName}</ProjectHeader>
+        <ProjectHeader>
+          {getProjectLogo(module)}
+          {projectName}
+        </ProjectHeader>
         <ProjectTotalValue>{formatFiatValue(fiatValue)}</ProjectTotalValue>
       </CardHeader>
       {sections && sections.map((section) => getSectionDisplay(section))}
@@ -81,6 +85,9 @@ const CardWrapper = styled(CustomPaper)({
 const ProjectHeader = styled(Typography)({
   fontSize: "1.5rem",
   fontWeight: "bold",
+  display: "flex",
+  gap: "8px",
+  alignItems: "center",
 });
 
 const ProjectTotalValue = styled(TypographyNeon)({
