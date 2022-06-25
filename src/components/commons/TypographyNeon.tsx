@@ -5,7 +5,7 @@ const TypographyNeon = (props: TypographyProps) => {
 };
 
 const StyledTypography = styled(Typography)({
-  textShadow: "0px 0px 10px #FF007F",
+  textShadow: "0px 0px 8px #FF007F",
 });
 
 export default TypographyNeon;

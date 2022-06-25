@@ -53,7 +53,7 @@ const SearchWalletInput = (props: Props) => {
   return (
     <>
       <CustomTextField
-        type="search"
+        type="text"
         inputRef={ref}
         disabled={isLoading}
         initialValue={initialWalletAddress}
