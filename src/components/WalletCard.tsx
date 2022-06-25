@@ -21,16 +21,16 @@ const WalletCard = (props: Props) => {
   if (!walletQuery) return null;
 
   const { isLoading, data: walletData } = walletQuery;
-
   if (isLoading) return <LoadingTableSkeleton />;
 
   if (!walletData) return null;
+  const { data: tokens } = walletData;
 
-  const walletValue = getWalletTotalValue(walletData);
+  if (tokens.length === 0) return null;
+  const walletValue = getWalletTotalValue(tokens);
 
-  const walletDataRows = walletData.map((tokenData: TokenCellType, i: number) => {
+  const walletDataRows = tokens.map((tokenData: TokenCellType, i: number) => {
     const { ticker, balance, price, fiatValue } = tokenData;
-
     return [
       <div key={`ticker-${i}`}>{ticker}</div>,
       <div key={`balance-${i}`}>{roundToDecimal(balance, 4)}</div>,

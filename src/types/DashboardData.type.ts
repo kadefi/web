@@ -1,3 +1,5 @@
+import { ProjectInfoType } from "./Project.type";
+
 export enum CELL_TYPE {
   TOKEN = "token",
   POOL = "pool",
@@ -58,11 +60,16 @@ export type Section = {
   rows: TableRowData[];
 };
 
-export type ProjectData = {
+export type ProjectResponse = {
   projectName: string;
   fiatValue: number;
   sections: Section[];
   error?: string;
 };
 
-export type WalletData = TokenCellType[];
+export type ProjectData = ProjectResponse | ProjectInfoType;
+
+export type WalletData = {
+  data: TokenCellType[];
+  errors: TokenCellType[];
+};
