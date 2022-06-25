@@ -71,7 +71,7 @@ const LandingPageContent = styled.div`
   justify-content: center;
   width: 100%;
   flex-grow: 1;
-  top: -80px;
+  top: -120px;
   position: relative;
 `;
 
