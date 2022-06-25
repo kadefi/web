@@ -18,11 +18,20 @@ import DashboardErrorFab from "../../src/components/DashboardErrorFab";
 const Dashboard: NextPage = () => {
   const router = useRouter();
 
-  const walletAddress = router.query.walletAddress as string;
+  const walletAddress = router.query.walletAddress as string | undefined;
 
   const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);
 
-  const isDashboardLoading = walletQuery.isLoading || projectsQuery.some((projectQuery) => projectQuery.isLoading);
+  let isDashboardLoading = true;
+  let dashboardErrorFab = null;
+
+  if (walletQuery && projectsQuery) {
+    isDashboardLoading = walletQuery.isLoading || projectsQuery.some((projectQuery) => projectQuery.isLoading);
+
+    dashboardErrorFab = (
+      <DashboardErrorFab loading={isDashboardLoading} walletQuery={walletQuery} projectsQuery={projectsQuery} />
+    );
+  }
 
   let walletCard = null;
   if (walletQuery) {
@@ -66,7 +75,7 @@ const Dashboard: NextPage = () => {
         {walletCard}
         {projectCards}
       </Content>
-      <DashboardErrorFab loading={isDashboardLoading} walletQuery={walletQuery} projectsQuery={projectsQuery} />
+      {dashboardErrorFab}
     </Background>
   );
 };
