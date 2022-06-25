@@ -1,5 +1,6 @@
 import { CELL_TYPE, TableRowData, TokenCellType } from "../types/DashboardData.type";
 import { formatFiatValue, roundToDecimal } from "./Number.util";
+import toDate from "date-fns/toDate";
 
 export const getRowDisplay = (rowData: TableRowData) => {
   return rowData.map((rowCell) => {
@@ -42,6 +43,15 @@ export const getRowDisplay = (rowData: TableRowData) => {
 
     if (rowCell.type === CELL_TYPE.FIAT) {
       return <div>{formatFiatValue(rowCell.value)}</div>;
+    }
+
+    if (rowCell.type === CELL_TYPE.DATE) {
+      const date = toDate(Date.parse(rowCell.value));
+      return (
+        <div>
+          {date.toDateString()} {date.toLocaleTimeString()}
+        </div>
+      );
     }
 
     return null;

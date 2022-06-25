@@ -6,6 +6,7 @@ export enum CELL_TYPE {
   STRING = "string",
   NUMBER = "number",
   FIAT = "fiat",
+  DATE = "date",
 }
 
 export type PoolCellType = {
@@ -51,7 +52,20 @@ export type FiatCellType = {
   value: number;
 };
 
-export type TableRowData = (PoolCellType | TokenCellType | NumberCellType | StringCellType | FiatCellType)[];
+export type DateCellType = {
+  id?: string;
+  type: CELL_TYPE.DATE;
+  value: string;
+};
+
+export type TableRowData = (
+  | PoolCellType
+  | TokenCellType
+  | NumberCellType
+  | StringCellType
+  | FiatCellType
+  | DateCellType
+)[];
 
 export type Section = {
   sectionName: string;
