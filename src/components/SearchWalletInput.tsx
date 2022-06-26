@@ -5,6 +5,7 @@ import CustomCircularProgress from "./commons/CustomCircularProgress";
 import { useRef, useState } from "react";
 import { isValidWalletAddress } from "../utils/String.util";
 import SnackBarAlert from "./commons/SnackBarAlert";
+import { ROUTE } from "../constants/Routes.constant";
 
 type Props = {
   initialWalletAddress?: string;
@@ -31,7 +32,7 @@ const SearchWalletInput = (props: Props) => {
       ref.current.blur();
     }
 
-    router.push(`/dashboard/${cleanedAddress}`);
+    router.push(`${ROUTE.DASHBOARD}/${cleanedAddress}`);
   };
 
   const handleWalletInputEnter = (e: any) => {

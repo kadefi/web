@@ -1,4 +1,3 @@
-import * as React from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material/styles";
@@ -7,6 +6,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "../src/theme";
 import createEmotionCache from "../src/createEmotionCache";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { initializeAmplitude } from "../src/analytics/Analytics.util";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -22,6 +22,8 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+initializeAmplitude();
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;

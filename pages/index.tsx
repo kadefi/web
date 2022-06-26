@@ -6,8 +6,12 @@ import Header from "../src/components/Header";
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import RecentSearches from "../src/components/RecentSearches/RecentSearches";
+import { ROUTE } from "../src/constants/Routes.constant";
+import { useTrackPageVisit } from "../src/analytics/useTrackPageVisit";
 
 const Home: NextPage = () => {
+  useTrackPageVisit(ROUTE.HOME);
+
   const titleProps = {
     display: "inline",
     fontWeight: 900,

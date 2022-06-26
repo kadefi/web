@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { ROUTE } from "../../constants/Routes.constant";
 import { getRecentWalletsLS } from "../../utils/LocalStorage.util";
 import CustomLink from "../commons/CustomLink";
 
@@ -34,7 +35,7 @@ const getWalletPill = (wallet: string) => {
     shortenedWallet = `${wallet.slice(0, 7)}...${wallet.slice(-4)}`;
   }
 
-  return <WalletPill href={`/dashboard/${wallet}`}>{shortenedWallet}</WalletPill>;
+  return <WalletPill href={`${ROUTE.DASHBOARD}/${wallet}`}>{shortenedWallet}</WalletPill>;
 };
 
 const WalletPill = styled(CustomLink)`

@@ -16,8 +16,14 @@ import { PROJECT_KEY } from "../../src/types/Project.type";
 import DashboardErrorFab from "../../src/components/DashboardErrorFab";
 import { useEffect, useState } from "react";
 import { addNewRecentWalletLS } from "../../src/utils/LocalStorage.util";
+import { ROUTE } from "../../src/constants/Routes.constant";
+import { trackWalletSearchEvent } from "../../src/analytics/Analytics.util";
+import { isValidWalletAddress } from "../../src/utils/String.util";
+import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 
 const Dashboard: NextPage = () => {
+  useTrackPageVisit(ROUTE.DASHBOARD);
+
   const router = useRouter();
 
   const [walletAddress, setWalletAddress] = useState<string | undefined>();
@@ -27,7 +33,10 @@ const Dashboard: NextPage = () => {
   }, [router.query.walletAddress]);
 
   useEffect(() => {
-    addNewRecentWalletLS(walletAddress);
+    if (walletAddress && isValidWalletAddress(walletAddress)) {
+      addNewRecentWalletLS(walletAddress);
+      trackWalletSearchEvent(walletAddress);
+    }
   }, [walletAddress]);
 
   const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);
