@@ -5,6 +5,7 @@ import SearchWalletInput from "../src/components/SearchWalletInput";
 import Header from "../src/components/Header";
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
+import RecentSearches from "../src/components/RecentSearches/RecentSearches";
 
 const Home: NextPage = () => {
   const titleProps = {
@@ -37,6 +38,7 @@ const Home: NextPage = () => {
               </Typography>
             </Subtitle>
             <SearchWalletInput />
+            <RecentSearches />
           </LandingPageContent>
         </Wrapper>
       </Container>

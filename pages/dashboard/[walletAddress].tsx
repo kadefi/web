@@ -14,11 +14,21 @@ import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
 import { PROJECT_KEY } from "../../src/types/Project.type";
 import DashboardErrorFab from "../../src/components/DashboardErrorFab";
+import { useEffect, useState } from "react";
+import { addNewRecentWalletLS } from "../../src/utils/LocalStorage.util";
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
 
-  const walletAddress = router.query.walletAddress as string | undefined;
+  const [walletAddress, setWalletAddress] = useState<string | undefined>();
+
+  useEffect(() => {
+    setWalletAddress(router.query.walletAddress as string | undefined);
+  }, [router.query.walletAddress]);
+
+  useEffect(() => {
+    addNewRecentWalletLS(walletAddress);
+  }, [walletAddress]);
 
   const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);
 
