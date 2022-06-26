@@ -1,21 +1,58 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import TypographyNeon from "./commons/TypographyNeon";
-import { styled } from "@mui/material/styles";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
-import { ProjectData, ProjectResponse, Section } from "../types/DashboardData.type";
+import { ProjectData, ProjectResponse, Section, TableRowData } from "../types/DashboardData.type";
 import { getRowDisplay } from "../utils/Table.util";
 import { formatFiatValue } from "../utils/Number.util";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
 import { UseQueryResult } from "react-query";
 import { getProjectLogo } from "../utils/Logo.util";
+import styled from "@emotion/styled";
 
 type Props = {
   projectQuery: UseQueryResult<ProjectData>;
 };
 
+const getMobileTableDisplay = (headers: string[], rows: TableRowData[]) => {
+  const tableHeaders = ["Details", ...headers.slice(-1)];
+
+  const tableRowComponents = rows.map((row, i) => {
+    const rowComponents = getRowDisplay(row);
+
+    const detailRowComponents = rowComponents.slice(0, -1);
+
+    const detailCell = (
+      <div key={`detailRow-${i}`}>
+        {detailRowComponents.map((detailRowComponent, j) => {
+          return (
+            <MobileDetailRowElement key={`detailRowCell-${j}`}>
+              <MobileDetailRowHeader>{headers[j]}</MobileDetailRowHeader>
+              {detailRowComponent}
+            </MobileDetailRowElement>
+          );
+        })}
+      </div>
+    );
+
+    const lastCell = <MobileLastCell>{rowComponents[rowComponents.length - 1]}</MobileLastCell>;
+
+    return [detailCell, lastCell];
+  });
+
+  return { tableHeaders, tableRowComponents };
+};
+
+const getDesktopTableDisplay = (headers: string[], rows: TableRowData[]) => {
+  const tableRowComponents = rows.map((rowData) => getRowDisplay(rowData));
+
+  return { tableHeaders: headers, tableRowComponents };
+};
+
 const ProjectCard = (props: Props) => {
   const { projectQuery } = props;
+
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   if (!projectQuery) return null;
 
@@ -30,7 +67,9 @@ const ProjectCard = (props: Props) => {
   const getSectionDisplay = (section: Section) => {
     const { sectionName, fiatValue, headers, rows } = section;
 
-    const rowComponents = rows.map((rowData) => getRowDisplay(rowData));
+    const transformTableDisplay = isMobile ? getMobileTableDisplay : getDesktopTableDisplay;
+
+    const { tableHeaders, tableRowComponents } = transformTableDisplay(headers, rows);
 
     return (
       <Box key={sectionName}>
@@ -38,7 +77,7 @@ const ProjectCard = (props: Props) => {
           <SectionName>{sectionName}</SectionName>
           <SectionTotalValue>{formatFiatValue(fiatValue)}</SectionTotalValue>
         </SectionHeader>
-        <CustomTable tableKey={`${section}-table`} headers={headers} rows={rowComponents} />
+        <CustomTable tableKey={`${section}-table`} headers={tableHeaders} rows={tableRowComponents} />
       </Box>
     );
   };
@@ -57,24 +96,51 @@ const ProjectCard = (props: Props) => {
   );
 };
 
+const MobileLastCell = styled.div`
+  font-size: 0.8rem;
+`;
+
+const MobileDetailRowHeader = styled.div`
+  font-weight: 400;
+  color: #a3a3a3;
+  font-size: 0.75rem;
+  width: 3rem;
+  white-space: pre-wrap;
+`;
+
+const MobileDetailRowElement = styled.div`
+  margin-bottom: 8px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+`;
+
 const SectionTotalValue = styled(Typography)({
   fontSize: "1rem",
   marginRight: "1rem",
   color: "#FFC600",
+
+  "@media (max-width: 600px)": {
+    fontSize: "0.9rem",
+  },
 });
 
 const SectionName = styled(Typography)({
   fontSize: "1rem",
   paddingLeft: "1rem",
   color: "#FFC600",
-  fontWeight: "500",
+  fontWeight: "700",
+
+  "@media (max-width: 600px)": {
+    fontSize: "0.9rem",
+  },
 });
 
 const SectionHeader = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop: "1.5rem",
+  marginTop: "1rem",
   marginBottom: "0.5rem",
 });
 
@@ -84,15 +150,23 @@ const CardWrapper = styled(CustomPaper)({
 });
 
 const ProjectHeader = styled(Typography)({
-  fontSize: "1.5rem",
+  fontSize: "1.25rem",
   fontWeight: "bold",
   display: "flex",
   gap: "8px",
   alignItems: "center",
+
+  "@media (max-width: 600px)": {
+    fontSize: "1rem",
+  },
 });
 
 const ProjectTotalValue = styled(TypographyNeon)({
   fontSize: "1.25rem",
+
+  "@media (max-width: 600px)": {
+    fontSize: "1rem",
+  },
 });
 
 const CardHeader = styled(Box)({

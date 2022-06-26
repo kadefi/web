@@ -3,7 +3,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import { useMediaQuery } from "@mui/material";
 
 const TwitterButton = () => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
     <Container target="__blank" href="https://twitter.com/kadefi_money/" isMobile={isMobile}>

@@ -102,16 +102,24 @@ const NetWorthAmountSkeleton = styled(Skeleton)({
   width: "10rem",
 });
 
-const NetWorthAmount = styled(TypographyNeon)({
-  fontSize: "48px",
-  marginBottom: "1rem",
-});
+const NetWorthAmount = styled(TypographyNeon)`
+  font-size: 48px;
+  margin-bottom: 1rem;
 
-const NetWorthTitle = styled(Typography)({
-  fontSize: "24px",
-  fontWeight: "bold",
-  marginTop: "1rem",
-});
+  @media (max-width: 600px) {
+    font-size: 40px;
+  }
+`;
+
+const NetWorthTitle = styled(Typography)`
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 1rem;
+
+  @media (max-width: 600px) {
+    font-size: 20px;
+  }
+`;
 
 const Content = styled(Container)({
   marginTop: "32px",

@@ -11,7 +11,7 @@ import styled from "@emotion/styled";
 import PngLogo from "./commons/PngLogo";
 import { getTokenLogo } from "../utils/Logo.util";
 
-const HEADERS = ["TOKEN", "BALANCE", "PRICE", "VALUE"];
+const HEADERS = ["Token Balance", "Price", "Value"];
 
 type Props = {
   walletQuery: UseQueryResult<WalletData>;
@@ -33,10 +33,8 @@ const WalletCard = (props: Props) => {
     const { ticker, balance, price, fiatValue } = tokenData;
     return [
       <TickerContainer key={`ticker-${i}`}>
-        {getTokenLogo(ticker)}
-        {ticker}
+        {getTokenLogo(ticker)} {`${roundToDecimal(balance, 4)} ${ticker}`}
       </TickerContainer>,
-      <div key={`balance-${i}`}>{roundToDecimal(balance, 4)}</div>,
       <div key={`price-${i}`}>{formatFiatValue(price)}</div>,
       <div key={`fiat-${i}`}>{formatFiatValue(fiatValue)}</div>,
     ];
@@ -68,14 +66,22 @@ const WalletHeaderContainer = styled.div`
   align-items: center;
 `;
 
-const WalletHeader = styled(Typography)({
-  fontSize: "1.5rem",
-  fontWeight: "bold",
-});
+const WalletHeader = styled(Typography)`
+  font-size: 1.25rem;
+  font-weight: bold;
 
-const WalletTotalValue = styled(TypographyNeon)({
-  fontSize: "1.25rem",
-});
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
+`;
+
+const WalletTotalValue = styled(TypographyNeon)`
+  font-size: 1.25rem;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
+`;
 
 const CardWrapper = styled(CustomPaper)({
   paddingBottom: "1rem",

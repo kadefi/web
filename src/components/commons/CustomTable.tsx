@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MuiTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,6 +16,8 @@ type Props = {
 
 const CustomTable = (props: Props) => {
   const { tableKey, headers, rows } = props;
+
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   const headerTableCells = useMemo(() => {
     return headers.map((header, i) => {
@@ -52,15 +55,19 @@ const CustomTable = (props: Props) => {
             align = "right";
           }
 
+          const style = {
+            verticalAlign: isMobile ? "top" : "center",
+          };
+
           return (
-            <StyledTableCell key={`${tableKey}-cell-${j}`} align={align}>
+            <StyledTableCell key={`${tableKey}-cell-${j}`} align={align} style={style}>
               {rowCell}
             </StyledTableCell>
           );
         })}
       </StyledTableRow>
     ));
-  }, [tableKey, rows]);
+  }, [tableKey, rows, isMobile]);
 
   const tableContent = tableRows.length === 0 ? <EmptyTable length={headerTableCells.length} /> : tableRows;
   return (
@@ -103,13 +110,21 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "rgba(23, 0, 23, 0.8)",
     color: theme.palette.common.white,
     borderBottom: "none",
-    fontWeight: "bold",
     padding: "0.5rem 1rem",
+    fontSize: "0.875rem",
+
+    "@media (max-width: 600px)": {
+      fontSize: "0.75rem",
+    },
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    borderBottom: "1px solid #3E193F",
+    fontSize: "0.875rem",
+    borderBottom: "1px solid #512a53",
     padding: "0.5rem 1rem",
+
+    "@media (max-width: 600px)": {
+      fontSize: "0.75rem",
+    },
   },
 }));
 
