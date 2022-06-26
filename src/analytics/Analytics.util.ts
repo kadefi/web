@@ -1,6 +1,6 @@
 import amplitude from "amplitude-js";
 import { ROUTE } from "../constants/Routes.constant";
-import { AMPLITUDE_EVENT } from "./AmplitudeEvents";
+import { AMPLITUDE_EVENT } from "./AmplitudeEvent";
 
 export const initializeAmplitude = () => {
   amplitude.getInstance().init(process.env.NEXT_PUBLIC_AMPLITUDE_KEY!);

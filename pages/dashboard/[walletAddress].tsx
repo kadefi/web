@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import WalletCard from "../../src/components/WalletCard";
 import ProjectCard from "../../src/components/ProjectCard";
@@ -86,7 +85,7 @@ const Dashboard: NextPage = () => {
   );
 
   return (
-    <Background>
+    <div>
       <Content maxWidth="md">
         <Header />
         <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
@@ -95,7 +94,7 @@ const Dashboard: NextPage = () => {
         {projectCards}
       </Content>
       {dashboardErrorFab}
-    </Background>
+    </div>
   );
 };
 
@@ -117,18 +116,6 @@ const NetWorthTitle = styled(Typography)({
 const Content = styled(Container)({
   marginTop: "32px",
   marginBottom: "80px",
-});
-
-const Background = styled(Box)({
-  position: "absolute",
-  backgroundImage: "url(/assets/background.png)",
-  backgroundPosition: "center",
-  backgroundSize: "cover",
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  overflowY: "auto",
 });
 
 export default Dashboard;

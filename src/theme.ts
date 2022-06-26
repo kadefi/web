@@ -8,6 +8,9 @@ let theme = createTheme({
   },
   palette: {
     mode: "dark",
+    background: {
+      default: "#5b133f",
+    },
     primary: {
       main: "#556cd6",
     },
