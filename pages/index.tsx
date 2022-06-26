@@ -34,11 +34,7 @@ const Home: NextPage = () => {
               Insights
             </Typography>
           </Title>
-          <Subtitle>
-            <Typography textAlign="center" fontWeight={500}>
-              View all your Kadena&apos;s DeFi investments in a single dashboard
-            </Typography>
-          </Subtitle>
+          <Subtitle>View all your Kadena&apos;s DeFi investments in a single dashboard</Subtitle>
           <SearchWalletInput />
           <RecentSearches />
         </LandingPageContent>
@@ -63,8 +59,14 @@ const Title = styled.div`
   margin-bottom: 1rem;
 `;
 
-const Subtitle = styled.div`
+const Subtitle = styled(Typography)`
+  text-align: center;
   margin-bottom: 3rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+    max-width: 70vw;
+  }
 `;
 
 const LandingPageContent = styled.div`
