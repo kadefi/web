@@ -1,6 +1,6 @@
 import { CELL_TYPE, TableRowData } from "../types/DashboardData.type";
 import { formatFiatValue, roundToDecimal } from "./Number.util";
-import toDate from "date-fns/toDate";
+import { toDate, format } from "date-fns";
 import TokenDisplay from "../components/commons/TokenDisplay";
 import TokenPoolDisplay from "../components/commons/TokenPoolDisplay";
 
@@ -28,11 +28,7 @@ export const getRowDisplay = (rowData: TableRowData) => {
 
     if (rowCell.type === CELL_TYPE.DATE) {
       const date = toDate(Date.parse(rowCell.value));
-      return (
-        <div>
-          {date.toDateString()} {date.toLocaleTimeString()}
-        </div>
-      );
+      return <div>{format(date, "MMM dd yyyy, HH:mm")}</div>;
     }
 
     return null;
