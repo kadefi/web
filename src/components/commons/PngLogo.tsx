@@ -45,8 +45,8 @@ const Background = styled.div<TokenProps & BackgroundProps>`
   border: 1px solid #aeabb1;
   background-color: ${(props) => props.color};
   border-radius: 5rem;
-  height: ${(props) => props.size};
-  width: ${(props) => props.size};
+  min-height: ${(props) => props.size};
+  min-width: ${(props) => props.size};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -88,6 +88,7 @@ const EmptyTable = ({ length }: EmptyTableProps) => (
 
 const StyledTableBody = styled(TableBody)({
   backgroundColor: "transparent",
+  whiteSpace: "nowrap",
 });
 
 const StyledTableContainer = styled(TableContainer)({
