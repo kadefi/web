@@ -74,6 +74,7 @@ const SectionHeader = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  marginTop: "1.5rem",
   marginBottom: "0.5rem",
 });
 
@@ -98,7 +99,8 @@ const CardHeader = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "1rem",
+  paddingTop: "1rem",
+  margin: "0 1rem 1rem 1rem",
 });
 
 export default ProjectCard;
