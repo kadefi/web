@@ -10,6 +10,7 @@ import { getWalletTotalValue } from "../utils/NetWorth.util";
 import styled from "@emotion/styled";
 import PngLogo from "./commons/PngLogo";
 import { getTokenLogo } from "../utils/Logo.util";
+import theme from "../theme";
 
 const HEADERS = ["Token Balance", "Price", "Value"];
 
@@ -70,7 +71,7 @@ const WalletHeader = styled(Typography)`
   font-size: 1.25rem;
   font-weight: bold;
 
-  @media (max-width: 600px) {
+  ${theme.breakpoints.down("sm")} {
     font-size: 1rem;
   }
 `;
@@ -78,7 +79,7 @@ const WalletHeader = styled(Typography)`
 const WalletTotalValue = styled(TypographyNeon)`
   font-size: 1.25rem;
 
-  @media (max-width: 600px) {
+  ${theme.breakpoints.down("sm")} {
     font-size: 1rem;
   }
 `;

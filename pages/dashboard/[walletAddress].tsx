@@ -19,6 +19,7 @@ import { ROUTE } from "../../src/constants/Routes.constant";
 import { trackWalletSearchEvent } from "../../src/analytics/Analytics.util";
 import { isValidWalletAddress } from "../../src/utils/String.util";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
+import theme from "../../src/theme";
 
 const Dashboard: NextPage = () => {
   useTrackPageVisit(ROUTE.DASHBOARD);
@@ -106,7 +107,7 @@ const NetWorthAmount = styled(TypographyNeon)`
   font-size: 48px;
   margin-bottom: 1rem;
 
-  @media (max-width: 600px) {
+  ${theme.breakpoints.down("sm")} {
     font-size: 40px;
   }
 `;
@@ -116,7 +117,7 @@ const NetWorthTitle = styled(Typography)`
   font-weight: bold;
   margin-top: 1rem;
 
-  @media (max-width: 600px) {
+  ${theme.breakpoints.down("sm")} {
     font-size: 20px;
   }
 `;

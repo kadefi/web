@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import RecentSearches from "../src/components/RecentSearches/RecentSearches";
 import { ROUTE } from "../src/constants/Routes.constant";
 import { useTrackPageVisit } from "../src/analytics/useTrackPageVisit";
+import theme from "../src/theme";
 
 const Home: NextPage = () => {
   useTrackPageVisit(ROUTE.HOME);
@@ -63,7 +64,7 @@ const Subtitle = styled(Typography)`
   text-align: center;
   margin-bottom: 3rem;
 
-  @media (max-width: 600px) {
+  ${theme.breakpoints.down("sm")} {
     font-size: 0.9rem;
     max-width: 70vw;
   }

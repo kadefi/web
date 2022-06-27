@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ROUTE } from "../../constants/Routes.constant";
+import theme from "../../theme";
 import { getRecentWalletsLS } from "../../utils/LocalStorage.util";
 import CustomLink from "../commons/CustomLink";
 
@@ -55,7 +56,7 @@ const Container = styled.div`
   margin-top: 24px;
   font-size: 14px;
 
-  @media (max-width: 600px) {
+  ${theme.breakpoints.down("sm")} {
     flex-direction: column;
   }
 `;

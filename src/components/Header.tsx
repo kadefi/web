@@ -15,7 +15,7 @@ const Header = () => {
     <Container>
       <ProjectNameContainer onClick={handleLogoClick}>
         <ImageContainer>
-          <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" />
+          <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" priority />
         </ImageContainer>
         <div>
           <ProjectName>KADEFI</ProjectName>

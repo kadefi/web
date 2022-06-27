@@ -1,33 +1,37 @@
 import styled from "@emotion/styled";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { useMediaQuery } from "@mui/material";
+import theme from "../../../theme";
 
 const TwitterButton = () => {
-  const isMobile = useMediaQuery("(max-width: 600px)");
-
   return (
-    <Container target="__blank" href="https://twitter.com/kadefi_money/" isMobile={isMobile}>
+    <Container target="__blank" href="https://twitter.com/kadefi_money/">
       <TwitterIcon fontSize="small" />
-      {isMobile ? null : "Follow Us"}
+      <Subtext>Follow Us</Subtext>
     </Container>
   );
 };
 
-type ContainerProps = {
-  isMobile: boolean;
-};
+const Subtext = styled.div`
+  ${theme.breakpoints.down("sm")} {
+    display: none;
+  }
+`;
 
-const Container = styled.a<ContainerProps>`
+const Container = styled.a`
   background-color: #ff007f;
   border-radius: 8px;
   display: flex;
   gap: 8px;
-  padding: ${(props) => (props.isMobile ? "8px" : "8px 16px")};
+  padding: 8px 16px;
   font-size: 12px;
   align-items: center;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+
+  ${theme.breakpoints.down("sm")} {
+    padding: 8px;
+  }
 `;
 
 export default TwitterButton;

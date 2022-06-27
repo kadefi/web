@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { ReactNode, useMemo } from "react";
+import theme from "../../theme";
 
 type Props = {
   tableKey: string;
@@ -17,7 +18,7 @@ type Props = {
 const CustomTable = (props: Props) => {
   const { tableKey, headers, rows } = props;
 
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const headerTableCells = useMemo(() => {
     return headers.map((header, i) => {
@@ -113,7 +114,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     padding: "0.5rem 1rem",
     fontSize: "0.875rem",
 
-    "@media (max-width: 600px)": {
+    [`${theme.breakpoints.down("sm")}`]: {
       fontSize: "0.75rem",
     },
   },
@@ -122,7 +123,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     borderBottom: "1px solid #512a53",
     padding: "0.5rem 1rem",
 
-    "@media (max-width: 600px)": {
+    [`${theme.breakpoints.down("sm")}`]: {
       fontSize: "0.75rem",
     },
   },

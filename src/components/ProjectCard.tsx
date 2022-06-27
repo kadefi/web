@@ -9,6 +9,7 @@ import LoadingTableSkeleton from "./LoadingTableSkeleton";
 import { UseQueryResult } from "react-query";
 import { getProjectLogo } from "../utils/Logo.util";
 import styled from "@emotion/styled";
+import theme from "../theme";
 
 type Props = {
   projectQuery: UseQueryResult<ProjectData>;
@@ -52,7 +53,7 @@ const getDesktopTableDisplay = (headers: string[], rows: TableRowData[]) => {
 const ProjectCard = (props: Props) => {
   const { projectQuery } = props;
 
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   if (!projectQuery) return null;
 
@@ -120,7 +121,7 @@ const SectionTotalValue = styled(Typography)({
   marginRight: "1rem",
   color: "#FFC600",
 
-  "@media (max-width: 600px)": {
+  [`{${theme.breakpoints.down("sm")}}`]: {
     fontSize: "0.9rem",
   },
 });
@@ -131,7 +132,7 @@ const SectionName = styled(Typography)({
   color: "#FFC600",
   fontWeight: "700",
 
-  "@media (max-width: 600px)": {
+  [`${theme.breakpoints.down("sm")}`]: {
     fontSize: "0.9rem",
   },
 });
@@ -156,7 +157,7 @@ const ProjectHeader = styled(Typography)({
   gap: "8px",
   alignItems: "center",
 
-  "@media (max-width: 600px)": {
+  [`${theme.breakpoints.down("sm")}`]: {
     fontSize: "1rem",
   },
 });
@@ -164,7 +165,7 @@ const ProjectHeader = styled(Typography)({
 const ProjectTotalValue = styled(TypographyNeon)({
   fontSize: "1.25rem",
 
-  "@media (max-width: 600px)": {
+  [`${theme.breakpoints.down("sm")}`]: {
     fontSize: "1rem",
   },
 });
