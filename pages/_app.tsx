@@ -34,11 +34,10 @@ export default function MyApp(props: MyAppProps) {
       <CacheProvider value={emotionCache}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <meta name="theme-color" content="#3C1053" />
           <title>Kadefi Money | DeFi Dashboard for Kadena</title>
         </Head>
         <Background>
-          <Image alt="Background" src="/assets/background.png" layout="fill" objectFit="cover" unoptimized priority />
+          <Image alt="Background" src="/assets/background.png" layout="fill" objectFit="cover" priority />
         </Background>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
