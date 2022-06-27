@@ -1,4 +1,5 @@
-import { CircularProgress, CircularProgressProps, styled } from "@mui/material";
+import styled from "@emotion/styled";
+import CircularProgress, { CircularProgressProps } from "@mui/material/CircularProgress";
 
 const CustomCircularProgress = (props: CircularProgressProps) => {
   return <StyledCircularProgress disableShrink {...props} />;

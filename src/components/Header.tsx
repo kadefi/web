@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import TwitterButton from "./commons/SocialButtons/TwitterButton";

@@ -1,16 +1,16 @@
-import CustomCircularProgress from "./commons/CustomCircularProgress";
-import Box from "@mui/material/Box";
 import DoneIcon from "@mui/icons-material/Done";
-import Tooltip from "@mui/material/Tooltip";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import Box from "@mui/material/Box";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { useState } from "react";
+import Fab from "@mui/material/Fab";
 import { styled } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
+import { useState } from "react";
+import { UseQueryResult } from "react-query";
 import { ProjectData, TokenCellType, WalletData } from "../types/DashboardData.type";
 import { ProjectErrorResponse } from "../types/Project.type";
-import { UseQueryResult } from "react-query";
 import { getDashboardErrors } from "../utils/DashboardError.util";
-import { Fab } from "@mui/material";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import CustomCircularProgress from "./commons/CustomCircularProgress";
 
 type DashboardErrorFabProps = {
   loading: boolean;

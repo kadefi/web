@@ -1,4 +1,5 @@
-import { styled, Typography, TypographyProps } from "@mui/material";
+import styled from "@emotion/styled";
+import Typography, { TypographyProps } from "@mui/material/Typography";
 
 const TypographyNeon = (props: TypographyProps) => {
   return <StyledTypography {...props} />;

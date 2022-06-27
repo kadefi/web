@@ -1,4 +1,3 @@
-import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MuiTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,6 +5,7 @@ import TableCell, { tableCellClasses, TableCellProps } from "@mui/material/Table
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { ReactNode, useMemo } from "react";
 import theme from "../../theme";
 

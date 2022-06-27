@@ -1,16 +1,17 @@
-import { Box, Typography } from "@mui/material";
-import CustomTable from "./commons/CustomTable";
-import CustomPaper from "./commons/CustomPaper";
-import TypographyNeon from "./commons/TypographyNeon";
-import { TokenCellType, WalletData } from "../types/DashboardData.type";
-import { formatFiatValue, roundToDecimal } from "../utils/Number.util";
-import LoadingTableSkeleton from "./LoadingTableSkeleton";
-import { UseQueryResult } from "react-query";
-import { getWalletTotalValue } from "../utils/NetWorth.util";
 import styled from "@emotion/styled";
-import PngLogo from "./commons/PngLogo";
-import { getTokenLogo } from "../utils/Logo.util";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { UseQueryResult } from "react-query";
 import theme from "../theme";
+import { TokenCellType, WalletData } from "../types/DashboardData.type";
+import { getTokenLogo } from "../utils/Logo.util";
+import { getWalletTotalValue } from "../utils/NetWorth.util";
+import { formatFiatValue, roundToDecimal } from "../utils/Number.util";
+import CustomPaper from "./commons/CustomPaper";
+import CustomTable from "./commons/CustomTable";
+import PngLogo from "./commons/PngLogo";
+import TypographyNeon from "./commons/TypographyNeon";
+import LoadingTableSkeleton from "./LoadingTableSkeleton";
 
 const HEADERS = ["Token Balance", "Price", "Value"];
 

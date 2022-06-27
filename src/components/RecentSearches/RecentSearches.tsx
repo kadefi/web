@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { ROUTE } from "../../constants/Routes.constant";
 import theme from "../../theme";

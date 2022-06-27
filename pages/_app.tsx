@@ -1,14 +1,14 @@
-import Head from "next/head";
-import { AppProps } from "next/app";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import theme from "../src/theme";
-import createEmotionCache from "../src/createEmotionCache";
+import styled from "@emotion/styled";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import { AppProps } from "next/app";
+import Head from "next/head";
+import Image from "next/image";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { initializeAmplitude } from "../src/analytics/Analytics.util";
-import Image from "next/image";
-import styled from "@emotion/styled";
+import createEmotionCache from "../src/createEmotionCache";
+import theme from "../src/theme";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

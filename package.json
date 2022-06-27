@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "analyze-build": "ANALYZE=true yarn build",
     "start": "next start",
     "lint": "yarn run typecheck && next lint && yarn run format:check",
     "lint:fix": "next lint --fix && yarn run format:fix",
@@ -21,6 +22,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.0",
     "@mui/material": "^5.8.1",
+    "@next/bundle-analyzer": "^12.1.6",
     "amplitude-js": "^8.18.5",
     "axios": "^0.27.2",
     "date-fns": "^2.28.0",

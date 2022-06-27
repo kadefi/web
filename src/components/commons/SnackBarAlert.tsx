@@ -1,4 +1,6 @@
-import { Snackbar, Alert, AlertColor, Slide, SlideProps } from "@mui/material";
+import Alert, { AlertColor } from "@mui/material/Alert";
+import Slide, { SlideProps } from "@mui/material/Slide";
+import Snackbar from "@mui/material/Snackbar";
 import { TransitionProps } from "@mui/material/transitions";
 
 type Props = {

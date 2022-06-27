@@ -31,6 +31,24 @@
     "react/no-unused-prop-types": "error",
     "react/no-unused-state": "error",
     "react/jsx-boolean-value": "error",
-    "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "never" }]
+    "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "never" }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["@mui/*/*/*", "!@mui/material/test-utils/*"]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "caseInsensitive": true,
+          "order": "asc"
+        },
+        "groups": ["external", "builtin", "parent", ["sibling", "index"]],
+        "newlines-between": "never",
+        "pathGroupsExcludedImportTypes": ["builtin"]
+      }
+    ]
   }
 }

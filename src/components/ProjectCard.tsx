@@ -1,15 +1,17 @@
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import TypographyNeon from "./commons/TypographyNeon";
+import styled from "@emotion/styled";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { UseQueryResult } from "react-query";
+import theme from "../theme";
+import { ProjectData, ProjectResponse, Section, TableRowData } from "../types/DashboardData.type";
+import { getProjectLogo } from "../utils/Logo.util";
+import { formatFiatValue } from "../utils/Number.util";
+import { getRowDisplay } from "../utils/Table.util";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
-import { ProjectData, ProjectResponse, Section, TableRowData } from "../types/DashboardData.type";
-import { getRowDisplay } from "../utils/Table.util";
-import { formatFiatValue } from "../utils/Number.util";
+import TypographyNeon from "./commons/TypographyNeon";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
-import { UseQueryResult } from "react-query";
-import { getProjectLogo } from "../utils/Logo.util";
-import styled from "@emotion/styled";
-import theme from "../theme";
 
 type Props = {
   projectQuery: UseQueryResult<ProjectData>;

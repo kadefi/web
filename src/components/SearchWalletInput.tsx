@@ -1,11 +1,11 @@
-import CustomTextField from "./commons/CustomTextField";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import { useRouter } from "next/router";
-import CustomCircularProgress from "./commons/CustomCircularProgress";
 import { useRef, useState } from "react";
-import { isValidWalletAddress } from "../utils/String.util";
-import SnackBarAlert from "./commons/SnackBarAlert";
 import { ROUTE } from "../constants/Routes.constant";
+import { isValidWalletAddress } from "../utils/String.util";
+import CustomCircularProgress from "./commons/CustomCircularProgress";
+import CustomTextField from "./commons/CustomTextField";
+import SnackBarAlert from "./commons/SnackBarAlert";
 
 type Props = {
   initialWalletAddress?: string;

@@ -1,12 +1,12 @@
-import type { NextPage } from "next";
-import Container from "@mui/material/Container";
-import SearchWalletInput from "../src/components/SearchWalletInput";
-import Header from "../src/components/Header";
 import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
-import RecentSearches from "../src/components/RecentSearches/RecentSearches";
-import { ROUTE } from "../src/constants/Routes.constant";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import type { NextPage } from "next";
 import { useTrackPageVisit } from "../src/analytics/useTrackPageVisit";
+import Header from "../src/components/Header";
+import RecentSearches from "../src/components/RecentSearches/RecentSearches";
+import SearchWalletInput from "../src/components/SearchWalletInput";
+import { ROUTE } from "../src/constants/Routes.constant";
 import theme from "../src/theme";
 
 const Home: NextPage = () => {
