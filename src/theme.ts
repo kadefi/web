@@ -4,7 +4,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 // Create a theme instance.
 let theme = createTheme({
   typography: {
-    fontFamily: "Montserrat",
+    fontFamily: "Montserrat, sans-serif",
   },
   palette: {
     mode: "dark",
