@@ -3,6 +3,7 @@ export enum PROJECT_KEY {
   BABENA = "babena",
   KD_LAUNCH = "kdlaunch",
   KADDEX = "kaddex",
+  ANEDAK = "anedak",
 }
 
 export enum TOKEN_TICKER {

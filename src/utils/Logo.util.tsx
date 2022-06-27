@@ -6,6 +6,7 @@ const PROJECT_LOGO_MAP = {
   [PROJECT_KEY.KADDEX]: "kaddex.png",
   [PROJECT_KEY.KD_LAUNCH]: "kdlaunch.png",
   [PROJECT_KEY.KD_SWAP]: "kdswap.png",
+  [PROJECT_KEY.ANEDAK]: "anedak.png",
 };
 
 export const getProjectLogo = (module: PROJECT_KEY) => {
