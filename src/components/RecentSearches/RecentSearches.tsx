@@ -65,6 +65,10 @@ const RecentSearchesWallets = styled.div`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+
+  ${theme.breakpoints.down("sm")} {
+    justify-content: center;
+  }
 `;
 
 export default RecentSearches;

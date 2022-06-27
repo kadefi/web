@@ -37,7 +37,7 @@ export default function MyApp(props: MyAppProps) {
           <title>Kadefi Money | DeFi Dashboard for Kadena</title>
         </Head>
         <Background>
-          <Image alt="Background" src="/assets/background.png" layout="fill" objectFit="cover" priority />
+          <Image alt="Background" src="/assets/background.png" layout="fill" objectFit="cover" quality={100} priority />
         </Background>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
