@@ -30,8 +30,19 @@ const Dashboard: NextPage = () => {
   const [walletAddress, setWalletAddress] = useState<string | undefined>();
 
   useEffect(() => {
-    setWalletAddress(router.query.walletAddress as string | undefined);
-  }, [router.query.walletAddress]);
+    const queryWalletAddress = router.query.walletAddress as string | undefined;
+
+    if (!queryWalletAddress) {
+      return;
+    }
+
+    if (!isValidWalletAddress(queryWalletAddress)) {
+      router.push("/");
+      return;
+    }
+
+    setWalletAddress(queryWalletAddress);
+  }, [router, router.query.walletAddress]);
 
   useEffect(() => {
     if (walletAddress && isValidWalletAddress(walletAddress)) {
