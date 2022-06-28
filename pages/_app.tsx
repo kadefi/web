@@ -3,12 +3,16 @@ import styled from "@emotion/styled";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppProps } from "next/app";
+import dynamic from "next/dynamic";
 import Head from "next/head";
-import Image from "next/image";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { initializeAmplitude } from "../src/analytics/Analytics.util";
 import createEmotionCache from "../src/createEmotionCache";
 import theme from "../src/theme";
+
+const BackgroundImage = dynamic(() => import("../src/components/BackgroundImage"), {
+  ssr: false,
+});
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -29,6 +33,7 @@ initializeAmplitude();
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
   return (
     <QueryClientProvider client={queryClient}>
       <CacheProvider value={emotionCache}>
@@ -37,7 +42,7 @@ export default function MyApp(props: MyAppProps) {
           <title>Kadefi Money | DeFi Dashboard for Kadena</title>
         </Head>
         <Background>
-          <Image alt="Background" src="/assets/background.png" layout="fill" objectFit="cover" quality={100} priority />
+          <BackgroundImage />
         </Background>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
