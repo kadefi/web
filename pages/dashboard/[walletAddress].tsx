@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { trackWalletSearchEvent } from "../../src/analytics/Analytics.util";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
@@ -17,6 +17,7 @@ import SearchWalletInput from "../../src/components/SearchWalletInput";
 import WalletCard from "../../src/components/WalletCard";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import theme from "../../src/theme";
+import { ProjectResponse } from "../../src/types/DashboardData.type";
 import { PROJECT_KEY } from "../../src/types/Project.type";
 import { addNewRecentWalletLS } from "../../src/utils/LocalStorage.util";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
@@ -71,9 +72,14 @@ const Dashboard: NextPage = () => {
 
   let projectCards = null;
   if (projectsQuery) {
+    const fiatValues: (number | undefined)[] = [];
+
     projectCards = projectsQuery.map((projectQuery, i) => {
+      fiatValues[i] = (projectQuery.data as ProjectResponse)?.fiatValue || undefined;
       return <ProjectCard key={Object.values(PROJECT_KEY)[i]} projectQuery={projectQuery} />;
     });
+
+    sortProjectCards(projectCards, fiatValues);
   }
 
   const netWorth = (
@@ -109,6 +115,14 @@ const Dashboard: NextPage = () => {
       {dashboardErrorFab}
     </div>
   );
+};
+
+const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | undefined)[]) => {
+  projectCards.sort((a, b) => {
+    const first = fiatValues[projectCards.indexOf(a)];
+    const second = fiatValues[projectCards.indexOf(b)];
+    return (second || 0) - (first || 0);
+  });
 };
 
 const NetWorthAmountSkeleton = styled(Skeleton)({
