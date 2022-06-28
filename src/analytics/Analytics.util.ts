@@ -3,10 +3,19 @@ import { ROUTE } from "../constants/Routes.constant";
 import { AMPLITUDE_EVENT } from "./AmplitudeEvent";
 
 export const initializeAmplitude = () => {
-  amplitude.getInstance().init(process.env.NEXT_PUBLIC_AMPLITUDE_KEY!);
+  if (!process.env.NEXT_PUBLIC_AMPLITUDE_KEY) {
+    console.log("WARN: Amplitude key has not been set");
+    return;
+  }
+
+  amplitude.getInstance().init(process.env.NEXT_PUBLIC_AMPLITUDE_KEY);
 };
 
 export const trackEvent = (eventName: AMPLITUDE_EVENT, data: Object) => {
+  if (!process.env.NEXT_PUBLIC_AMPLITUDE_KEY) {
+    return;
+  }
+
   amplitude.getInstance().logEvent(eventName, data);
 };
 
