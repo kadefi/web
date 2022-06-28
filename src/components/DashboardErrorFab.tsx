@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import { useState } from "react";
 import { UseQueryResult } from "react-query";
+import theme from "../theme";
 import { ProjectData, TokenCellType, WalletData } from "../types/DashboardData.type";
 import { ProjectErrorResponse } from "../types/Project.type";
 import { getDashboardErrors } from "../utils/DashboardError.util";
@@ -61,8 +62,13 @@ const DashboardErrorFab = ({ loading, walletQuery, projectsQuery }: DashboardErr
 
 const FabContainer = styled(Box)({
   position: "fixed",
-  bottom: 20,
-  right: 30,
+  bottom: 24,
+  right: 24,
+
+  [`${theme.breakpoints.down("sm")}`]: {
+    bottom: 16,
+    right: 16,
+  },
 });
 
 type ErrorsTooltipProps = {

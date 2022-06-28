@@ -20,6 +20,9 @@ let theme = createTheme({
     error: {
       main: red.A400,
     },
+    success: {
+      main: "#097969",
+    },
   },
   components: {
     MuiTypography: {
