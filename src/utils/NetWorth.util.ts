@@ -1,5 +1,6 @@
 import { UseQueryResult } from "react-query";
 import { ProjectData, ProjectResponse, TokenCellType, WalletData } from "../types/DashboardData.type";
+import { roundToDecimal } from "./Number.util";
 
 export const getWalletTotalValue = (data: TokenCellType[]) => {
   return data.reduce((prev, current) => prev + current.fiatValue, 0);
@@ -11,11 +12,15 @@ export const getNetWorth = (walletQuery: UseQueryResult<WalletData>, projectsQue
   let netWorth = 0;
   if (walletData) netWorth += getWalletTotalValue(walletData.data);
 
-  projectsQuery.map((projectQuery) => {
-    const { data: projectResponse } = projectQuery;
-    const projectData = projectResponse as ProjectResponse;
-    if (projectData) netWorth += projectData.fiatValue;
+  projectsQuery.forEach((projectQuery) => {
+    const { data: projectData } = projectQuery;
+
+    if (!projectData) {
+      return;
+    }
+
+    netWorth += (projectData as ProjectResponse).fiatValue;
   });
 
-  return netWorth;
+  return roundToDecimal(netWorth, 2);
 };

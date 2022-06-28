@@ -6,7 +6,7 @@ import theme from "../theme";
 import { TokenCellType, WalletData } from "../types/DashboardData.type";
 import { getTokenLogo } from "../utils/Logo.util";
 import { getWalletTotalValue } from "../utils/NetWorth.util";
-import { formatFiatValue, roundToDecimal } from "../utils/Number.util";
+import { formatFiatValue, roundToDecimalStr } from "../utils/Number.util";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
 import PngLogo from "./commons/PngLogo";
@@ -35,7 +35,7 @@ const WalletCard = (props: Props) => {
     const { ticker, balance, price, fiatValue } = tokenData;
     return [
       <TickerContainer key={`ticker-${i}`}>
-        {getTokenLogo(ticker)} {`${roundToDecimal(balance, 4)} ${ticker}`}
+        {getTokenLogo(ticker)} {`${roundToDecimalStr(balance, 4)} ${ticker}`}
       </TickerContainer>,
       <div key={`price-${i}`}>{formatFiatValue(price)}</div>,
       <div key={`fiat-${i}`}>{formatFiatValue(fiatValue)}</div>,

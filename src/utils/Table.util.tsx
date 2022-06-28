@@ -1,5 +1,5 @@
 import { CELL_TYPE, TableRowData } from "../types/DashboardData.type";
-import { formatFiatValue, roundToDecimal } from "./Number.util";
+import { formatFiatValue, roundToDecimalStr } from "./Number.util";
 import { toDate, format } from "date-fns";
 import TokenDisplay from "../components/commons/TokenDisplay";
 import TokenPoolDisplay from "../components/commons/TokenPoolDisplay";
@@ -15,7 +15,7 @@ export const getRowDisplay = (rowData: TableRowData) => {
     }
 
     if (rowCell.type === CELL_TYPE.NUMBER) {
-      return <div>{roundToDecimal(rowCell.value, 2)}</div>;
+      return <div>{roundToDecimalStr(rowCell.value, 2)}</div>;
     }
 
     if (rowCell.type === CELL_TYPE.STRING) {

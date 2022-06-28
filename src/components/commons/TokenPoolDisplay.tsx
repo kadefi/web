@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { TokenCellType } from "../../types/DashboardData.type";
 import { getTokenLogo } from "../../utils/Logo.util";
-import { roundToDecimal, formatFiatValue } from "../../utils/Number.util";
+import { roundToDecimalStr, formatFiatValue } from "../../utils/Number.util";
 
 type Props = {
   token0: TokenCellType;
@@ -13,7 +13,7 @@ const TokenPoolDisplay = (props: Props) => {
   const { token0, token1, fiatValue } = props;
 
   const tokenDisplay = (token: TokenCellType) => {
-    return `${roundToDecimal(token.balance, 2)} ${token.ticker}`;
+    return `${roundToDecimalStr(token.balance, 2)} ${token.ticker}`;
   };
 
   return (

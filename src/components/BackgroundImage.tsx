@@ -5,7 +5,6 @@ import theme from "../theme";
 const BackgroundImage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  console.log(isMobile);
   return (
     <Image
       alt="Background"
