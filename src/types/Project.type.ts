@@ -1,8 +1,19 @@
+/*
+ * NOTE:
+ * When adding new PROJECT_KEY or TOKEN_TICKER
+ * please make sure there is a corresponding image under
+ *
+ * "/public/assets/projects" or "/public/assets/tokens"
+ *
+ * based on what you are adding.
+ */
+
 export enum PROJECT_KEY {
   KD_SWAP = "kdswap",
   BABENA = "babena",
   KD_LAUNCH = "kdlaunch",
   KADDEX = "kaddex",
+  ANEDAK = "anedak",
 }
 
 export enum TOKEN_TICKER {
