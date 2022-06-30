@@ -49,6 +49,7 @@
         "newlines-between": "never",
         "pathGroupsExcludedImportTypes": ["builtin"]
       }
-    ]
+    ],
+    "curly": "error"
   }
 }

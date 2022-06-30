@@ -22,10 +22,15 @@ type Props = {
 const WalletCard = (props: Props) => {
   const { walletQuery } = props;
 
-  if (!walletQuery) return null;
+  if (!walletQuery) {
+    return null;
+  }
 
   const { isLoading, data: walletData } = walletQuery;
-  if (isLoading) return <LoadingTableSkeleton />;
+
+  if (isLoading) {
+    return <LoadingTableSkeleton />;
+  }
 
   const tokens = walletData ? walletData.data : [];
 

@@ -57,12 +57,19 @@ const ProjectCard = (props: Props) => {
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  if (!projectQuery) return null;
+  if (!projectQuery) {
+    return null;
+  }
 
   const { data: projectData, isLoading, isError } = projectQuery;
 
-  if (isLoading) return <LoadingTableSkeleton />;
-  if (!projectData || isError) return null;
+  if (isLoading) {
+    return <LoadingTableSkeleton />;
+  }
+
+  if (!projectData || isError) {
+    return null;
+  }
 
   const projectResponse = projectData as ProjectResponse;
   const { projectName, module, fiatValue, sections } = projectResponse;
