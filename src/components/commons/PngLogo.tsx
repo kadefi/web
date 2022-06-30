@@ -17,7 +17,7 @@ const PngLogo = (props: Props) => {
 
   let logo = (
     <LogoContainer isToken={isCircular} size={imageSize}>
-      <Image layout="fill" objectFit="contain" src={src} alt="" />
+      <Image layout="fill" objectFit="contain" src={src} alt="" priority />
     </LogoContainer>
   );
 
