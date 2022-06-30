@@ -51,7 +51,7 @@ const WalletCard = (props: Props) => {
     <CardWrapper>
       <Container>
         <WalletHeaderContainer>
-          <PngLogo src="/assets/projects/wallet.png" size={1.75} />
+          <PngLogo src="/assets/wallet.png" size={1.75} />
           <WalletHeader>Wallet</WalletHeader>
         </WalletHeaderContainer>
         <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>

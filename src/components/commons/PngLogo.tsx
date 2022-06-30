@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 
 type Props = {
   src: string;
@@ -9,15 +9,15 @@ type Props = {
   padding?: number;
 };
 
-const PngLogo = (props: Props) => {
-  const { src, isCircular = false, size = 1, backgroundColor = "#000000", padding = 0.5 } = props;
+const PngLogo = (props: Props & ImageProps) => {
+  const { src, isCircular = false, size = 1, backgroundColor = "#000000", padding = 0.5, ...otherImageProps } = props;
 
   const backgroundSize = `${size}rem`;
   const imageSize = `${isCircular ? size - padding : size}rem`;
 
   let logo = (
     <LogoContainer isToken={isCircular} size={imageSize}>
-      <Image layout="fill" objectFit="contain" src={src} alt="" quality={70} priority />
+      <Image layout="fill" objectFit="contain" src={src} alt="" priority {...otherImageProps} />
     </LogoContainer>
   );
 

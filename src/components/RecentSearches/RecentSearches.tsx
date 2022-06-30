@@ -19,7 +19,7 @@ const RecentSearches = () => {
 
   return (
     <Container>
-      <Typography fontSize="12px">Recent Searches</Typography>
+      <Typography fontSize="14px">Recent Searches</Typography>
       <RecentSearchesWallets>
         {wallets.map((wallet, i) => (
           <div key={`recent-searches-${i}`}>{getWalletPill(wallet)}</div>

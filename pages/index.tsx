@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import { useTrackPageVisit } from "../src/analytics/useTrackPageVisit";
+import SupportedProjects from "../src/components/commons/SupportedProjects/SupportedProjects";
 import Header from "../src/components/Header";
 import RecentSearches from "../src/components/RecentSearches/RecentSearches";
 import SearchWalletInput from "../src/components/SearchWalletInput";
@@ -35,7 +36,8 @@ const Home: NextPage = () => {
               Insights
             </Typography>
           </Title>
-          <Subtitle>View all your Kadena&apos;s DeFi investments in a single dashboard</Subtitle>
+          <Subtitle>Track all your Kadena&apos;s DeFi investments in a single dashboard</Subtitle>
+          <SupportedProjects />
           <SearchWalletInput />
           <RecentSearches />
         </LandingPageContent>
@@ -62,7 +64,7 @@ const Title = styled.div`
 
 const Subtitle = styled(Typography)`
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   ${theme.breakpoints.down("sm")} {
     font-size: 0.9rem;
