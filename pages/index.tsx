@@ -26,39 +26,52 @@ const Home: NextPage = () => {
           <KadefiLogo />
           <TwitterButton />
         </Header>
-        <Title>
-          <Typography variant="h3" {...titleProps}>
-            Unlocking{" "}
-          </Typography>
-          <Typography variant="h3" color="#FF007F" {...titleProps}>
-            DeFi{" "}
-          </Typography>
-          <Typography variant="h3" {...titleProps}>
-            Insights
-          </Typography>
-        </Title>
-        <Subtitle>Track all your Kadena&apos;s DeFi investments in a single dashboard</Subtitle>
-        <SupportedProjects />
-        <SearchWalletInput />
-        <RecentSearches />
+        <Content>
+          <Title>
+            <Typography variant="h3" {...titleProps}>
+              Unlocking{" "}
+            </Typography>
+            <Typography variant="h3" color="#FF007F" {...titleProps}>
+              DeFi{" "}
+            </Typography>
+            <Typography variant="h3" {...titleProps}>
+              Insights
+            </Typography>
+          </Title>
+          <Subtitle>Track all your Kadena&apos;s DeFi investments in a single dashboard</Subtitle>
+          <SupportedProjects />
+          <SearchWalletInput />
+          <RecentSearches />
+        </Content>
       </Container>
     </Wrapper>
   );
 };
 
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
 const Container = styled(MuiContainer)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6rem;
-  margin-top: 4rem;
   width: 100%;
+  position: absolute;
+  top: 3rem;
+  padding: 0 1rem;
 `;
 
 const Wrapper = styled.div`
