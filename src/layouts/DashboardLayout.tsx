@@ -6,12 +6,11 @@ import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/system";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react";
+import { KadefiLogo } from "../components/commons/KadefiLogo";
 import SearchWalletInput from "../components/SearchWalletInput";
 import { DashboardLayoutContext } from "../contexts/DashboardLayoutContext";
 import { useWalletAddress } from "../hooks/useWalletAddress";
@@ -71,9 +70,6 @@ const DashboardLayout = (props: Props) => {
   }, [isMobile]);
 
   // Handlers
-  const handleLogoClick = () => {
-    router.push("/");
-  };
 
   const handleSideBarToggle = () => {
     setIsSideBarOpen(!isSideBarOpen);
@@ -105,16 +101,7 @@ const DashboardLayout = (props: Props) => {
   const navBar = (
     <NavBar>
       <LeftNavBar>
-        <ProjectLogo onClick={handleLogoClick}>
-          <LogoContainer>
-            <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" priority />
-          </LogoContainer>
-          <div>
-            <ProjectName>KADEFI</ProjectName>
-            <ProjectName color="#FF007F">.MONEY</ProjectName>
-          </div>
-          <BetaTag>BETA</BetaTag>
-        </ProjectLogo>
+        <KadefiLogo />
         {isMobile ? <HamburgerMenu onClick={handleSideBarToggle} fontSize="medium" sx={{ color: "#b3b3b3" }} /> : null}
       </LeftNavBar>
       <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
@@ -166,14 +153,6 @@ const DashboardLayout = (props: Props) => {
   );
 };
 
-const BetaTag = styled.div`
-  background-color: #ff007f;
-  padding: 2px 8px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  border-radius: 8rem;
-`;
-
 const HamburgerMenu = styled(MenuSharpIcon)`
   cursor: pointer;
 `;
@@ -183,6 +162,7 @@ const RightNavBar = styled(Container)`
 `;
 
 const LeftNavBar = styled.div`
+  padding-left: 1rem;
   min-width: 17rem;
 
   ${theme.breakpoints.down("md")} {
@@ -199,21 +179,6 @@ const LeftNavBar = styled.div`
   }
 `;
 
-const ProjectLogo = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding-left: 1rem;
-
-  ${theme.breakpoints.down("md")} {
-    height: 1.5rem;
-    padding: 0;
-    gap: 8px;
-  }
-`;
-
 const NavBar = styled(Box)`
   position: relative;
   display: flex;
@@ -227,18 +192,6 @@ const NavBar = styled(Box)`
     flex-direction: column;
   }
 `;
-
-const ProjectName = styled(Typography)`
-  display: inline;
-  font-weight: 700;
-  font-size: 18px;
-`;
-
-const LogoContainer = styled(Box)({
-  position: "relative",
-  height: "2.25rem",
-  width: "2rem",
-});
 
 type MenuButtonProps = {
   isActive?: boolean;
