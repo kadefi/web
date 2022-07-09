@@ -2,7 +2,6 @@ import Container from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import type { NextPage } from "next";
 import { ReactElement, useEffect } from "react";
 import CountUp from "react-countup";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
@@ -17,7 +16,7 @@ import { useWalletAddress } from "../../src/hooks/useWalletAddress";
 import { getDashboardLayout } from "../../src/layouts/DashboardLayout";
 import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
-import { Page } from "../../src/types/Page.type";
+import { CustomNextPage } from "../../src/types/Page.type";
 import { PROJECT_KEY } from "../../src/types/Project.type";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
 
@@ -29,7 +28,7 @@ const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | un
   });
 };
 
-const Dashboard: NextPage & Page = () => {
+const Dashboard: CustomNextPage = () => {
   // Contexts
   const { isDashboardLoading, setIsDashboardLoading } = useDashboardLayoutContext();
 
