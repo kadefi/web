@@ -1,0 +1,40 @@
+{
+  "gallery": [
+    {
+      "collection": "Kitty Kad NFT",
+      "description": "Gen 0 Collection",
+      "address": "free.kitty-kad-kitties",
+      "chain": "1",
+      "nfts": [
+        {
+          "id": "2123",
+          "url": "https://dsfajsdlksadfsdf/2123.png",
+          "traits": {}
+        },
+        {
+          "id": "1223",
+          "url": "https://dsfajsdlksadfsdf/1223.png",
+          "traits": {}
+        }
+      ]
+    },
+    {
+      "collection": "Kadena Bulls NFT",
+      "description": "80's Bull Collection",
+      "address": "free.eighties-bulls",
+      "chain": "1",
+      "nfts": [
+        {
+          "id": "2123",
+          "url": "https://dsfajsdlksadfsdf/2123.png",
+          "traits": {}
+        },
+        {
+          "id": "1223",
+          "url": "https://dsfajsdlksadfsdf/1223.png",
+          "traits": {}
+        }
+      ]
+    }
+  ]
+}

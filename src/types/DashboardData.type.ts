@@ -87,3 +87,16 @@ export type WalletData = {
   data: TokenCellType[];
   errors: TokenCellType[];
 };
+
+export type NftData = {
+  gallery: {
+    collection: string;
+    description: string;
+    address: string;
+    chain: string;
+    nfts: {
+      id: string;
+      url: string;
+    }[];
+  }[];
+};
