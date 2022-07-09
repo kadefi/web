@@ -113,6 +113,7 @@ const DashboardLayout = (props: Props) => {
             <ProjectName>KADEFI</ProjectName>
             <ProjectName color="#FF007F">.MONEY</ProjectName>
           </div>
+          <BetaTag>BETA</BetaTag>
         </ProjectLogo>
         {isMobile ? <HamburgerMenu onClick={handleSideBarToggle} fontSize="medium" sx={{ color: "#b3b3b3" }} /> : null}
       </LeftNavBar>
@@ -165,6 +166,14 @@ const DashboardLayout = (props: Props) => {
   );
 };
 
+const BetaTag = styled.div`
+  background-color: #ff007f;
+  padding: 2px 8px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: 8rem;
+`;
+
 const HamburgerMenu = styled(MenuSharpIcon)`
   cursor: pointer;
 `;
@@ -174,7 +183,7 @@ const RightNavBar = styled(Container)`
 `;
 
 const LeftNavBar = styled.div`
-  min-width: 15rem;
+  min-width: 17rem;
 
   ${theme.breakpoints.down("md")} {
     min-width: 100vw;
@@ -196,7 +205,7 @@ const ProjectLogo = styled.div`
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  padding: 0 2rem;
+  padding-left: 1rem;
 
   ${theme.breakpoints.down("md")} {
     height: 1.5rem;
@@ -222,13 +231,13 @@ const NavBar = styled(Box)`
 const ProjectName = styled(Typography)`
   display: inline;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const LogoContainer = styled(Box)({
   position: "relative",
   height: "2.25rem",
-  width: "2.25rem",
+  width: "2rem",
 });
 
 type MenuButtonProps = {
