@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { trackWalletSearchEvent } from "../analytics/Analytics.util";
+import { ROUTE } from "../constants/Routes.constant";
 import { addNewRecentWalletLS } from "../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../utils/String.util";
 import CustomCircularProgress from "./commons/CustomCircularProgress";
@@ -43,6 +44,11 @@ const SearchWalletInput = (props: Props) => {
 
     // Track new wallet search event on Amplitude
     trackWalletSearchEvent(cleanedAddress);
+
+    if (router.pathname === ROUTE.HOME) {
+      router.push(`${ROUTE.DASHBOARD}/${cleanedAddress}`);
+      return;
+    }
 
     router.push(`${router.pathname}`.replace("[walletAddress]", cleanedAddress));
   };

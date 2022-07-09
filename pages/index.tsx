@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import Container from "@mui/material/Container";
+import MuiContainer from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import { useTrackPageVisit } from "../src/analytics/useTrackPageVisit";
@@ -46,12 +46,19 @@ const Home: NextPage = () => {
   );
 };
 
+const Container = styled(MuiContainer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6rem;
   margin-top: 4rem;
+  width: 100%;
 `;
 
 const Wrapper = styled.div`

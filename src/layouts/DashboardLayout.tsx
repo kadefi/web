@@ -128,7 +128,7 @@ const DashboardLayout = (props: Props) => {
 
           if (MENU_CONFIG[title].isDisabled) {
             return (
-              <Tooltip title="Under development" placement="right" arrow>
+              <Tooltip key={`tooltip-${title}`} title="Under development" placement="right" arrow>
                 {menuButton}
               </Tooltip>
             );
@@ -212,7 +212,7 @@ const MenuButton = styled.div<MenuButtonProps>`
   gap: 8px;
   align-items: center;
   white-space: nowrap;
-  opacity: ${(props) => (props.isDisabled ? "0.5" : "1")};
+  opacity: ${(props) => (props.isDisabled ? "0.3" : "1")};
 
   &:hover {
     background-color: ${(props) => (props.isDisabled ? "none" : "rgb(255, 255, 255, 0.1)")};
