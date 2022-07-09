@@ -232,7 +232,12 @@ const MenuButtons = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow-y: auto;
 `;
 
 const Content = styled.div`
