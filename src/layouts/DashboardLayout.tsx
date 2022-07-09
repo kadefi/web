@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import { useMediaQuery } from "@mui/material";
@@ -68,7 +68,6 @@ const DashboardLayout = (props: Props) => {
   const navBar = (
     <NavBar>
       <LeftNavBar>
-        {isMobile ? <HamburgerMenu onClick={handleSideBarToggle} /> : null}
         <ProjectLogo onClick={handleLogoClick}>
           <LogoContainer>
             <Image src="/assets/logo.png" layout="fill" objectFit="contain" alt="logo" priority />
@@ -78,6 +77,7 @@ const DashboardLayout = (props: Props) => {
             <ProjectName color="#FF007F">.MONEY</ProjectName>
           </div>
         </ProjectLogo>
+        {isMobile ? <HamburgerMenu onClick={handleSideBarToggle} fontSize="medium" sx={{ color: "#b3b3b3" }} /> : null}
       </LeftNavBar>
       <RightNavBar maxWidth="md">
         <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
@@ -111,11 +111,8 @@ const DashboardLayout = (props: Props) => {
   );
 };
 
-const HamburgerMenu = styled(MenuRoundedIcon)`
+const HamburgerMenu = styled(MenuSharpIcon)`
   cursor: pointer;
-  padding: 1px;
-  border: 1px solid white;
-  border-radius: 4px;
 `;
 
 const RightNavBar = styled(Container)`
@@ -130,6 +127,7 @@ const LeftNavBar = styled.div`
     display: flex;
     padding: 0.25rem 1.5rem 1rem 1.5rem;
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
   }
 
@@ -237,12 +235,11 @@ const SideBar = styled.div<SideBarProps>`
   z-index: 1;
 
   ${theme.breakpoints.down("md")} {
-    transition-duration: 300ms;
-    transition-property: height, padding;
+    transition: height 0.5s, padding 0.5s;
     position: absolute;
     background: #270024;
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.25);
-    height: ${(props) => (props.isOpen ? "auto" : "0px")};
+    height: ${(props) => (props.isOpen ? "12rem" : "0px")};
     width: 100vw;
     padding: ${(props) => (props.isOpen ? "1rem" : "0px")} 1rem;
   }
