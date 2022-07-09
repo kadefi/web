@@ -10,7 +10,9 @@ export const getNetWorth = (walletQuery: UseQueryResult<WalletData>, projectsQue
   const { data: walletData } = walletQuery;
 
   let netWorth = 0;
-  if (walletData) netWorth += getWalletTotalValue(walletData.data);
+  if (walletData) {
+    netWorth += getWalletTotalValue(walletData.data);
+  }
 
   projectsQuery.forEach((projectQuery) => {
     const { data: projectData } = projectQuery;

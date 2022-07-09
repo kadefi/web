@@ -2,7 +2,8 @@ import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import { ROUTE } from "../constants/Routes.constant";
+import { trackWalletSearchEvent } from "../analytics/Analytics.util";
+import { addNewRecentWalletLS } from "../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../utils/String.util";
 import CustomCircularProgress from "./commons/CustomCircularProgress";
 import CustomTextField from "./commons/CustomTextField";
@@ -14,13 +15,17 @@ type Props = {
 };
 
 const SearchWalletInput = (props: Props) => {
+  // Props
   const { initialWalletAddress, isLoading = false } = props;
 
+  // States
   const [isErrorNotiOpen, setIsErrorNotiOpen] = useState(false);
 
+  // Custom hooks
   const router = useRouter();
   const ref = useRef<HTMLInputElement>();
 
+  // Handlers
   const handleSearchWallet = (value: string) => {
     const cleanedAddress = value.toLowerCase().trim();
 
@@ -33,7 +38,13 @@ const SearchWalletInput = (props: Props) => {
       ref.current.blur();
     }
 
-    router.push(`${ROUTE.DASHBOARD}/${cleanedAddress}`);
+    // Save recent wallet to local storage
+    addNewRecentWalletLS(cleanedAddress);
+
+    // Track new wallet search event on Amplitude
+    trackWalletSearchEvent(cleanedAddress);
+
+    router.push(`${router.pathname}`.replace("[walletAddress]", cleanedAddress));
   };
 
   const handleWalletInputEnter = (e: any) => {
@@ -46,6 +57,7 @@ const SearchWalletInput = (props: Props) => {
     setIsErrorNotiOpen(false);
   };
 
+  // Display components
   const endIconComponent = isLoading ? (
     <CustomCircularProgress disableShrink size={20} sx={{ opacity: 0.5 }} />
   ) : (

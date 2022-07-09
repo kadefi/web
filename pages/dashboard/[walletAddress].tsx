@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import { ReactElement, useEffect } from "react";
 import CountUp from "react-countup";
-import { trackWalletSearchEvent } from "../../src/analytics/Analytics.util";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
@@ -20,57 +19,59 @@ import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
 import { Page } from "../../src/types/Page.type";
 import { PROJECT_KEY } from "../../src/types/Project.type";
-import { addNewRecentWalletLS } from "../../src/utils/LocalStorage.util";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
-import { isValidWalletAddress } from "../../src/utils/String.util";
+
+const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | undefined)[]) => {
+  projectCards.sort((a, b) => {
+    const first = fiatValues[projectCards.indexOf(a)];
+    const second = fiatValues[projectCards.indexOf(b)];
+    return (second || 0) - (first || 0);
+  });
+};
 
 const Dashboard: NextPage & Page = () => {
-  useTrackPageVisit(ROUTE.DASHBOARD);
-
-  const { walletAddress } = useWalletAddress();
-
+  // Contexts
   const { isDashboardLoading, setIsDashboardLoading } = useDashboardLayoutContext();
 
-  useEffect(() => {
-    if (walletAddress && isValidWalletAddress(walletAddress)) {
-      addNewRecentWalletLS(walletAddress);
-      trackWalletSearchEvent(walletAddress);
-    }
-  }, [walletAddress]);
+  // Custom Hooks
+  useTrackPageVisit(ROUTE.DASHBOARD);
+  const { walletAddress } = useWalletAddress();
 
+  // Data Queries
   const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);
 
+  // Effects
   useEffect(() => {
+    // Update isDashboardLoading based on status of wallet and project queries
     if (walletQuery && projectsQuery) {
-      const isLoading = walletQuery.isLoading || projectsQuery.some((projectQuery) => projectQuery.isLoading);
-
-      setIsDashboardLoading(isLoading);
+      const isWalletLoading = walletQuery.isLoading;
+      const isProjectsLoading = projectsQuery.some((projectQuery) => projectQuery.isLoading);
+      setIsDashboardLoading(isWalletLoading || isProjectsLoading);
+    } else {
+      setIsDashboardLoading(true);
     }
   }, [walletQuery, projectsQuery, setIsDashboardLoading]);
 
-  let dashboardErrorFab = null;
-  if (walletQuery && projectsQuery) {
-    dashboardErrorFab = (
-      <DashboardErrorFab loading={isDashboardLoading} walletQuery={walletQuery} projectsQuery={projectsQuery} />
-    );
+  // Prevent rendering without queries
+  if (!walletQuery || !projectsQuery) {
+    return null;
   }
 
-  let walletCard = null;
-  if (walletQuery) {
-    walletCard = <WalletCard walletQuery={walletQuery} />;
-  }
+  // Display components
+  const dashboardErrorFab = (
+    <DashboardErrorFab loading={isDashboardLoading} walletQuery={walletQuery} projectsQuery={projectsQuery} />
+  );
 
-  let projectCards = null;
-  if (projectsQuery) {
-    const fiatValues: (number | undefined)[] = [];
+  const walletCard = <WalletCard walletQuery={walletQuery} />;
 
-    projectCards = projectsQuery.map((projectQuery, i) => {
-      fiatValues[i] = (projectQuery.data as ProjectResponse)?.fiatValue || undefined;
-      return <ProjectCard key={Object.values(PROJECT_KEY)[i]} projectQuery={projectQuery} />;
-    });
+  const fiatValues: (number | undefined)[] = [];
 
-    sortProjectCards(projectCards, fiatValues);
-  }
+  const projectCards = projectsQuery.map((projectQuery, i) => {
+    fiatValues[i] = (projectQuery.data as ProjectResponse)?.fiatValue || undefined;
+    return <ProjectCard key={Object.values(PROJECT_KEY)[i]} projectQuery={projectQuery} />;
+  });
+
+  sortProjectCards(projectCards, fiatValues);
 
   const netWorth = (
     <>
@@ -103,14 +104,6 @@ const Dashboard: NextPage & Page = () => {
       {dashboardErrorFab}
     </div>
   );
-};
-
-const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | undefined)[]) => {
-  projectCards.sort((a, b) => {
-    const first = fiatValues[projectCards.indexOf(a)];
-    const second = fiatValues[projectCards.indexOf(b)];
-    return (second || 0) - (first || 0);
-  });
 };
 
 const NetWorthAmountSkeleton = styled(Skeleton)({

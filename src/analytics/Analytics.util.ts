@@ -24,5 +24,6 @@ export const trackPageVisit = (route: ROUTE) => {
 };
 
 export const trackWalletSearchEvent = (walletAddress: string) => {
+  // console.log("Track amplitude wallet search event")
   trackEvent(AMPLITUDE_EVENT.WALLET_SEARCH, { walletAddress });
 };

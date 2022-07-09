@@ -7,6 +7,7 @@ export const useWalletAddress = () => {
 
   const [walletAddress, setWalletAddress] = useState<string | undefined>();
 
+  // Whenever route query changes
   useEffect(() => {
     const queryWalletAddress = router.query.walletAddress as string | undefined;
 
@@ -14,11 +15,13 @@ export const useWalletAddress = () => {
       return;
     }
 
+    // Back to homepage if invalide route wallet address is invalid
     if (!isValidWalletAddress(queryWalletAddress)) {
       router.push("/");
       return;
     }
 
+    // Set walletAddress based on route
     setWalletAddress(queryWalletAddress);
   }, [router, router.query.walletAddress]);
 
