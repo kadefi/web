@@ -147,7 +147,7 @@ const ProjectLogo = styled.div`
   ${theme.breakpoints.down("md")} {
     height: 1.5rem;
     padding: 0;
-    gap: 4px;
+    gap: 8px;
   }
 `;
 
@@ -173,8 +173,8 @@ const ProjectName = styled(Typography)`
 
 const LogoContainer = styled(Box)({
   position: "relative",
-  width: "2rem",
-  height: "100%",
+  height: "2.25rem",
+  width: "2.25rem",
 });
 
 type MenuButtonProps = {
