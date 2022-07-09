@@ -9,7 +9,9 @@ const SupportedProjects = () => {
       <Typography variant="subtitle2" mb="0.5rem">
         Supported Projects & Tokens:
       </Typography>
-      <ProjectLogos>{Object.values(TOKEN_TICKER).map((token) => getTokenLogo(token))}</ProjectLogos>
+      <ProjectLogos>
+        {Object.values(TOKEN_TICKER).map((token) => getTokenLogo(token, `${token}-supported`))}
+      </ProjectLogos>
     </Container>
   );
 };

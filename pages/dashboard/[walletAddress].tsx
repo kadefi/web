@@ -3,47 +3,33 @@ import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect } from "react";
 import CountUp from "react-countup";
 import { trackWalletSearchEvent } from "../../src/analytics/Analytics.util";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import DashboardErrorFab from "../../src/components/DashboardErrorFab";
-import Header from "../../src/components/Header";
 import ProjectCard from "../../src/components/ProjectCard";
-import SearchWalletInput from "../../src/components/SearchWalletInput";
 import WalletCard from "../../src/components/WalletCard";
 import { ROUTE } from "../../src/constants/Routes.constant";
+import { useDashboardLayoutContext } from "../../src/contexts/DashboardLayoutContext";
+import { useWalletAddress } from "../../src/hooks/useWalletAddress";
+import { getDashboardLayout } from "../../src/layouts/DashboardLayout";
 import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
+import { Page } from "../../src/types/Page.type";
 import { PROJECT_KEY } from "../../src/types/Project.type";
 import { addNewRecentWalletLS } from "../../src/utils/LocalStorage.util";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
 import { isValidWalletAddress } from "../../src/utils/String.util";
 
-const Dashboard: NextPage = () => {
+const Dashboard: NextPage & Page = () => {
   useTrackPageVisit(ROUTE.DASHBOARD);
 
-  const router = useRouter();
+  const { walletAddress } = useWalletAddress();
 
-  const [walletAddress, setWalletAddress] = useState<string | undefined>();
-
-  useEffect(() => {
-    const queryWalletAddress = router.query.walletAddress as string | undefined;
-
-    if (!queryWalletAddress) {
-      return;
-    }
-
-    if (!isValidWalletAddress(queryWalletAddress)) {
-      router.push("/");
-      return;
-    }
-
-    setWalletAddress(queryWalletAddress);
-  }, [router, router.query.walletAddress]);
+  const { isDashboardLoading, setIsDashboardLoading } = useDashboardLayoutContext();
 
   useEffect(() => {
     if (walletAddress && isValidWalletAddress(walletAddress)) {
@@ -54,12 +40,16 @@ const Dashboard: NextPage = () => {
 
   const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);
 
-  let isDashboardLoading = true;
+  useEffect(() => {
+    if (walletQuery && projectsQuery) {
+      const isLoading = walletQuery.isLoading || projectsQuery.some((projectQuery) => projectQuery.isLoading);
+
+      setIsDashboardLoading(isLoading);
+    }
+  }, [walletQuery, projectsQuery, setIsDashboardLoading]);
+
   let dashboardErrorFab = null;
-
   if (walletQuery && projectsQuery) {
-    isDashboardLoading = walletQuery.isLoading || projectsQuery.some((projectQuery) => projectQuery.isLoading);
-
     dashboardErrorFab = (
       <DashboardErrorFab loading={isDashboardLoading} walletQuery={walletQuery} projectsQuery={projectsQuery} />
     );
@@ -106,8 +96,6 @@ const Dashboard: NextPage = () => {
   return (
     <div>
       <Content maxWidth="md">
-        <Header />
-        <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
         {netWorth}
         {walletCard}
         {projectCards}
@@ -152,5 +140,7 @@ const Content = styled(Container)({
   marginTop: "32px",
   marginBottom: "80px",
 });
+
+Dashboard.getLayout = getDashboardLayout;
 
 export default Dashboard;

@@ -1,4 +1,5 @@
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
+import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { ROUTE } from "../constants/Routes.constant";
@@ -61,6 +62,7 @@ const SearchWalletInput = (props: Props) => {
         onKeyDown={handleWalletInputEnter}
         fullWidth
         placeholder="Enter your wallet address"
+        startIcon={{ component: <SearchIcon sx={{ color: "#ffffff9e" }} /> }}
         endIcon={{
           component: endIconComponent,
           onClick: handleSearchWallet,

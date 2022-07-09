@@ -5,6 +5,6 @@ export const getProjectLogo = (module: PROJECT_KEY) => {
   return <PngLogo src={`/assets/projects/${module}.png`} size={1.75} />;
 };
 
-export const getTokenLogo = (token: TOKEN_TICKER) => {
-  return <PngLogo src={`/assets/tokens/${token}.png`} isCircular size={1.5} quality={50} />;
+export const getTokenLogo = (token: TOKEN_TICKER, key?: string) => {
+  return <PngLogo key={key} src={`/assets/tokens/${token}.png`} isCircular size={1.5} quality={50} />;
 };

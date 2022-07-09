@@ -5,6 +5,9 @@ import { ReactNode, useEffect, useState } from "react";
 
 type CustomTextFieldProps = {
   initialValue?: string;
+  startIcon?: {
+    component: ReactNode;
+  };
   endIcon?: {
     component: ReactNode;
     onClick?: (value: string) => void;
@@ -12,7 +15,7 @@ type CustomTextFieldProps = {
 } & TextFieldProps;
 
 const CustomTextField = (props: CustomTextFieldProps) => {
-  const { endIcon, initialValue, ...textFieldProps } = props;
+  const { startIcon, endIcon, initialValue, ...textFieldProps } = props;
   const [input, setInput] = useState<string>("");
 
   useEffect(() => {
@@ -26,18 +29,21 @@ const CustomTextField = (props: CustomTextFieldProps) => {
   };
 
   let additionalTextFieldProps = { ...textFieldProps };
-  if (endIcon) {
-    additionalTextFieldProps = {
-      ...textFieldProps,
-      InputProps: {
+  additionalTextFieldProps = {
+    ...textFieldProps,
+    InputProps: {
+      ...(startIcon && {
+        startAdornment: <InputAdornment position="start">{startIcon.component}</InputAdornment>,
+      }),
+      ...(endIcon && {
         endAdornment: (
           <StyledInputAdornment onClick={handleEndIconClick} position="end">
             {endIcon.component}
           </StyledInputAdornment>
         ),
-      },
-    };
-  }
+      }),
+    },
+  };
 
   return (
     <StyledTextField
@@ -56,10 +62,11 @@ type StyledProps = {
 const StyledTextField = styled(MuiTextField)<StyledProps>`
   opacity: ${(props) => (props.disabled ? 0.9 : 1)};
   & .MuiInputBase-root {
-    background: rgba(34, 0, 35, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10rem;
   }
   & .MuiInputBase-input {
-    padding: 0.8em 1em;
+    padding: 0.5rem 0.25rem;
   }
   & .MuiOutlinedInput-root {
     & fieldset {

@@ -4,8 +4,7 @@ import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import { useTrackPageVisit } from "../src/analytics/useTrackPageVisit";
 import SupportedProjects from "../src/components/commons/SupportedProjects/SupportedProjects";
-import Header from "../src/components/Header";
-import RecentSearches from "../src/components/RecentSearches/RecentSearches";
+import RecentSearches from "../src/components/RecentSearches";
 import SearchWalletInput from "../src/components/SearchWalletInput";
 import { ROUTE } from "../src/constants/Routes.constant";
 import theme from "../src/theme";
@@ -21,9 +20,6 @@ const Home: NextPage = () => {
   return (
     <Container maxWidth="md">
       <Wrapper>
-        <HeaderContainer>
-          <Header />
-        </HeaderContainer>
         <LandingPageContent>
           <Title>
             <Typography variant="h3" {...titleProps}>
@@ -45,11 +41,6 @@ const Home: NextPage = () => {
     </Container>
   );
 };
-
-const HeaderContainer = styled.div`
-  margin-top: 32px;
-  flex-grow: 0;
-`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -80,7 +71,6 @@ const LandingPageContent = styled.div`
   width: 100%;
   flex-grow: 1;
   position: relative;
-  top: -80px;
 `;
 
 export default Home;

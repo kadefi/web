@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import { ROUTE } from "../../constants/Routes.constant";
-import theme from "../../theme";
-import { getRecentWalletsLS } from "../../utils/LocalStorage.util";
-import CustomLink from "../commons/CustomLink";
+import { ROUTE } from "../constants/Routes.constant";
+import theme from "../theme";
+import { getRecentWalletsLS } from "../utils/LocalStorage.util";
+import CustomLink from "./commons/CustomLink";
 
 const RecentSearches = () => {
   const [wallets, setWallets] = useState<string[]>([]);

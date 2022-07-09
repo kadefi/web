@@ -12,12 +12,14 @@ import MobileBackground from "../public/assets/mobile-background.svg";
 import { initializeAmplitude } from "../src/analytics/Analytics.util";
 import createEmotionCache from "../src/createEmotionCache";
 import theme from "../src/theme";
+import { Page } from "../src/types/Page.type";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
+  Component: Page;
 }
 
 const queryClient = new QueryClient({
@@ -33,6 +35,8 @@ initializeAmplitude();
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -54,7 +58,7 @@ export default function MyApp(props: MyAppProps) {
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </CacheProvider>
     </QueryClientProvider>
