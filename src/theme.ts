@@ -25,6 +25,16 @@ let theme = createTheme({
     },
   },
   components: {
+    MuiTooltip: {
+      styleOverrides: {
+        arrow: {
+          color: "#2E3033",
+        },
+        tooltip: {
+          backgroundColor: "#2E3033",
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {

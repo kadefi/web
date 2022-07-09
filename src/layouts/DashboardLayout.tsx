@@ -4,9 +4,10 @@ import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import { useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/system";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -124,17 +125,29 @@ const DashboardLayout = (props: Props) => {
   const sideBar = (
     <SideBar isOpen={isSideBarOpen} numMenuItems={Object.values(MENU_TITLE).length}>
       <MenuButtons>
-        {Object.values(MENU_TITLE).map((title) => (
-          <MenuButton
-            key={title}
-            isActive={title === activeMenu}
-            isDisabled={MENU_CONFIG[title].isDisabled}
-            onClick={(e) => handleMenuClick(e, title)}
-          >
-            {MENU_CONFIG[title].icon}
-            {title}
-          </MenuButton>
-        ))}
+        {Object.values(MENU_TITLE).map((title) => {
+          const menuButton = (
+            <MenuButton
+              key={title}
+              isActive={title === activeMenu}
+              isDisabled={MENU_CONFIG[title].isDisabled}
+              onClick={(e) => handleMenuClick(e, title)}
+            >
+              {MENU_CONFIG[title].icon}
+              {title}
+            </MenuButton>
+          );
+
+          if (MENU_CONFIG[title].isDisabled) {
+            return (
+              <Tooltip title="Under development" placement="right" arrow>
+                {menuButton}
+              </Tooltip>
+            );
+          }
+
+          return menuButton;
+        })}
       </MenuButtons>
     </SideBar>
   );
@@ -154,7 +167,6 @@ const DashboardLayout = (props: Props) => {
 
 const HamburgerMenu = styled(MenuSharpIcon)`
   cursor: pointer;
-  z-index: 2;
 `;
 
 const RightNavBar = styled(Container)`
