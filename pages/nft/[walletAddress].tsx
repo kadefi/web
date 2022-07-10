@@ -1,9 +1,12 @@
 import styled from "@emotion/styled";
-import { Skeleton, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
+import Image from "next/image";
 import { useEffect } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetNftGalleryData } from "../../src/api/queries/NftGallery.queries";
+import CustomCircularProgress from "../../src/components/commons/CustomCircularProgress";
+import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import NftCard from "../../src/components/NftCard";
 import { ROUTE } from "../../src/constants/Routes.constant";
@@ -40,9 +43,26 @@ const NftGallery: CustomNextPage = () => {
     return null;
   }
 
+  const getLoadingDisplay = (
+    <CentralContainer maxWidth="md">
+      <CustomCircularProgress size={100} color="secondary" />
+      <p>Loading Your NFTs....</p>
+    </CentralContainer>
+  );
+
+  const noDataDisplay = (
+    <CentralContainer maxWidth="md">
+      <Image src="/assets/empty-box.png" alt="" width={300} height={300} style={{ marginBottom: 20 }} />
+      <P>We didn&apos;t find any NFT here..</P>
+      <P>Maybe we should have?</P>
+      <P>If we missed your NFT, DM us!</P>
+      <TwitterButton subtext="Send Message" />
+    </CentralContainer>
+  );
+
   const getNftDisplay = (data: NftGalleryData) => {
-    if (!data || !data.gallery) {
-      return null;
+    if (!data || !data.gallery || data.gallery.length === 0) {
+      return noDataDisplay;
     }
 
     return data.gallery.map((collection) => {
@@ -64,13 +84,22 @@ const NftGallery: CustomNextPage = () => {
 
   return (
     <Container maxWidth="md">
-      {isDashboardLoading ? <LoadingSkeleton animation="wave" /> : getNftDisplay(nftQuery.data as NftGalleryData)}
+      {isDashboardLoading ? getLoadingDisplay : getNftDisplay(nftQuery.data as NftGalleryData)}
     </Container>
   );
 };
 
-const LoadingSkeleton = styled(Skeleton)`
-  width: 100%;
+const P = styled.p`
+  margin-top: 0px;
+  margin-bottom: 20px;
+`;
+
+const CentralContainer = styled(MuiContainer)`
+  margin-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const NftsContainer = styled.div`

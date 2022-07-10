@@ -4,10 +4,11 @@ import theme from "../../../theme";
 
 type Props = {
   isLogoOnly?: boolean;
+  subtext?: string;
 };
 
 const TwitterButton = (props: Props) => {
-  const { isLogoOnly = false } = props;
+  const { isLogoOnly = false, subtext = "Follow Us" } = props;
 
   if (isLogoOnly) {
     return <TwitterIcon fontSize="small" />;
@@ -16,7 +17,7 @@ const TwitterButton = (props: Props) => {
   return (
     <Container target="__blank" href="https://twitter.com/kadefi_money/">
       <TwitterIcon fontSize="small" />
-      <Subtext>Follow Us</Subtext>
+      <Subtext>{subtext}</Subtext>
     </Container>
   );
 };
