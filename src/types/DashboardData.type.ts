@@ -88,15 +88,18 @@ export type WalletData = {
   errors: TokenCellType[];
 };
 
-export type NftData = {
+export type NftGalleryData = {
   gallery: {
     collection: string;
     description: string;
     address: string;
     chain: string;
-    nfts: {
-      id: string;
-      url: string;
-    }[];
+    nfts: NftData[];
   }[];
+};
+
+export type NftData = {
+  id: string;
+  imageLinkType: "base64" | "url";
+  url: string;
 };
