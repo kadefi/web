@@ -90,7 +90,7 @@ export type WalletData = {
 
 export type NftGalleryData = {
   gallery: {
-    collection: string;
+    name: string;
     description: string;
     address: string;
     chain: string;
@@ -100,6 +100,6 @@ export type NftGalleryData = {
 
 export type NftData = {
   id: string;
-  imageLinkType: "base64" | "url";
+  type: "base64" | "PNG";
   url: string;
 };

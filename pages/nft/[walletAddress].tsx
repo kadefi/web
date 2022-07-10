@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
 import { useEffect } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
@@ -47,12 +47,12 @@ const NftGallery: CustomNextPage = () => {
 
     return data.gallery.map((collection) => {
       return (
-        <CollectionContainer key={collection.collection}>
-          <CollectionName variant="h4">{collection.collection}</CollectionName>
+        <CollectionContainer key={collection.name}>
+          <CollectionName variant="h4">{collection.name}</CollectionName>
           <CollectionDescription variant="body1">{collection.description}</CollectionDescription>
           <NftsContainer>
             {collection.nfts.map((nft) => (
-              <NftCard key={`${collection.description}-${nft.id}`} nft={nft} />
+              <NftCard key={`${collection.description}-${nft.id}`} nftData={nft} collectionName={collection.name} />
             ))}
           </NftsContainer>
         </CollectionContainer>
@@ -62,10 +62,14 @@ const NftGallery: CustomNextPage = () => {
 
   return (
     <Container maxWidth="md">
-      {isDashboardLoading ? "Loading..." : getNftDisplay(nftQuery.data as NftGalleryData)}
+      {isDashboardLoading ? <LoadingSkeleton animation="wave" /> : getNftDisplay(nftQuery.data as NftGalleryData)}
     </Container>
   );
 };
+
+const LoadingSkeleton = styled(Skeleton)`
+  width: 100%;
+`;
 
 const NftsContainer = styled.div`
   display: grid;
