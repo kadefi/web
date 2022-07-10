@@ -63,7 +63,11 @@ const NftGallery: CustomNextPage = () => {
   );
 
   const getNftDisplay = (data: NftGalleryData) => {
-    if (!data || !data.gallery || data.gallery.length === 0) {
+    if (!data || !data.gallery) {
+      return null;
+    }
+
+    if (data.gallery.length === 0) {
       return noDataDisplay;
     }
 
