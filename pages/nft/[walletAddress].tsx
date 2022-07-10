@@ -43,7 +43,7 @@ const NftGallery: CustomNextPage = () => {
     return null;
   }
 
-  const getLoadingDisplay = (
+  const loadingIndicator = (
     <CentralContainer maxWidth="md">
       <CustomCircularProgress size={100} color="secondary" />
       <p>Loading Your NFTs....</p>
@@ -52,7 +52,9 @@ const NftGallery: CustomNextPage = () => {
 
   const noDataDisplay = (
     <CentralContainer maxWidth="md">
-      <Image src="/assets/empty-box.png" alt="" width={300} height={300} style={{ marginBottom: 20 }} />
+      <EmptyBoxImageContainer>
+        <Image src="/assets/empty-box.png" alt="" layout="fill" objectFit="contain" />
+      </EmptyBoxImageContainer>
       <P>We didn&apos;t find any NFT here..</P>
       <P>Maybe we should have?</P>
       <P>If we missed your NFT, DM us!</P>
@@ -84,10 +86,22 @@ const NftGallery: CustomNextPage = () => {
 
   return (
     <Container maxWidth="md">
-      {isDashboardLoading ? getLoadingDisplay : getNftDisplay(nftQuery.data as NftGalleryData)}
+      {isDashboardLoading ? loadingIndicator : getNftDisplay(nftQuery.data as NftGalleryData)}
     </Container>
   );
 };
+
+const EmptyBoxImageContainer = styled.div`
+  margin-bottom: 1rem;
+  position: relative;
+  height: 15rem;
+  width: 15rem;
+
+  ${theme.breakpoints.down("md")} {
+    height: 10rem;
+    width: 10rem;
+  }
+`;
 
 const P = styled.p`
   margin-top: 0px;
@@ -95,11 +109,15 @@ const P = styled.p`
 `;
 
 const CentralContainer = styled(MuiContainer)`
-  margin-top: 120px;
+  margin-top: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  ${theme.breakpoints.down("md")} {
+    margin-top: 1rem;
+  }
 `;
 
 const NftsContainer = styled.div`
