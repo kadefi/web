@@ -4,4 +4,18 @@ module.exports = {
   images: {
     domains: ["gateway.pinata.cloud"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/dashboard",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/nft",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
 };
