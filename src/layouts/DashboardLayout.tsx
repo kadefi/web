@@ -142,7 +142,7 @@ const DashboardLayout = (props: Props) => {
       <SidebarFooter>
         <SocialIcons>
           <TwitterContainer target="__blank" href="https://twitter.com/kadefi_money/">
-            <div>Follow us on</div>
+            <div>Talk to us on</div>
             <TwitterIcon fontSize="small" />
           </TwitterContainer>
         </SocialIcons>
