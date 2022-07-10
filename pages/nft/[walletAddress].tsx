@@ -49,7 +49,9 @@ const NftGallery: CustomNextPage = () => {
       return (
         <CollectionContainer key={collection.name}>
           <CollectionName variant="h4">{collection.name}</CollectionName>
-          <CollectionDescription variant="body1">{collection.description}</CollectionDescription>
+          <CollectionDescription variant="body1">
+            {`${collection.description} - ${collection.nfts.length} NFT(s)`}
+          </CollectionDescription>
           <NftsContainer>
             {collection.nfts.map((nft) => (
               <NftCard key={`${collection.description}-${nft.id}`} nftData={nft} collectionName={collection.name} />
