@@ -13,6 +13,7 @@ import { initializeAmplitude } from "../src/analytics/Analytics.util";
 import createEmotionCache from "../src/createEmotionCache";
 import theme from "../src/theme";
 import { Page } from "../src/types/Page.type";
+import "./_app.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

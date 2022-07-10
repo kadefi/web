@@ -2,7 +2,17 @@ import styled from "@emotion/styled";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import theme from "../../../theme";
 
-const TwitterButton = () => {
+type Props = {
+  isLogoOnly?: boolean;
+};
+
+const TwitterButton = (props: Props) => {
+  const { isLogoOnly = false } = props;
+
+  if (isLogoOnly) {
+    return <TwitterIcon fontSize="small" />;
+  }
+
   return (
     <Container target="__blank" href="https://twitter.com/kadefi_money/">
       <TwitterIcon fontSize="small" />
