@@ -157,7 +157,7 @@ const DashboardLayout = (props: Props) => {
   );
 
   return (
-    <DashboardLayoutContext.Provider value={{ isDashboardLoading, setIsDashboardLoading }}>
+    <DashboardLayoutContext.Provider value={{ walletAddress, isDashboardLoading, setIsDashboardLoading }}>
       <Wrapper>
         {navBar}
         <Content onClick={handleSideBarClose}>

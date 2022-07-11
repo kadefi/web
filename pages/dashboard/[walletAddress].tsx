@@ -12,7 +12,6 @@ import ProjectCard from "../../src/components/ProjectCard";
 import WalletCard from "../../src/components/WalletCard";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { useDashboardLayoutContext } from "../../src/contexts/DashboardLayoutContext";
-import { useWalletAddress } from "../../src/hooks/useWalletAddress";
 import { getDashboardLayout } from "../../src/layouts/DashboardLayout";
 import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
@@ -34,7 +33,7 @@ const Dashboard: CustomNextPage = () => {
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.DASHBOARD);
-  const { walletAddress } = useWalletAddress();
+  const { walletAddress } = useDashboardLayoutContext();
 
   // Data Queries
   const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);

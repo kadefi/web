@@ -11,7 +11,6 @@ import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import NftCard from "../../src/components/NftCard";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { useDashboardLayoutContext } from "../../src/contexts/DashboardLayoutContext";
-import { useWalletAddress } from "../../src/hooks/useWalletAddress";
 import { getDashboardLayout } from "../../src/layouts/DashboardLayout";
 import theme from "../../src/theme";
 import { NftGalleryData } from "../../src/types/DashboardData.type";
@@ -23,7 +22,7 @@ const NftGallery: CustomNextPage = () => {
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.NFT_GALLERY);
-  const { walletAddress } = useWalletAddress();
+  const { walletAddress } = useDashboardLayoutContext();
 
   // Data Queries
   const nftQuery = useGetNftGalleryData(walletAddress);

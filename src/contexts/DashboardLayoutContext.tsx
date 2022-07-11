@@ -2,6 +2,7 @@ import { createContext, Dispatch, SetStateAction, useContext } from "react";
 import { isEmpty } from "../utils/Object.util";
 
 type DashboardLayoutContextType = {
+  walletAddress: string | undefined;
   isDashboardLoading: boolean;
   setIsDashboardLoading: Dispatch<SetStateAction<boolean>>;
 };
