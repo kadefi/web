@@ -151,6 +151,7 @@ const DashboardLayout = (props: Props) => {
           <PngLogo src="/assets/tokens/FLUX.png" size={1.5} quality={50} />
           Flux
         </FluxAttribution>
+        <CopyrightText>Copyright © 2022 Kadefi.money. All rights reserved.</CopyrightText>
       </SidebarFooter>
     </SideBar>
   );
@@ -167,6 +168,12 @@ const DashboardLayout = (props: Props) => {
     </DashboardLayoutContext.Provider>
   );
 };
+
+const CopyrightText = styled.p`
+  font-size: 8px;
+  margin-top: 0px;
+  text-align: center;
+`;
 
 const TwitterContainer = styled.a`
   cursor: pointer;
