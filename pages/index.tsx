@@ -38,7 +38,7 @@ const Home: NextPage = () => {
               Insights
             </Typography>
           </Title>
-          <Subtitle>Track all your Kadena&apos;s DeFi investments in a single dashboard</Subtitle>
+          <Subtitle>Track all your Kadena&apos;s investments and NFTs in a single dashboard</Subtitle>
           <SupportedProjects />
           <SearchWalletInput />
           <RecentSearches />
