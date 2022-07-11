@@ -1,5 +1,5 @@
 export const roundToDecimalStr = (num: number, decimalDigits: number) => {
-  return roundToDecimal(num, decimalDigits).toLocaleString(undefined, { minimumFractionDigits: 2 });
+  return roundToDecimal(num, decimalDigits).toLocaleString("en-US", { minimumFractionDigits: 2 });
 };
 
 export const roundToDecimal = (num: number, decimalDigits: number) => {
