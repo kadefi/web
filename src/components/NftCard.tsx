@@ -3,6 +3,7 @@ import MuiBrokenImageIcon from "@mui/icons-material/BrokenImage";
 import Skeleton from "@mui/material/Skeleton";
 import Image from "next/image";
 import { useState } from "react";
+import { trackNftImageLoadError } from "../analytics/Analytics.util";
 import { NftData } from "../types/DashboardData.type";
 
 type Props = {
@@ -25,7 +26,7 @@ const NftCard = (props: Props) => {
       style={{ imageRendering: nft.type === "base64" ? "pixelated" : "auto" }}
       onLoadingComplete={() => setIsLoading(false)}
       onErrorCapture={() => {
-        console.log("error");
+        trackNftImageLoadError({ collection: collectionName, nftId: nft.id });
         setIsLoading(false);
         setIsError(true);
       }}
