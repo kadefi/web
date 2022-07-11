@@ -27,3 +27,13 @@ export const trackWalletSearchEvent = (walletAddress: string) => {
   // console.log("Track amplitude wallet search event")
   trackEvent(AMPLITUDE_EVENT.WALLET_SEARCH, { walletAddress });
 };
+
+export const trackRequestError = (config: {
+  method: string;
+  baseUrl: string;
+  url: string;
+  errorMessage: string;
+  statusText: string;
+}) => {
+  trackEvent(AMPLITUDE_EVENT.REQUEST_ERROR, config);
+};

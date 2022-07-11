@@ -22,7 +22,7 @@ const NftGallery: CustomNextPage = () => {
   const { isDashboardLoading, setIsDashboardLoading } = useDashboardLayoutContext();
 
   // Custom Hooks
-  useTrackPageVisit(ROUTE.DASHBOARD);
+  useTrackPageVisit(ROUTE.NFT_GALLERY);
   const { walletAddress } = useWalletAddress();
 
   // Data Queries
