@@ -173,6 +173,10 @@ const CopyrightText = styled.p`
   font-size: 8px;
   margin-top: 0px;
   text-align: center;
+  ${theme.breakpoints.down("md")} {
+    text-align: left;
+    padding-left: 1rem;
+  }
 `;
 
 const TwitterContainer = styled.a`
@@ -338,7 +342,7 @@ const SideBar = styled.div<SideBarProps>`
     position: absolute;
     background: #270024;
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.25);
-    height: ${(props) => (props.isOpen ? `${props.numMenuItems * 4 + 6}rem` : "0px")};
+    height: ${(props) => (props.isOpen ? `${props.numMenuItems * 4 + 6.5}rem` : "0px")};
     width: 100vw;
     padding: ${(props) => (props.isOpen ? "1rem" : "0px")} 1rem;
   }
