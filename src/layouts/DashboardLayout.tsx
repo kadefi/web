@@ -37,7 +37,7 @@ const MENU_CONFIG = {
   },
   [MENU_TITLE.NFT]: {
     icon: <PhotoLibraryOutlinedIcon />,
-    route: "/nft",
+    route: "/gallery",
     isDisabled: false,
   },
   [MENU_TITLE.PROJECT_HISTORY]: {

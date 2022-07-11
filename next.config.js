@@ -12,7 +12,7 @@ module.exports = {
         permanent: true,
       },
       {
-        source: "/nft",
+        source: "/gallery",
         destination: "/",
         permanent: true,
       },

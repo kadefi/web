@@ -1,5 +1,5 @@
 export enum ROUTE {
   HOME = "/",
   DASHBOARD = "/dashboard",
-  NFT_GALLERY = "/nft",
+  NFT_GALLERY = "/gallery",
 }
