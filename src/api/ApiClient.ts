@@ -8,8 +8,9 @@ ApiClient.interceptors.response.use((res) => res, interceptErrorResponse);
 function interceptErrorResponse(error: AxiosError) {
   const { message: errorMessage, code: statusText = "" } = error;
   const { method = "", baseURL: baseUrl = "", url = "" } = error.config;
+  const statusCode = error.response?.status as number;
 
-  trackRequestError({ method, baseUrl, url, errorMessage, statusText });
+  trackRequestError({ method, baseUrl, url, errorMessage, statusText, statusCode });
 
   console.log("Network Error: ", error);
   throw error;

@@ -34,6 +34,7 @@ export const trackRequestError = (config: {
   url: string;
   errorMessage: string;
   statusText: string;
+  statusCode: number;
 }) => {
   trackEvent(AMPLITUDE_EVENT.REQUEST_ERROR, config);
 };
