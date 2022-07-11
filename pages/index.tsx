@@ -72,6 +72,12 @@ const Header = styled.div`
   position: absolute;
   top: 3rem;
   padding: 0 1rem;
+
+  @media (max-height: 600px) {
+    position: relative;
+    top: 0;
+    margin-bottom: 3rem;
+  }
 `;
 
 const Wrapper = styled.div`
