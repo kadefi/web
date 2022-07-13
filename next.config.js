@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["gateway.pinata.cloud", "cdn.kadefi.money"],
+    domains: ["gateway.pinata.cloud", "cdn.kadefi.money", "ipfs.io"],
   },
   async redirects() {
     return [
