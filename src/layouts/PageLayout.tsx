@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import CableOutlinedIcon from "@mui/icons-material/CableOutlined";
 import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
@@ -25,6 +26,7 @@ type Props = {
 enum MENU_TITLE {
   DASHBOARD = "Dashboard",
   NFT = "NFT Gallery",
+  INTEGRATIONS = "Integrations",
   PROJECT_HISTORY = "Portfolio History",
   TOOLS = "Tools",
 }
@@ -33,21 +35,31 @@ const MENU_CONFIG = {
   [MENU_TITLE.DASHBOARD]: {
     icon: <DashboardOutlinedIcon />,
     route: "/dashboard",
+    isWalletSearch: true,
     isDisabled: false,
   },
   [MENU_TITLE.NFT]: {
     icon: <PhotoLibraryOutlinedIcon />,
     route: "/gallery",
+    isWalletSearch: true,
+    isDisabled: false,
+  },
+  [MENU_TITLE.INTEGRATIONS]: {
+    icon: <CableOutlinedIcon />,
+    route: "/integrations",
+    isWalletSearch: false,
     isDisabled: false,
   },
   [MENU_TITLE.PROJECT_HISTORY]: {
     icon: <TimelineOutlinedIcon />,
     route: "",
+    isWalletSearch: false,
     isDisabled: true,
   },
   [MENU_TITLE.TOOLS]: {
     icon: <ConstructionOutlinedIcon />,
     route: "",
+    isWalletSearch: false,
     isDisabled: true,
   },
 };
@@ -90,9 +102,13 @@ const PageLayout = (props: Props) => {
       return;
     }
 
-    handleSideBarClose();
+    if (MENU_CONFIG[title].isWalletSearch) {
+      router.push(`${MENU_CONFIG[title].route}/${walletAddress}`);
+    } else {
+      router.push(`${MENU_CONFIG[title].route}`);
+    }
 
-    router.push(`${MENU_CONFIG[title].route}/${walletAddress}`);
+    handleSideBarClose();
   };
 
   // Display components
@@ -106,9 +122,11 @@ const PageLayout = (props: Props) => {
         <KadefiLogo />
         {isMobile ? <HamburgerMenu onClick={handleSideBarToggle} fontSize="medium" sx={{ color: "#b3b3b3" }} /> : null}
       </LeftNavBar>
-      <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
-        <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
-      </RightNavBar>
+      {MENU_CONFIG[activeMenu].isWalletSearch && (
+        <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
+          <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
+        </RightNavBar>
+      )}
     </NavBar>
   );
 
@@ -234,23 +252,25 @@ const HamburgerMenu = styled(MenuSharpIcon)`
 
 const RightNavBar = styled(Container)`
   flex-grow: 1;
+  display: flex;
+  align-items: center;
+
+  ${theme.breakpoints.down("md")} {
+    padding-bottom: 1rem;
+  }
 `;
 
 const LeftNavBar = styled.div`
-  padding-left: 1rem;
   min-width: 17rem;
+  padding: 1rem 0 1rem 1rem;
 
   ${theme.breakpoints.down("md")} {
     min-width: 100vw;
     display: flex;
-    padding: 0.25rem 1.5rem 1rem 1.5rem;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-  }
-
-  ${theme.breakpoints.down("sm")} {
-    padding: 0.25rem 1rem 1rem 1rem;
+    padding: 1rem;
   }
 `;
 
@@ -261,7 +281,6 @@ const NavBar = styled(Box)`
   width: 100%;
   z-index: 1;
   background: rgba(0, 0, 0, 0.4);
-  padding: 1rem 0;
 
   ${theme.breakpoints.down("md")} {
     flex-direction: column;
@@ -297,7 +316,7 @@ const MenuButton = styled.div<MenuButtonProps>`
 const MenuButtons = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 
   ${theme.breakpoints.down("md")} {
     gap: 1rem;
