@@ -14,7 +14,7 @@ import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react"
 import { KadefiLogo } from "../components/commons/KadefiLogo";
 import PngLogo from "../components/commons/PngLogo";
 import SearchWalletInput from "../components/SearchWalletInput";
-import { DashboardLayoutContext } from "../contexts/DashboardLayoutContext";
+import { PageLayoutContext } from "../contexts/PageLayoutContext";
 import { useWalletAddress } from "../hooks/useWalletAddress";
 import theme from "../theme";
 
@@ -52,7 +52,7 @@ const MENU_CONFIG = {
   },
 };
 
-const DashboardLayout = (props: Props) => {
+const PageLayout = (props: Props) => {
   const { children } = props;
 
   // Routing
@@ -157,7 +157,7 @@ const DashboardLayout = (props: Props) => {
   );
 
   return (
-    <DashboardLayoutContext.Provider value={{ walletAddress, isDashboardLoading, setIsDashboardLoading }}>
+    <PageLayoutContext.Provider value={{ walletAddress, isDashboardLoading, setIsDashboardLoading }}>
       <Wrapper>
         {navBar}
         <Content onClick={handleSideBarClose}>
@@ -165,7 +165,7 @@ const DashboardLayout = (props: Props) => {
           <ChildrenContainer>{children}</ChildrenContainer>
         </Content>
       </Wrapper>
-    </DashboardLayoutContext.Provider>
+    </PageLayoutContext.Provider>
   );
 };
 
@@ -353,6 +353,6 @@ const ChildrenContainer = styled.div`
   flex-grow: 1;
 `;
 
-export default DashboardLayout;
+export default PageLayout;
 
-export const getDashboardLayout = (page: ReactElement) => <DashboardLayout>{page}</DashboardLayout>;
+export const getPageLayout = (page: ReactElement) => <PageLayout>{page}</PageLayout>;

@@ -7,8 +7,8 @@ import { useGetNftCollections } from "../../src/api/queries/NftGallery.queries";
 import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
 import NftCollection from "../../src/components/NftCollection";
 import { ROUTE } from "../../src/constants/Routes.constant";
-import { useDashboardLayoutContext } from "../../src/contexts/DashboardLayoutContext";
-import { getDashboardLayout } from "../../src/layouts/DashboardLayout";
+import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { NftCollectionData } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
@@ -23,11 +23,11 @@ const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number |
 
 const NftGallery: CustomNextPage = () => {
   // Contexts
-  const { isDashboardLoading, setIsDashboardLoading } = useDashboardLayoutContext();
+  const { isDashboardLoading, setIsDashboardLoading } = usePageLayoutContext();
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.NFT_GALLERY);
-  const { walletAddress } = useDashboardLayoutContext();
+  const { walletAddress } = usePageLayoutContext();
 
   // Data Queries
   const { collectionsQueries } = useGetNftCollections(walletAddress);
@@ -110,6 +110,6 @@ const Container = styled(MuiContainer)`
   padding: 2rem;
 `;
 
-NftGallery.getLayout = getDashboardLayout;
+NftGallery.getLayout = getPageLayout;
 
 export default NftGallery;

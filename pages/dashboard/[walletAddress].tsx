@@ -11,8 +11,8 @@ import DashboardErrorFab from "../../src/components/DashboardErrorFab";
 import ProjectCard from "../../src/components/ProjectCard";
 import WalletCard from "../../src/components/WalletCard";
 import { ROUTE } from "../../src/constants/Routes.constant";
-import { useDashboardLayoutContext } from "../../src/contexts/DashboardLayoutContext";
-import { getDashboardLayout } from "../../src/layouts/DashboardLayout";
+import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
@@ -29,11 +29,11 @@ const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | un
 
 const Dashboard: CustomNextPage = () => {
   // Contexts
-  const { isDashboardLoading, setIsDashboardLoading } = useDashboardLayoutContext();
+  const { isDashboardLoading, setIsDashboardLoading } = usePageLayoutContext();
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.DASHBOARD);
-  const { walletAddress } = useDashboardLayoutContext();
+  const { walletAddress } = usePageLayoutContext();
 
   // Data Queries
   const { walletQuery, projectsQuery } = useGetDashboardData(walletAddress);
@@ -132,6 +132,6 @@ const Content = styled(Container)({
   marginBottom: "80px",
 });
 
-Dashboard.getLayout = getDashboardLayout;
+Dashboard.getLayout = getPageLayout;
 
 export default Dashboard;
