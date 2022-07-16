@@ -61,9 +61,9 @@ const ProjectCard = (props: Props) => {
     return null;
   }
 
-  const { data: projectData, isLoading, isError } = projectQuery;
+  const { data: projectData, isLoading, isFetching, isError } = projectQuery;
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <LoadingTableSkeleton />;
   }
 

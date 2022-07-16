@@ -89,13 +89,13 @@ export type WalletData = {
 };
 
 export type NftGalleryData = {
-  gallery: {
-    name: string;
-    description: string;
-    address: string;
-    chain: string;
-    nfts: NftData[];
-  }[];
+  gallery: NftCollectionData[];
+};
+
+export type NftCollectionData = {
+  name: string;
+  description: string;
+  nfts: NftData[];
 };
 
 export type NftData = {

@@ -1,20 +1,25 @@
 import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
 import Image from "next/image";
-import { useEffect } from "react";
+import { ReactElement, useEffect } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
-import { useGetNftGalleryData } from "../../src/api/queries/NftGallery.queries";
-import CustomCircularProgress from "../../src/components/commons/CustomCircularProgress";
+import { useGetNftCollections } from "../../src/api/queries/NftGallery.queries";
 import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
-import TypographyNeon from "../../src/components/commons/TypographyNeon";
-import NftCard from "../../src/components/NftCard";
+import NftCollection from "../../src/components/NftCollection";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { useDashboardLayoutContext } from "../../src/contexts/DashboardLayoutContext";
 import { getDashboardLayout } from "../../src/layouts/DashboardLayout";
 import theme from "../../src/theme";
-import { NftGalleryData } from "../../src/types/DashboardData.type";
+import { NftCollectionData } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
+
+const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number | undefined)[]) => {
+  collections.sort((a, b) => {
+    const first = numberOfNfts[collections.indexOf(a)];
+    const second = numberOfNfts[collections.indexOf(b)];
+    return (second || 0) - (first || 0);
+  });
+};
 
 const NftGallery: CustomNextPage = () => {
   // Contexts
@@ -25,73 +30,51 @@ const NftGallery: CustomNextPage = () => {
   const { walletAddress } = useDashboardLayoutContext();
 
   // Data Queries
-  const nftQuery = useGetNftGalleryData(walletAddress);
+  const { collectionsQueries } = useGetNftCollections(walletAddress);
 
   // Effects
   useEffect(() => {
-    if (nftQuery) {
-      const nftQueryIsLoading = nftQuery.isLoading;
-      setIsDashboardLoading(nftQueryIsLoading);
-    } else {
-      setIsDashboardLoading(true);
+    setIsDashboardLoading(true);
+
+    // Update isDashboardLoading based on status of collections loading
+    if (
+      collectionsQueries?.length > 0 &&
+      collectionsQueries?.every((collectionQuery) => collectionQuery.isLoading === false)
+    ) {
+      setIsDashboardLoading(false);
     }
-  }, [nftQuery, setIsDashboardLoading]);
+  }, [collectionsQueries, setIsDashboardLoading]);
 
   // Prevent rendering without queries
-  if (!nftQuery) {
+  if (!collectionsQueries) {
     return null;
   }
 
-  const loadingIndicator = (
-    <CentralContainer maxWidth="md">
-      <CustomCircularProgress size={100} color="secondary" />
-      <p>Loading Your NFTs....</p>
-    </CentralContainer>
-  );
+  const numberOfNfts: (number | undefined)[] = [];
 
-  const noDataDisplay = (
-    <CentralContainer maxWidth="md">
-      <EmptyBoxImageContainer>
-        <Image src="/assets/empty-box.png" alt="" layout="fill" objectFit="contain" />
-      </EmptyBoxImageContainer>
-      <P>We didn&apos;t find any NFT here..</P>
-      <P>Maybe we should have?</P>
-      <P>If we missed your NFT, DM us!</P>
-      <TwitterButton subtext="Send Message" />
-    </CentralContainer>
-  );
+  const nftCollections = collectionsQueries.map((collectionQuery, i) => {
+    numberOfNfts[i] = (collectionQuery.data as NftCollectionData)?.nfts?.length || undefined;
+    return <NftCollection key={`collection-${i}`} collectionQuery={collectionQuery} />;
+  });
 
-  const getNftDisplay = (data: NftGalleryData) => {
-    if (!data || !data.gallery) {
-      return null;
-    }
+  sortNftCollections(nftCollections, numberOfNfts);
 
-    if (data.gallery.length === 0) {
-      return noDataDisplay;
-    }
+  // No NFT Collection
+  if (!isDashboardLoading && numberOfNfts.every((value) => value === undefined)) {
+    return (
+      <CentralContainer maxWidth="md">
+        <EmptyBoxImageContainer>
+          <Image src="/assets/empty-box.png" alt="" layout="fill" objectFit="contain" priority />
+        </EmptyBoxImageContainer>
+        <P>We didn&apos;t find any NFT here..</P>
+        <P>Maybe we should have?</P>
+        <P>If we missed your NFT, DM us!</P>
+        <TwitterButton subtext="Send Message" />
+      </CentralContainer>
+    );
+  }
 
-    return data.gallery.map((collection) => {
-      return (
-        <CollectionContainer key={collection.name}>
-          <CollectionName variant="h4">{collection.name}</CollectionName>
-          <CollectionDescription variant="body1">
-            {`${collection.description} - ${collection.nfts.length} NFT(s)`}
-          </CollectionDescription>
-          <NftsContainer>
-            {collection.nfts.map((nft) => (
-              <NftCard key={`${collection.description}-${nft.id}`} nftData={nft} collectionName={collection.name} />
-            ))}
-          </NftsContainer>
-        </CollectionContainer>
-      );
-    });
-  };
-
-  return (
-    <Container maxWidth="md">
-      {isDashboardLoading ? loadingIndicator : getNftDisplay(nftQuery.data as NftGalleryData)}
-    </Container>
-  );
+  return <Container maxWidth="md">{nftCollections}</Container>;
 };
 
 const EmptyBoxImageContainer = styled.div`
@@ -123,20 +106,6 @@ const CentralContainer = styled(MuiContainer)`
   }
 `;
 
-const NftsContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-
-  ${theme.breakpoints.down("sm")} {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-`;
-
-const CollectionContainer = styled.div`
-  margin-bottom: 3rem;
-`;
-
 const Container = styled(MuiContainer)`
   padding: 2rem;
 `;
@@ -144,12 +113,3 @@ const Container = styled(MuiContainer)`
 NftGallery.getLayout = getDashboardLayout;
 
 export default NftGallery;
-
-const CollectionName = styled(TypographyNeon)`
-  margin-bottom: 8px;
-`;
-
-const CollectionDescription = styled(Typography)`
-  margin-bottom: 16px;
-  color: #c5c5c5;
-`;

@@ -26,6 +26,13 @@ export enum TOKEN_TICKER {
   HYPE = "HYPE",
 }
 
+export enum NFT_COLLECTION_KEY {
+  BABENA = "babena",
+  INU_CREW = "inucrew",
+  KADENA_BULLS = "kadenabulls",
+  KITTY_KAD = "kittykad",
+}
+
 export type ProjectErrorResponse = {
   name: string;
   module: PROJECT_KEY;
