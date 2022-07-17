@@ -91,9 +91,16 @@ export type WalletData = {
 export type ProjectsList = {
   name: string;
   module: string;
+  social: string;
+  image: string;
 }[];
 
-export type NftCollectionsDetails = string[];
+export type NftCollectionsList = {
+  name: string;
+  description: string;
+  social: string;
+  module: string;
+}[];
 
 export type NftGalleryData = {
   gallery: NftCollectionData[];

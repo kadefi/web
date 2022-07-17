@@ -1,5 +1,5 @@
 import { QueryFunction, useQueries, useQuery, UseQueryResult } from "react-query";
-import { NftCollectionData, NftCollectionsDetails as NftCollectionsList } from "../../types/DashboardData.type";
+import { NftCollectionData, NftCollectionsList as NftCollectionsList } from "../../types/DashboardData.type";
 import { isValidWalletAddress } from "../../utils/String.util";
 import { getNftCollectionsList, getNftCollectionData } from "../Nft.api";
 
@@ -14,8 +14,8 @@ export const useGetNftCollectionsData = (nftCollectionsList: NftCollectionsList 
 
   nftCollectionsList.forEach((collection) => {
     queries.push({
-      queryKey: [collection, walletAddress],
-      queryFn: ({ signal }) => getNftCollectionData(collection, walletAddress, signal),
+      queryKey: [collection.module, walletAddress],
+      queryFn: ({ signal }) => getNftCollectionData(collection.module, walletAddress, signal),
       enabled: isEnabled,
     });
   });

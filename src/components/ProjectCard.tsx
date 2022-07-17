@@ -4,17 +4,18 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { UseQueryResult } from "react-query";
 import theme from "../theme";
-import { ProjectData, ProjectResponse, Section, TableRowData } from "../types/DashboardData.type";
-import { getProjectLogo } from "../utils/Logo.util";
+import { ProjectData, ProjectResponse, ProjectsList, Section, TableRowData } from "../types/DashboardData.type";
 import { formatFiatValue } from "../utils/Number.util";
 import { getRowDisplay } from "../utils/Table.util";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
+import PngLogo from "./commons/PngLogo";
 import TypographyNeon from "./commons/TypographyNeon";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
 
 type Props = {
   projectQuery: UseQueryResult<ProjectData>;
+  projectsList: ProjectsList;
 };
 
 const getMobileTableDisplay = (headers: string[], rows: TableRowData[]) => {
@@ -53,7 +54,7 @@ const getDesktopTableDisplay = (headers: string[], rows: TableRowData[]) => {
 };
 
 const ProjectCard = (props: Props) => {
-  const { projectQuery } = props;
+  const { projectQuery, projectsList } = props;
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -73,6 +74,8 @@ const ProjectCard = (props: Props) => {
 
   const projectResponse = projectData as ProjectResponse;
   const { projectName, module, fiatValue, sections } = projectResponse;
+
+  const projectImageSrc = projectsList.filter((p) => p.module === module)[0].image;
 
   const getSectionDisplay = (section: Section) => {
     const { sectionName, fiatValue, headers, rows } = section;
@@ -96,7 +99,7 @@ const ProjectCard = (props: Props) => {
     <CardWrapper>
       <CardHeader>
         <ProjectHeader>
-          {getProjectLogo(module)}
+          <PngLogo src={projectImageSrc} size={1.75} />
           {projectName}
         </ProjectHeader>
         <ProjectTotalValue>{formatFiatValue(fiatValue)}</ProjectTotalValue>

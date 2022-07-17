@@ -12,12 +12,15 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react";
+import { useGetProjectsList } from "../api/queries/Dashboard.queries";
+import { useGetNftCollectionsList } from "../api/queries/NftGallery.queries";
 import { KadefiLogo } from "../components/commons/KadefiLogo";
 import PngLogo from "../components/commons/PngLogo";
 import SearchWalletInput from "../components/SearchWalletInput";
 import { PageLayoutContext } from "../contexts/PageLayoutContext";
 import { useWalletAddress } from "../hooks/useWalletAddress";
 import theme from "../theme";
+import { NftCollectionsList, ProjectsList } from "../types/DashboardData.type";
 
 type Props = {
   children: ReactNode;
@@ -73,6 +76,12 @@ const PageLayout = (props: Props) => {
   // States
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // Default to close sidebar (only for mobile)
   const [isDashboardLoading, setIsDashboardLoading] = useState(true); // Default to loading true
+  const [projectsList, setProjectsList] = useState<ProjectsList>();
+  const [nftCollectionsList, setNftCollectionsList] = useState<NftCollectionsList>();
+
+  // Queries
+  const { data: nftCollectionsListRes } = useGetNftCollectionsList();
+  const { data: projectsListRes } = useGetProjectsList();
 
   // Custom Hooks
   const { walletAddress } = useWalletAddress();
@@ -83,8 +92,19 @@ const PageLayout = (props: Props) => {
     setIsSideBarOpen(!isMobile);
   }, [isMobile]);
 
-  // Handlers
+  useEffect(() => {
+    if (nftCollectionsListRes) {
+      setNftCollectionsList(nftCollectionsListRes);
+    }
+  }, [nftCollectionsListRes]);
 
+  useEffect(() => {
+    if (projectsListRes) {
+      setProjectsList(projectsListRes);
+    }
+  }, [projectsListRes]);
+
+  // Handlers
   const handleSideBarToggle = () => {
     setIsSideBarOpen(!isSideBarOpen);
   };
@@ -175,7 +195,17 @@ const PageLayout = (props: Props) => {
   );
 
   return (
-    <PageLayoutContext.Provider value={{ walletAddress, isDashboardLoading, setIsDashboardLoading }}>
+    <PageLayoutContext.Provider
+      value={{
+        walletAddress,
+        isDashboardLoading,
+        setIsDashboardLoading,
+        projectsList,
+        setProjectsList,
+        nftCollectionsList,
+        setNftCollectionsList,
+      }}
+    >
       <Wrapper>
         {navBar}
         <Content onClick={handleSideBarClose}>

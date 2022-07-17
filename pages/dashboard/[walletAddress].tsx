@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { ReactElement, useEffect } from "react";
 import CountUp from "react-countup";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
-import { useGetDashboardData, useGetProjectsList } from "../../src/api/queries/Dashboard.queries";
+import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import DashboardErrorFab from "../../src/components/DashboardErrorFab";
 import ProjectCard from "../../src/components/ProjectCard";
@@ -28,14 +28,13 @@ const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | un
 
 const Dashboard: CustomNextPage = () => {
   // Contexts
-  const { isDashboardLoading, setIsDashboardLoading } = usePageLayoutContext();
+  const { isDashboardLoading, setIsDashboardLoading, projectsList } = usePageLayoutContext();
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.DASHBOARD);
   const { walletAddress } = usePageLayoutContext();
 
   // Data Queries
-  const { data: projectsList } = useGetProjectsList();
   const { walletQuery, projectsQuery } = useGetDashboardData(projectsList, walletAddress);
 
   // Effects
@@ -50,7 +49,7 @@ const Dashboard: CustomNextPage = () => {
   }, [walletQuery, projectsQuery, setIsDashboardLoading]);
 
   // Prevent rendering without queries
-  if (!walletQuery || !projectsQuery) {
+  if (!walletQuery || !projectsQuery || !projectsList) {
     return null;
   }
 
@@ -65,7 +64,7 @@ const Dashboard: CustomNextPage = () => {
 
   const projectCards = projectsQuery.map((projectQuery, i) => {
     fiatValues[i] = (projectQuery.data as ProjectResponse)?.fiatValue || undefined;
-    return <ProjectCard key={`project-card-${i}`} projectQuery={projectQuery} />;
+    return <ProjectCard key={`project-card-${i}`} projectQuery={projectQuery} projectsList={projectsList} />;
   });
 
   sortProjectCards(projectCards, fiatValues);
