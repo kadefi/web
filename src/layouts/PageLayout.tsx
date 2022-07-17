@@ -22,7 +22,7 @@ import { PageLayoutContext } from "../contexts/PageLayoutContext";
 import { useWalletAddress } from "../hooks/useWalletAddress";
 import theme from "../theme";
 import { NftCollectionsList, ProjectsList } from "../types/DashboardData.type";
-import { arrayLocalStorage } from "../utils/LocalStorage.util";
+import { arrayLocalStorage, getRecentWalletsLS } from "../utils/LocalStorage.util";
 
 type Props = {
   children: ReactNode;
@@ -146,8 +146,17 @@ const PageLayout = (props: Props) => {
       return;
     }
 
+    let redirectWallet = walletAddress;
+
+    if (!redirectWallet) {
+      const recentWallets = getRecentWalletsLS();
+      if (recentWallets) {
+        redirectWallet = recentWallets[0];
+      }
+    }
+
     if (MENU_CONFIG[title].isWalletSearch) {
-      router.push(`${MENU_CONFIG[title].route}/${walletAddress}`);
+      router.push(`${MENU_CONFIG[title].route}/${redirectWallet}`);
     } else {
       router.push(`${MENU_CONFIG[title].route}`);
     }

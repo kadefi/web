@@ -42,6 +42,8 @@ const NftGallery: CustomNextPage = () => {
       collectionsQueries?.every((collectionQuery) => collectionQuery.isLoading === false)
     ) {
       setIsDashboardLoading(false);
+    } else {
+      setIsDashboardLoading(true);
     }
   }, [collectionsQueries, setIsDashboardLoading]);
 

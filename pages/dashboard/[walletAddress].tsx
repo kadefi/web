@@ -45,6 +45,8 @@ const Dashboard: CustomNextPage = () => {
       projectsQuery?.every((collectionQuery) => collectionQuery.isLoading === false)
     ) {
       setIsDashboardLoading(false);
+    } else {
+      setIsDashboardLoading(true);
     }
   }, [walletQuery, projectsQuery, setIsDashboardLoading]);
 
