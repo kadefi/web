@@ -1,6 +1,4 @@
 import styled from "@emotion/styled";
-import CheckBoxOutlineBlankRoundedIcon from "@mui/icons-material/CheckBoxOutlineBlankRounded";
-import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import { MouseEvent, useState } from "react";
 import PngLogo from "./PngLogo";
@@ -24,8 +22,6 @@ const IntegrationPill = (props: Props) => {
 
   const [isSelected, setIsSelected] = useState(true);
 
-  const checkBox = isSelected ? <DoneRoundedIcon /> : <CheckBoxOutlineBlankRoundedIcon />;
-
   const handleIntegrationToggle = (e: MouseEvent) => {
     e.stopPropagation();
     setIsSelected(!isSelected);
@@ -34,7 +30,6 @@ const IntegrationPill = (props: Props) => {
   return (
     <Container isSelected={isSelected}>
       <LeftPill onClick={handleIntegrationToggle}>
-        {checkBox}
         {image && <PngLogo src={image} size={1.5} />}
         <NameContainer>
           <ProjectName>{name}</ProjectName>
@@ -93,6 +88,8 @@ const Container = styled.div<ContainerProps>`
   cursor: pointer;
   opacity: ${(props) => (props.isSelected ? 1 : 0.5)};
   transition: 300ms;
+  box-shadow: ${(props) => (props.isSelected ? "0px 6px 8px rgba(0, 0, 0, 0.25)" : "none")};
+  border: ${(props) => (props.isSelected ? "1px solid #FF007F" : "1px solid transparent")};
 
   &:hover {
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.25);
