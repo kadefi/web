@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Skeleton, Typography } from "@mui/material";
+import { useState } from "react";
 import { UseQueryResult } from "react-query";
 import theme from "../theme";
 import { NftCollectionData } from "../types/DashboardData.type";
@@ -16,6 +17,8 @@ const NftCollection = (props: Props) => {
 
   const { data: collection, isLoading, isFetching } = collectionQuery;
 
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
   if (isLoading || isFetching) {
     return <LoadingSkeleton variant="rectangular" />;
   }
@@ -24,6 +27,18 @@ const NftCollection = (props: Props) => {
     return null;
   }
 
+  let nfts = collection.nfts;
+
+  if (isCollapsed) {
+    nfts = nfts.slice(0, 8);
+  }
+
+  const remainingNftsCount = collection.nfts.length - nfts.length;
+
+  const handleExpand = () => {
+    setIsCollapsed(false);
+  };
+
   return (
     <CollectionContainer key={collection.name}>
       <CollectionName variant="h4">{collection.name}</CollectionName>
@@ -31,13 +46,31 @@ const NftCollection = (props: Props) => {
         {`${collection.description} - ${collection.nfts.length} NFT(s)`}
       </CollectionDescription>
       <NftsContainer>
-        {collection.nfts.map((nft, i) => (
+        {nfts.map((nft, i) => (
           <NftCard key={`${collection.description}-${nft.id}-${i}`} nftData={nft} collectionName={collection.name} />
         ))}
       </NftsContainer>
+      {isCollapsed && remainingNftsCount > 0 && (
+        <ShowAllToggleButton onClick={handleExpand}>Show All</ShowAllToggleButton>
+      )}
     </CollectionContainer>
   );
 };
+
+const ShowAllToggleButton = styled.div`
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ff007f;
+  transition: 300ms;
+  color: #c3c3c3;
+
+  &:hover {
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.25);
+  }
+`;
 
 const LoadingSkeleton = styled(Skeleton)`
   height: 15rem;
@@ -48,6 +81,7 @@ const NftsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
+  margin-bottom: 1rem;
 
   ${theme.breakpoints.down("sm")} {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
