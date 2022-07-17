@@ -30,6 +30,9 @@ const Integrations = () => {
 
   const handleToggleProjectIntegration = (module: string) => {
     if (selectedProjectModules?.includes(module)) {
+      if (selectedProjectModules.length === 1 && selectedProjectModules[0] === module) {
+        return;
+      }
       setSelectedProjectModules((selectedProjectModules) =>
         selectedProjectModules?.filter((projectModule) => projectModule !== module),
       );
@@ -66,6 +69,9 @@ const Integrations = () => {
 
   const handleToggleNftIntegration = (module: string) => {
     if (selectedNftModules?.includes(module)) {
+      if (selectedNftModules.length === 1 && selectedNftModules[0] === module) {
+        return;
+      }
       setSelectedNftModules((selectedNftModules) => selectedNftModules?.filter((nftModule) => nftModule !== module));
       arrayLocalStorage(LS_SELECTED_NFT_MODULES).removeItem(module);
     } else {
