@@ -23,14 +23,14 @@ const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number |
 
 const NftGallery: CustomNextPage = () => {
   // Contexts
-  const { isDashboardLoading, setIsDashboardLoading, nftCollectionsList } = usePageLayoutContext();
+  const { isDashboardLoading, setIsDashboardLoading, selectedNftModules } = usePageLayoutContext();
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.NFT_GALLERY);
   const { walletAddress } = usePageLayoutContext();
 
   // Data Queries
-  const { collectionsQueries } = useGetNftCollectionsData(nftCollectionsList, walletAddress);
+  const { collectionsQueries } = useGetNftCollectionsData(selectedNftModules, walletAddress);
 
   // Effects
   useEffect(() => {

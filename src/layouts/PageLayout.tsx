@@ -17,10 +17,12 @@ import { useGetNftCollectionsList } from "../api/queries/NftGallery.queries";
 import { KadefiLogo } from "../components/commons/KadefiLogo";
 import PngLogo from "../components/commons/PngLogo";
 import SearchWalletInput from "../components/SearchWalletInput";
+import { LS_SELECTED_NFT_MODULES, LS_SELECTED_PROJECT_MODULES } from "../constants/LocalStorage.constant";
 import { PageLayoutContext } from "../contexts/PageLayoutContext";
 import { useWalletAddress } from "../hooks/useWalletAddress";
 import theme from "../theme";
 import { NftCollectionsList, ProjectsList } from "../types/DashboardData.type";
+import { arrayLocalStorage } from "../utils/LocalStorage.util";
 
 type Props = {
   children: ReactNode;
@@ -78,6 +80,8 @@ const PageLayout = (props: Props) => {
   const [isDashboardLoading, setIsDashboardLoading] = useState(true); // Default to loading true
   const [projectsList, setProjectsList] = useState<ProjectsList>();
   const [nftCollectionsList, setNftCollectionsList] = useState<NftCollectionsList>();
+  const [selectedProjectModules, setSelectedProjectModules] = useState<string[]>();
+  const [selectedNftModules, setSelectedNftModules] = useState<string[]>();
 
   // Queries
   const { data: nftCollectionsListRes } = useGetNftCollectionsList();
@@ -93,14 +97,34 @@ const PageLayout = (props: Props) => {
   }, [isMobile]);
 
   useEffect(() => {
+    const lsNftModules = arrayLocalStorage(LS_SELECTED_NFT_MODULES).get();
+
     if (nftCollectionsListRes) {
       setNftCollectionsList(nftCollectionsListRes);
+
+      if (lsNftModules) {
+        setSelectedNftModules(lsNftModules);
+      } else {
+        const nftModules = nftCollectionsListRes.map((collection) => collection.module);
+        setSelectedNftModules(nftModules);
+        arrayLocalStorage(LS_SELECTED_NFT_MODULES).init(nftModules);
+      }
     }
   }, [nftCollectionsListRes]);
 
   useEffect(() => {
+    const lsProjectModules = arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).get();
+
     if (projectsListRes) {
       setProjectsList(projectsListRes);
+
+      if (lsProjectModules) {
+        setSelectedProjectModules(lsProjectModules);
+      } else {
+        const projectModules = projectsListRes.map((project) => project.module);
+        setSelectedProjectModules(projectModules);
+        arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).init(projectModules);
+      }
     }
   }, [projectsListRes]);
 
@@ -204,6 +228,10 @@ const PageLayout = (props: Props) => {
         setProjectsList,
         nftCollectionsList,
         setNftCollectionsList,
+        selectedNftModules,
+        setSelectedNftModules,
+        selectedProjectModules,
+        setSelectedProjectModules,
       }}
     >
       <Wrapper>

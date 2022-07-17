@@ -1,30 +1,24 @@
 import styled from "@emotion/styled";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
-import { MouseEvent, useState } from "react";
+import { MouseEvent } from "react";
 import PngLogo from "./PngLogo";
 
 type Props = {
   name: string;
-  // module: string;
+  module: string;
   socialLink: string;
+  isSelected: boolean;
+  handleToggle: (module: string) => void;
   description?: string;
   image?: string;
 };
 
 const IntegrationPill = (props: Props) => {
-  const {
-    name,
-    // module,
-    socialLink,
-    description,
-    image,
-  } = props;
-
-  const [isSelected, setIsSelected] = useState(true);
+  const { name, module, socialLink, description, image, isSelected, handleToggle } = props;
 
   const handleIntegrationToggle = (e: MouseEvent) => {
     e.stopPropagation();
-    setIsSelected(!isSelected);
+    handleToggle(module);
   };
 
   return (

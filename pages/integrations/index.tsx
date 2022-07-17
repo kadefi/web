@@ -4,11 +4,20 @@ import MuiContainer from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
 import IntegrationPill from "../../src/components/commons/IntegrationPill";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
+import { LS_SELECTED_NFT_MODULES, LS_SELECTED_PROJECT_MODULES } from "../../src/constants/LocalStorage.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
 import { getPageLayout } from "../../src/layouts/PageLayout";
+import { arrayLocalStorage } from "../../src/utils/LocalStorage.util";
 
 const Integrations = () => {
-  const { nftCollectionsList, projectsList } = usePageLayoutContext();
+  const {
+    nftCollectionsList,
+    projectsList,
+    selectedNftModules,
+    selectedProjectModules,
+    setSelectedNftModules,
+    setSelectedProjectModules,
+  } = usePageLayoutContext();
 
   if (!nftCollectionsList || !projectsList) {
     return (
@@ -18,6 +27,18 @@ const Integrations = () => {
       </Container>
     );
   }
+
+  const handleToggleProjectIntegration = (module: string) => {
+    if (selectedProjectModules?.includes(module)) {
+      setSelectedProjectModules((selectedProjectModules) =>
+        selectedProjectModules?.filter((projectModule) => projectModule !== module),
+      );
+      arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).removeItem(module);
+    } else {
+      setSelectedProjectModules((selectedProjectModules) => [...(selectedProjectModules || []), module].sort());
+      arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).addItem(module);
+    }
+  };
 
   const projectIntegrations = (
     <IntegrationsSection>
@@ -31,7 +52,9 @@ const Integrations = () => {
             <IntegrationPill
               key={project.module}
               name={project.name}
-              // module={project.module}
+              module={project.module}
+              isSelected={selectedProjectModules?.includes(project.module) || false}
+              handleToggle={handleToggleProjectIntegration}
               socialLink={project.social}
               image={project.image}
             />
@@ -40,6 +63,16 @@ const Integrations = () => {
       </PillsContainer>
     </IntegrationsSection>
   );
+
+  const handleToggleNftIntegration = (module: string) => {
+    if (selectedNftModules?.includes(module)) {
+      setSelectedNftModules((selectedNftModules) => selectedNftModules?.filter((nftModule) => nftModule !== module));
+      arrayLocalStorage(LS_SELECTED_NFT_MODULES).removeItem(module);
+    } else {
+      setSelectedNftModules((selectedNftModules) => [...(selectedNftModules || []), module].sort());
+      arrayLocalStorage(LS_SELECTED_NFT_MODULES).addItem(module);
+    }
+  };
 
   const nftIntegrations = (
     <IntegrationsSection>
@@ -53,8 +86,10 @@ const Integrations = () => {
             <IntegrationPill
               key={collection.module}
               name={collection.name}
+              module={collection.module}
               description={collection.description}
-              // module={collection.module}
+              isSelected={selectedNftModules?.includes(collection.module) || false}
+              handleToggle={handleToggleNftIntegration}
               socialLink={collection.social}
             />
           );

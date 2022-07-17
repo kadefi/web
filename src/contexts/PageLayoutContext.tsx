@@ -6,10 +6,18 @@ type PageLayoutContextType = {
   walletAddress: string | undefined;
   isDashboardLoading: boolean;
   setIsDashboardLoading: Dispatch<SetStateAction<boolean>>;
+
+  // Projects
   projectsList?: ProjectsList;
   setProjectsList: Dispatch<SetStateAction<ProjectsList | undefined>>;
+  selectedProjectModules?: string[];
+  setSelectedProjectModules: Dispatch<SetStateAction<string[] | undefined>>;
+
+  // NFT
   nftCollectionsList?: NftCollectionsList;
   setNftCollectionsList: Dispatch<SetStateAction<NftCollectionsList | undefined>>;
+  selectedNftModules?: string[];
+  setSelectedNftModules: Dispatch<SetStateAction<string[] | undefined>>;
 };
 
 export const PageLayoutContext = createContext<PageLayoutContextType>({} as PageLayoutContextType);

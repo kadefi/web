@@ -28,14 +28,14 @@ const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | un
 
 const Dashboard: CustomNextPage = () => {
   // Contexts
-  const { isDashboardLoading, setIsDashboardLoading, projectsList } = usePageLayoutContext();
+  const { isDashboardLoading, setIsDashboardLoading, projectsList, selectedProjectModules } = usePageLayoutContext();
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.DASHBOARD);
   const { walletAddress } = usePageLayoutContext();
 
   // Data Queries
-  const { walletQuery, projectsQuery } = useGetDashboardData(projectsList, walletAddress);
+  const { walletQuery, projectsQuery } = useGetDashboardData(selectedProjectModules, walletAddress);
 
   // Effects
   useEffect(() => {

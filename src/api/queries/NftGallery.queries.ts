@@ -3,19 +3,19 @@ import { NftCollectionData, NftCollectionsList as NftCollectionsList } from "../
 import { isValidWalletAddress } from "../../utils/String.util";
 import { getNftCollectionsList, getNftCollectionData } from "../Nft.api";
 
-export const useGetNftCollectionsData = (nftCollectionsList: NftCollectionsList = [], walletAddress: string = "") => {
+export const useGetNftCollectionsData = (selectedNftModules: string[] = [], walletAddress: string = "") => {
   const queries: {
     queryKey: string[];
     queryFn: QueryFunction<NftCollectionData>;
     enabled: boolean;
   }[] = [];
 
-  const isEnabled = nftCollectionsList?.length > 0 && isValidWalletAddress(walletAddress);
+  const isEnabled = selectedNftModules?.length > 0 && isValidWalletAddress(walletAddress);
 
-  nftCollectionsList.forEach((collection) => {
+  selectedNftModules.forEach((nftModule) => {
     queries.push({
-      queryKey: [collection.module, walletAddress],
-      queryFn: ({ signal }) => getNftCollectionData(collection.module, walletAddress, signal),
+      queryKey: [nftModule, walletAddress],
+      queryFn: ({ signal }) => getNftCollectionData(nftModule, walletAddress, signal),
       enabled: isEnabled,
     });
   });
