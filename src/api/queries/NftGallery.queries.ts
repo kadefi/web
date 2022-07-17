@@ -1,26 +1,32 @@
-import { QueryFunction, useQueries, UseQueryResult } from "react-query";
-import { NftCollectionData } from "../../types/DashboardData.type";
-import { NFT_COLLECTION_KEY } from "../../types/Project.type";
-import { getNftCollectionData } from "../Nft.api";
+import { QueryFunction, useQueries, useQuery, UseQueryResult } from "react-query";
+import { NftCollectionData, NftCollectionsDetails as NftCollectionsList } from "../../types/DashboardData.type";
+import { isValidWalletAddress } from "../../utils/String.util";
+import { getNftCollectionsList, getNftCollectionData } from "../Nft.api";
 
-export const useGetNftCollections = (walletAddress?: string) => {
+export const useGetNftCollectionsData = (nftCollectionsList: NftCollectionsList = [], walletAddress: string = "") => {
   const queries: {
     queryKey: string[];
     queryFn: QueryFunction<NftCollectionData>;
+    enabled: boolean;
   }[] = [];
 
-  if (walletAddress) {
-    Object.values(NFT_COLLECTION_KEY).forEach((collectionKey) => {
-      queries.push({
-        queryKey: [collectionKey, walletAddress],
-        queryFn: ({ signal }) => getNftCollectionData(collectionKey, walletAddress, signal),
-      });
+  const isEnabled = nftCollectionsList?.length > 0 && isValidWalletAddress(walletAddress);
+
+  nftCollectionsList.forEach((collection) => {
+    queries.push({
+      queryKey: [collection, walletAddress],
+      queryFn: ({ signal }) => getNftCollectionData(collection, walletAddress, signal),
+      enabled: isEnabled,
     });
-  }
+  });
 
   const [...collectionsQueries] = useQueries(queries);
 
   return { collectionsQueries } as {
     collectionsQueries: UseQueryResult<NftCollectionData>[];
   };
+};
+
+export const useGetNftCollectionsList = (): UseQueryResult<NftCollectionsList> => {
+  return useQuery(["NFT_COLLECTIONS_LIST"], () => getNftCollectionsList(), { cacheTime: 1000 * 60 * 10 });
 };

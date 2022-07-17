@@ -1,29 +1,32 @@
-import { QueryFunction, useQueries, UseQueryResult } from "react-query";
-import { WALLET_KEY } from "../../constants/Project.constant";
-import { ProjectData, WalletData } from "../../types/DashboardData.type";
-import { PROJECT_KEY } from "../../types/Project.type";
-import { getProjectData } from "../Project.api";
+import { QueryFunction, useQueries, useQuery, UseQueryResult } from "react-query";
+import { ProjectData, ProjectsList, WalletData } from "../../types/DashboardData.type";
+import { getProjectData, getProjectsList } from "../Project.api";
 import { getWalletTokens } from "../Wallet.api";
 
-export const useGetDashboardData = (walletAddress?: string) => {
+export const useGetDashboardData = (projectsList: ProjectsList = [], walletAddress: string = "") => {
   const queries: {
     queryKey: string[];
     queryFn: QueryFunction<WalletData | ProjectData>;
+    enabled: boolean;
   }[] = [];
 
-  if (walletAddress) {
-    queries.push({
-      queryKey: [WALLET_KEY, walletAddress],
-      queryFn: ({ signal }) => getWalletTokens(walletAddress, signal),
-    });
+  const isEnabled = projectsList?.length > 0 && walletAddress?.length > 0;
 
-    Object.values(PROJECT_KEY).forEach((projectKey) => {
-      queries.push({
-        queryKey: [projectKey, walletAddress],
-        queryFn: ({ signal }) => getProjectData(projectKey, walletAddress, signal),
-      });
+  queries.push({
+    queryKey: ["WALLET", walletAddress],
+    queryFn: ({ signal }) => getWalletTokens(walletAddress, signal),
+    enabled: isEnabled,
+  });
+
+  const modules = projectsList.map((project) => project.module);
+
+  modules.forEach((projectKey) => {
+    queries.push({
+      queryKey: [projectKey, walletAddress],
+      queryFn: ({ signal }) => getProjectData(projectKey, walletAddress, signal),
+      enabled: isEnabled,
     });
-  }
+  });
 
   const [walletQuery, ...projectsQuery] = useQueries(queries);
 
@@ -31,4 +34,8 @@ export const useGetDashboardData = (walletAddress?: string) => {
     walletQuery: UseQueryResult<WalletData>;
     projectsQuery: UseQueryResult<ProjectData>[];
   };
+};
+
+export const useGetProjectsList = (): UseQueryResult<ProjectsList> => {
+  return useQuery(["PROJECTS_LIST"], () => getProjectsList(), { cacheTime: 1000 * 60 * 10 });
 };

@@ -1,12 +1,16 @@
 import { NftCollectionData } from "../types/DashboardData.type";
-import { NFT_COLLECTION_KEY } from "../types/Project.type";
 import ApiClient from "./ApiClient";
 
 export const getNftCollectionData = async (
-  collectionKey: NFT_COLLECTION_KEY,
+  collectionKey: string,
   walletAddress: string,
   signal: AbortSignal | undefined,
 ): Promise<NftCollectionData> => {
   const response = await ApiClient.get(`gallery/${collectionKey}/${walletAddress}`, { signal });
   return response.data as NftCollectionData;
+};
+
+export const getNftCollectionsList = async () => {
+  const response = await ApiClient.get(`gallery`);
+  return response.data as string[];
 };

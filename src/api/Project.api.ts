@@ -9,3 +9,8 @@ export const getProjectData = async (
   const response = await ApiClient.get(`projects/${projectKey}/${walletAddress}`, { signal });
   return response.data as ProjectData;
 };
+
+export const getProjectsList = async () => {
+  const response = await ApiClient.get(`projects`);
+  return response.data as string[];
+};

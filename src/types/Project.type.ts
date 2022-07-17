@@ -8,14 +8,6 @@
  * based on what you are adding.
  */
 
-export enum PROJECT_KEY {
-  KD_SWAP = "kdswap",
-  BABENA = "babena",
-  KD_LAUNCH = "kdlaunch",
-  KADDEX = "kaddex",
-  ANEDAK = "anedak",
-}
-
 export enum TOKEN_TICKER {
   BABE = "BABE",
   KDA = "KDA",
@@ -26,14 +18,7 @@ export enum TOKEN_TICKER {
   HYPE = "HYPE",
 }
 
-export enum NFT_COLLECTION_KEY {
-  BABENA = "babena",
-  INU_CREW = "inucrew",
-  KADENA_BULLS = "kadenabulls",
-  KITTY_KAD = "kittykad",
-}
-
 export type ProjectErrorResponse = {
   name: string;
-  module: PROJECT_KEY;
+  module: string;
 };

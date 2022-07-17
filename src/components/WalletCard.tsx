@@ -26,9 +26,9 @@ const WalletCard = (props: Props) => {
     return null;
   }
 
-  const { isLoading, data: walletData } = walletQuery;
+  const { isLoading, data: walletData, isIdle } = walletQuery;
 
-  if (isLoading) {
+  if (isLoading || isIdle) {
     return <LoadingTableSkeleton />;
   }
 

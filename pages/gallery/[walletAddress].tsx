@@ -3,7 +3,7 @@ import MuiContainer from "@mui/material/Container";
 import Image from "next/image";
 import { ReactElement, useEffect } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
-import { useGetNftCollections } from "../../src/api/queries/NftGallery.queries";
+import { useGetNftCollectionsList, useGetNftCollectionsData } from "../../src/api/queries/NftGallery.queries";
 import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
 import NftCollection from "../../src/components/NftCollection";
 import { ROUTE } from "../../src/constants/Routes.constant";
@@ -30,7 +30,8 @@ const NftGallery: CustomNextPage = () => {
   const { walletAddress } = usePageLayoutContext();
 
   // Data Queries
-  const { collectionsQueries } = useGetNftCollections(walletAddress);
+  const { data: nftCollectionsList } = useGetNftCollectionsList();
+  const { collectionsQueries } = useGetNftCollectionsData(nftCollectionsList, walletAddress);
 
   // Effects
   useEffect(() => {

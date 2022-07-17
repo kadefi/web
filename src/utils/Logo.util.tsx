@@ -1,7 +1,7 @@
 import PngLogo from "../components/commons/PngLogo";
-import { PROJECT_KEY, TOKEN_TICKER } from "../types/Project.type";
+import { TOKEN_TICKER } from "../types/Project.type";
 
-export const getProjectLogo = (module: PROJECT_KEY) => {
+export const getProjectLogo = (module: string) => {
   return <PngLogo src={`/assets/projects/${module}.png`} size={1.75} />;
 };
 

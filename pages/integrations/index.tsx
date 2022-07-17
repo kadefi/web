@@ -3,7 +3,7 @@ import { getPageLayout } from "../../src/layouts/PageLayout";
 
 const Integrations = () => {
   return (
-    <Container>
+    <Container maxWidth="md">
       <div>Integrations Page</div>
     </Container>
   );

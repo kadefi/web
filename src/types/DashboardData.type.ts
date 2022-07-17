@@ -1,4 +1,4 @@
-import { ProjectErrorResponse, PROJECT_KEY, TOKEN_TICKER } from "./Project.type";
+import { ProjectErrorResponse, TOKEN_TICKER } from "./Project.type";
 
 export enum CELL_TYPE {
   TOKEN = "token",
@@ -76,7 +76,7 @@ export type Section = {
 
 export type ProjectResponse = {
   projectName: string;
-  module: PROJECT_KEY;
+  module: string;
   fiatValue: number;
   sections: Section[];
 };
@@ -87,6 +87,13 @@ export type WalletData = {
   data: TokenCellType[];
   errors: TokenCellType[];
 };
+
+export type ProjectsList = {
+  name: string;
+  module: string;
+}[];
+
+export type NftCollectionsDetails = string[];
 
 export type NftGalleryData = {
   gallery: NftCollectionData[];
