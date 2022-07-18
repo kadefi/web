@@ -16,6 +16,7 @@ export enum TOKEN_TICKER {
   FLUX = "FLUX",
   ADK = "ADK",
   HYPE = "HYPE",
+  MOK = "MOK",
 }
 
 export type ProjectErrorResponse = {
