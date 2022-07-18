@@ -1,9 +1,22 @@
+import _ from "underscore";
 import { LS_RECENT_SEARCHES_KEY } from "../constants/LocalStorage.constant";
 
 const SEPARATOR = ";";
 
+const getLocalStorageArray = (key: string) => {
+  const lsItem = localStorage.getItem(key);
+
+  let arr: string[] = [];
+
+  if (lsItem) {
+    arr = lsItem.split(SEPARATOR);
+  }
+
+  return arr;
+};
+
 export const getRecentWalletsLS = () => {
-  return localStorage.getItem(LS_RECENT_SEARCHES_KEY)?.split(SEPARATOR) || [];
+  return getLocalStorageArray(LS_RECENT_SEARCHES_KEY);
 };
 
 export const addNewRecentWalletLS = (walletAddress: string) => {
@@ -16,20 +29,20 @@ export const addNewRecentWalletLS = (walletAddress: string) => {
 export const arrayLocalStorage = (key: string) => {
   return {
     get: () => {
-      return localStorage.getItem(key)?.split(SEPARATOR);
+      return getLocalStorageArray(key);
     },
     init: (items: string[]) => {
-      localStorage.setItem(key, items.join(SEPARATOR));
+      localStorage.removeItem(key);
+      localStorage.setItem(key, items.sort().join(SEPARATOR));
     },
     addItem: (newItem: string) => {
-      const currentList = localStorage.getItem(key)?.split(SEPARATOR) || [];
-      const newList = Array.from(new Set([newItem, ...currentList])).sort();
+      const currentList = getLocalStorageArray(key);
+      const newList = _.uniq([newItem, ...currentList].sort(), true);
       localStorage.setItem(key, newList.join(SEPARATOR));
     },
     removeItem: (item: string) => {
-      const currentList = new Set(localStorage.getItem(key)?.split(SEPARATOR) || []);
-      currentList.delete(item);
-      const newList = Array.from(currentList).sort();
+      const currentList = getLocalStorageArray(key);
+      const newList = _.without(currentList, item);
       localStorage.setItem(key, newList.join(SEPARATOR));
     },
   };
