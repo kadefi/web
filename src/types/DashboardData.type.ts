@@ -88,19 +88,25 @@ export type WalletData = {
   errors: TokenCellType[];
 };
 
-export type ProjectsList = {
+export type ProjectsList = ProjectsListItem[];
+
+export type ProjectsListItem = {
   name: string;
   module: string;
   social: string;
   image: string;
-}[];
+  description?: string;
+};
 
-export type NftCollectionsList = {
+export type NftCollectionsList = NftCollectionsListItem[];
+
+export type NftCollectionsListItem = {
   name: string;
-  description: string;
-  social: string;
   module: string;
-}[];
+  social: string;
+  description: string;
+  image?: string;
+};
 
 export type NftGalleryData = {
   gallery: NftCollectionData[];

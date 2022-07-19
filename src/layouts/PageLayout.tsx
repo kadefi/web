@@ -12,17 +12,15 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react";
-import { useGetProjectsList } from "../api/queries/Dashboard.queries";
-import { useGetNftCollectionsList } from "../api/queries/NftGallery.queries";
 import { KadefiLogo } from "../components/commons/KadefiLogo";
 import PngLogo from "../components/commons/PngLogo";
 import SearchWalletInput from "../components/SearchWalletInput";
-import { LS_SELECTED_NFT_MODULES, LS_SELECTED_PROJECT_MODULES } from "../constants/LocalStorage.constant";
 import { PageLayoutContext } from "../contexts/PageLayoutContext";
+import { useNftCollectionsList } from "../hooks/useNftCollectionsList";
+import { useProjectsList } from "../hooks/useProjectsList";
 import { useWalletAddress } from "../hooks/useWalletAddress";
 import theme from "../theme";
-import { NftCollectionsList, ProjectsList } from "../types/DashboardData.type";
-import { arrayLocalStorage, getRecentWalletsLS } from "../utils/LocalStorage.util";
+import { getRecentWalletsLS } from "../utils/LocalStorage.util";
 
 type Props = {
   children: ReactNode;
@@ -78,14 +76,9 @@ const PageLayout = (props: Props) => {
   // States
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // Default to close sidebar (only for mobile)
   const [isDashboardLoading, setIsDashboardLoading] = useState(true); // Default to loading true
-  const [projectsList, setProjectsList] = useState<ProjectsList>();
-  const [nftCollectionsList, setNftCollectionsList] = useState<NftCollectionsList>();
-  const [selectedProjectModules, setSelectedProjectModules] = useState<string[]>();
-  const [selectedNftModules, setSelectedNftModules] = useState<string[]>();
 
-  // Queries
-  const { data: nftCollectionsListRes } = useGetNftCollectionsList();
-  const { data: projectsListRes } = useGetProjectsList();
+  const projectListStates = useProjectsList();
+  const nftCollectionsListStates = useNftCollectionsList();
 
   // Custom Hooks
   const { walletAddress } = useWalletAddress();
@@ -95,38 +88,6 @@ const PageLayout = (props: Props) => {
   useEffect(() => {
     setIsSideBarOpen(!isMobile);
   }, [isMobile]);
-
-  useEffect(() => {
-    const lsNftModules = arrayLocalStorage(LS_SELECTED_NFT_MODULES).get();
-
-    if (nftCollectionsListRes) {
-      setNftCollectionsList(nftCollectionsListRes);
-
-      if (lsNftModules) {
-        setSelectedNftModules(lsNftModules);
-      } else {
-        const nftModules = nftCollectionsListRes.map((collection) => collection.module);
-        setSelectedNftModules(nftModules);
-        arrayLocalStorage(LS_SELECTED_NFT_MODULES).init(nftModules);
-      }
-    }
-  }, [nftCollectionsListRes]);
-
-  useEffect(() => {
-    const lsProjectModules = arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).get();
-
-    if (projectsListRes) {
-      setProjectsList(projectsListRes);
-
-      if (lsProjectModules) {
-        setSelectedProjectModules(lsProjectModules);
-      } else {
-        const projectModules = projectsListRes.map((project) => project.module);
-        setSelectedProjectModules(projectModules);
-        arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).init(projectModules);
-      }
-    }
-  }, [projectsListRes]);
 
   // Handlers
   const handleSideBarToggle = () => {
@@ -183,33 +144,33 @@ const PageLayout = (props: Props) => {
     </NavBar>
   );
 
+  const menuButtons = Object.values(MENU_TITLE).map((title) => {
+    const menuButton = (
+      <MenuButton
+        key={title}
+        isActive={title === activeMenu}
+        isDisabled={MENU_CONFIG[title].isDisabled}
+        onClick={(e) => handleMenuClick(e, title)}
+      >
+        {MENU_CONFIG[title].icon}
+        {title}
+      </MenuButton>
+    );
+
+    if (MENU_CONFIG[title].isDisabled) {
+      return (
+        <Tooltip key={`tooltip-${title}`} title="Under development" placement="right" arrow>
+          {menuButton}
+        </Tooltip>
+      );
+    }
+
+    return menuButton;
+  });
+
   const sideBar = (
     <SideBar isOpen={isSideBarOpen} numMenuItems={Object.values(MENU_TITLE).length}>
-      <MenuButtons>
-        {Object.values(MENU_TITLE).map((title) => {
-          const menuButton = (
-            <MenuButton
-              key={title}
-              isActive={title === activeMenu}
-              isDisabled={MENU_CONFIG[title].isDisabled}
-              onClick={(e) => handleMenuClick(e, title)}
-            >
-              {MENU_CONFIG[title].icon}
-              {title}
-            </MenuButton>
-          );
-
-          if (MENU_CONFIG[title].isDisabled) {
-            return (
-              <Tooltip key={`tooltip-${title}`} title="Under development" placement="right" arrow>
-                {menuButton}
-              </Tooltip>
-            );
-          }
-
-          return menuButton;
-        })}
-      </MenuButtons>
+      <MenuButtons>{menuButtons}</MenuButtons>
       <SidebarFooter>
         <SocialIcons>
           <TwitterContainer target="__blank" href="https://twitter.com/kadefi_money/">
@@ -233,14 +194,8 @@ const PageLayout = (props: Props) => {
         walletAddress,
         isDashboardLoading,
         setIsDashboardLoading,
-        projectsList,
-        setProjectsList,
-        nftCollectionsList,
-        setNftCollectionsList,
-        selectedNftModules,
-        setSelectedNftModules,
-        selectedProjectModules,
-        setSelectedProjectModules,
+        ...projectListStates,
+        ...nftCollectionsListStates,
       }}
     >
       <Wrapper>

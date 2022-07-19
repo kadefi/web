@@ -10,14 +10,14 @@ type PageLayoutContextType = {
   // Projects
   projectsList?: ProjectsList;
   setProjectsList: Dispatch<SetStateAction<ProjectsList | undefined>>;
-  selectedProjectModules?: string[];
-  setSelectedProjectModules: Dispatch<SetStateAction<string[] | undefined>>;
+  selectedProjectModules: string[];
+  handleProjectModuleToggle: (module: string) => void;
 
   // NFT
   nftCollectionsList?: NftCollectionsList;
   setNftCollectionsList: Dispatch<SetStateAction<NftCollectionsList | undefined>>;
-  selectedNftModules?: string[];
-  setSelectedNftModules: Dispatch<SetStateAction<string[] | undefined>>;
+  selectedNftModules: string[];
+  handleNftModuleToggle: (module: string) => void;
 };
 
 export const PageLayoutContext = createContext<PageLayoutContextType>({} as PageLayoutContextType);

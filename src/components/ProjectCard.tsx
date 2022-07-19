@@ -99,7 +99,7 @@ const ProjectCard = (props: Props) => {
     <CardWrapper>
       <CardHeader>
         <ProjectHeader>
-          <PngLogo src={projectImageSrc} size={1.75} />
+          <PngLogo src={projectImageSrc} size={1.75} unoptimized />
           {projectName}
         </ProjectHeader>
         <ProjectTotalValue>{formatFiatValue(fiatValue)}</ProjectTotalValue>

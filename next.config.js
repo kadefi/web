@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["gateway.pinata.cloud", "cdn.kadefi.money", "ipfs.io", "firebasestorage.googleapis.com"],
+    domains: ["gateway.pinata.cloud", "cdn2.kadefi.money", "ipfs.io", "firebasestorage.googleapis.com"],
   },
   async redirects() {
     return [
