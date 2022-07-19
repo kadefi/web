@@ -30,6 +30,7 @@ const NftCard = (props: Props) => {
         setIsLoading(false);
         setIsError(true);
       }}
+      unoptimized
     />
   );
 
