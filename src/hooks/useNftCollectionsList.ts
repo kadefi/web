@@ -17,7 +17,7 @@ export const useNftCollectionsList = () => {
     if (nftCollectionsListRes) {
       setNftCollectionsList(nftCollectionsListRes);
 
-      if (lsNftModules) {
+      if (lsNftModules.length > 0) {
         setSelectedNftModules(lsNftModules);
       } else {
         const nftModules = nftCollectionsListRes.map((collection) => collection.module);

@@ -17,7 +17,7 @@ export const useProjectsList = () => {
     if (projectsListRes) {
       setProjectsList(projectsListRes);
 
-      if (lsProjectModules) {
+      if (lsProjectModules.length > 0) {
         setSelectedProjectModules(lsProjectModules);
       } else {
         const projectModules = projectsListRes.map((project) => project.module);
