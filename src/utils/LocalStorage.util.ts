@@ -45,5 +45,8 @@ export const arrayLocalStorage = (key: string) => {
       const newList = _.without(currentList, item);
       localStorage.setItem(key, newList.join(SEPARATOR));
     },
+    destroy: () => {
+      localStorage.removeItem(key);
+    },
   };
 };

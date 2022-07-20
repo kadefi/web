@@ -37,7 +37,7 @@ const NftCard = (props: Props) => {
   return (
     <NftCardContainer>
       <ImageContainer>
-        {isLoading && !isError && <ImageSkeleton animation="wave" />}
+        {isLoading && !isError && <ImageSkeleton variant="rectangular" animation="wave" />}
         {isError && (
           <BrokenImageContainer>
             <BrokenImageIcon />
@@ -78,8 +78,9 @@ const CollectionName = styled.div`
 `;
 
 const ImageSkeleton = styled(Skeleton)`
-  transform: scale(1, 45);
+  position: absolute;
   width: 100%;
+  height: 100%;
 `;
 
 const NftCardContainer = styled.div`

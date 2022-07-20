@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import _ from "underscore";
 import { useGetNftCollectionsList } from "../api/queries/NftGallery.queries";
-import { LS_SELECTED_NFT_MODULES } from "../constants/LocalStorage.constant";
+import { LS_DISABLED_NFT_MODULES, LS_SELECTED_NFT_MODULES } from "../constants/LocalStorage.constant";
 import { NftCollectionsList } from "../types/DashboardData.type";
 import { arrayLocalStorage } from "../utils/LocalStorage.util";
 
@@ -12,17 +12,17 @@ export const useNftCollectionsList = () => {
   const { data: nftCollectionsListRes } = useGetNftCollectionsList();
 
   useEffect(() => {
-    const lsNftModules = arrayLocalStorage(LS_SELECTED_NFT_MODULES).get();
+    const disabledNftModules = arrayLocalStorage(LS_DISABLED_NFT_MODULES).get();
+    arrayLocalStorage(LS_SELECTED_NFT_MODULES).destroy();
 
     if (nftCollectionsListRes) {
       setNftCollectionsList(nftCollectionsListRes);
+      const nftModules = nftCollectionsListRes.map((collection) => collection.module);
 
-      if (lsNftModules.length > 0) {
-        setSelectedNftModules(lsNftModules);
+      if (disabledNftModules.length > 0) {
+        setSelectedNftModules(_.difference(nftModules, disabledNftModules));
       } else {
-        const nftModules = nftCollectionsListRes.map((collection) => collection.module);
         setSelectedNftModules(nftModules);
-        arrayLocalStorage(LS_SELECTED_NFT_MODULES).init(nftModules);
       }
     }
   }, [nftCollectionsListRes]);
@@ -33,10 +33,10 @@ export const useNftCollectionsList = () => {
         return;
       }
       setSelectedNftModules((selectedNftModules) => _.without(selectedNftModules, module));
-      arrayLocalStorage(LS_SELECTED_NFT_MODULES).removeItem(module);
+      arrayLocalStorage(LS_DISABLED_NFT_MODULES).addItem(module);
     } else {
       setSelectedNftModules((selectedNftModules) => [...selectedNftModules, module].sort());
-      arrayLocalStorage(LS_SELECTED_NFT_MODULES).addItem(module);
+      arrayLocalStorage(LS_DISABLED_NFT_MODULES).removeItem(module);
     }
   };
 

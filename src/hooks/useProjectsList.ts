@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import _ from "underscore";
 import { useGetProjectsList } from "../api/queries/Dashboard.queries";
-import { LS_SELECTED_PROJECT_MODULES } from "../constants/LocalStorage.constant";
+import { LS_DISABLED_PROJECT_MODULES, LS_SELECTED_PROJECT_MODULES } from "../constants/LocalStorage.constant";
 import { ProjectsList } from "../types/DashboardData.type";
 import { arrayLocalStorage } from "../utils/LocalStorage.util";
 
@@ -12,17 +12,17 @@ export const useProjectsList = () => {
   const { data: projectsListRes } = useGetProjectsList();
 
   useEffect(() => {
-    const lsProjectModules = arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).get();
+    const disabledProjectModules = arrayLocalStorage(LS_DISABLED_PROJECT_MODULES).get();
+    arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).destroy();
 
     if (projectsListRes) {
       setProjectsList(projectsListRes);
+      const projectModules = projectsListRes.map((project) => project.module);
 
-      if (lsProjectModules.length > 0) {
-        setSelectedProjectModules(lsProjectModules);
+      if (disabledProjectModules.length > 0) {
+        setSelectedProjectModules(_.difference(projectModules, disabledProjectModules));
       } else {
-        const projectModules = projectsListRes.map((project) => project.module);
         setSelectedProjectModules(projectModules);
-        arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).init(projectModules);
       }
     }
   }, [projectsListRes]);
@@ -33,10 +33,10 @@ export const useProjectsList = () => {
         return;
       }
       setSelectedProjectModules((selectedProjectModules) => _.without(selectedProjectModules, module));
-      arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).removeItem(module);
+      arrayLocalStorage(LS_DISABLED_PROJECT_MODULES).addItem(module);
     } else {
       setSelectedProjectModules((selectedProjectModules) => [...selectedProjectModules, module].sort());
-      arrayLocalStorage(LS_SELECTED_PROJECT_MODULES).addItem(module);
+      arrayLocalStorage(LS_DISABLED_PROJECT_MODULES).removeItem(module);
     }
   };
 
