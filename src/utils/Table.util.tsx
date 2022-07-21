@@ -11,7 +11,14 @@ export const getRowDisplay = (rowData: TableRowData) => {
     }
 
     if (rowCell.type === CELL_TYPE.TOKEN) {
-      return <TokenDisplay balance={rowCell.balance} ticker={rowCell.ticker} fiatValue={rowCell.fiatValue} />;
+      return (
+        <TokenDisplay
+          balance={rowCell.balance}
+          ticker={rowCell.ticker}
+          fiatValue={rowCell.fiatValue}
+          image={rowCell.image}
+        />
+      );
     }
 
     if (rowCell.type === CELL_TYPE.NUMBER) {

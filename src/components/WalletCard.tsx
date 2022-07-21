@@ -37,10 +37,11 @@ const WalletCard = (props: Props) => {
   const walletValue = getWalletTotalValue(tokens);
 
   const walletDataRows = tokens.map((tokenData: TokenCellType, i: number) => {
-    const { ticker, balance, price, fiatValue } = tokenData;
+    const { ticker, balance, price, fiatValue, image } = tokenData;
     return [
       <TickerContainer key={`ticker-${i}`}>
-        {getTokenLogo(ticker)} {`${roundToDecimalStr(balance, 4)} ${ticker}`}
+        {getTokenLogo(image)}
+        {`${roundToDecimalStr(balance, 4)} ${ticker}`}
       </TickerContainer>,
       <div key={`price-${i}`}>{formatFiatValue(price, 4)}</div>,
       <div key={`fiat-${i}`}>{formatFiatValue(fiatValue)}</div>,
