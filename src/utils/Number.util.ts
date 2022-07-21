@@ -1,11 +1,9 @@
+import round from "lodash/round";
+
 export const roundToDecimalStr = (num: number, decimalDigits: number) => {
-  return roundToDecimal(num, decimalDigits).toLocaleString("en-US", { minimumFractionDigits: 2 });
+  return round(num, decimalDigits).toLocaleString("en-US", { minimumFractionDigits: 2 });
 };
 
-export const roundToDecimal = (num: number, decimalDigits: number) => {
-  return Math.round((num + Number.EPSILON) * Math.pow(10, decimalDigits)) / Math.pow(10, decimalDigits);
-};
-
-export const formatFiatValue = (num: number) => {
-  return `$${roundToDecimalStr(num, 2)}`;
+export const formatFiatValue = (num: number, decimals: number = 2) => {
+  return `$${roundToDecimalStr(num, decimals)}`;
 };
