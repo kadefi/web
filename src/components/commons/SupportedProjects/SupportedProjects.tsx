@@ -1,20 +1,31 @@
 import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
-import { TOKEN_TICKER } from "../../../types/Project.type";
+import { Skeleton, Typography } from "@mui/material";
+import { useProjectsList } from "../../../hooks/useProjectsList";
 import { getTokenLogo } from "../../../utils/Logo.util";
 
 const SupportedProjects = () => {
+  const { projectsList } = useProjectsList();
+
+  let projectLogos = null;
+  if (projectsList) {
+    projectLogos = projectsList.map((project) => getTokenLogo(project.image, `${project.module}-supported`));
+  }
+
   return (
     <Container>
       <Typography variant="subtitle2" mb="0.5rem">
-        Supported Projects & Tokens:
+        Supported Projects:
       </Typography>
-      <ProjectLogos>
-        {Object.values(TOKEN_TICKER).map((token) => getTokenLogo(token, `${token}-supported`))}
-      </ProjectLogos>
+      <ProjectLogos>{projectsList ? projectLogos : <LoadingSkeleton variant="rectangular" />}</ProjectLogos>
     </Container>
   );
 };
+
+const LoadingSkeleton = styled(Skeleton)`
+  height: 1.5rem;
+  width: 10rem;
+  border-radius: 8px;
+`;
 
 const Container = styled.div`
   display: flex;

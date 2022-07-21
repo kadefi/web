@@ -19,8 +19,8 @@ const TokenPoolDisplay = (props: Props) => {
   return (
     <Container>
       <LogosContainer>
-        {getTokenLogo(token0.ticker)}
-        <SecondLogo>{getTokenLogo(token1.ticker)}</SecondLogo>
+        {getTokenLogo(token0.image)}
+        <SecondLogo>{getTokenLogo(token1.image)}</SecondLogo>
       </LogosContainer>
       <div>
         <div>

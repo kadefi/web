@@ -1,4 +1,4 @@
-import { ProjectErrorResponse, TOKEN_TICKER } from "./Project.type";
+import { ProjectErrorResponse } from "./Project.type";
 
 export enum CELL_TYPE {
   TOKEN = "token",
@@ -25,7 +25,7 @@ export type TokenCellType = {
   fiatValue: number;
   image: string;
   name: string;
-  ticker: TOKEN_TICKER;
+  ticker: string;
   balance: number;
   address: string;
   source: {

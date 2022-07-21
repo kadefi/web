@@ -1,20 +1,20 @@
 import styled from "@emotion/styled";
-import { TOKEN_TICKER } from "../../types/Project.type";
 import { getTokenLogo } from "../../utils/Logo.util";
 import { formatFiatValue, roundToDecimalStr } from "../../utils/Number.util";
 
 type Props = {
   balance: number;
-  ticker: TOKEN_TICKER;
+  ticker: string;
   fiatValue: number;
+  image: string;
 };
 
 const TokenDisplay = (props: Props) => {
-  const { balance, ticker, fiatValue } = props;
+  const { balance, ticker, fiatValue, image } = props;
 
   return (
     <Container>
-      {getTokenLogo(ticker)}
+      {getTokenLogo(image)}
       <div>
         <div>
           {roundToDecimalStr(balance, 2)} {ticker}
