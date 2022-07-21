@@ -41,7 +41,7 @@ const WalletCard = (props: Props) => {
     return [
       <TickerContainer key={`ticker-${i}`}>
         {getTokenLogo(image)}
-        {`${roundToDecimalStr(balance, 4)} ${ticker}`}
+        {`${roundToDecimalStr(balance, 2)} ${ticker}`}
       </TickerContainer>,
       <div key={`price-${i}`}>{formatFiatValue(price, 4)}</div>,
       <div key={`fiat-${i}`}>{formatFiatValue(fiatValue)}</div>,
