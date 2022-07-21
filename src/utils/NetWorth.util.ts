@@ -1,6 +1,6 @@
+import round from "lodash/round";
 import { UseQueryResult } from "react-query";
 import { ProjectData, ProjectResponse, TokenCellType, WalletData } from "../types/DashboardData.type";
-import { roundToDecimal } from "./Number.util";
 
 export const getWalletTotalValue = (data: TokenCellType[]) => {
   return data.reduce((prev, current) => prev + current.fiatValue, 0);
@@ -24,5 +24,5 @@ export const getNetWorth = (walletQuery: UseQueryResult<WalletData>, projectsQue
     netWorth += (projectData as ProjectResponse).fiatValue;
   });
 
-  return roundToDecimal(netWorth, 2);
+  return round(netWorth, 2);
 };

@@ -23,6 +23,7 @@ export type TokenCellType = {
   chains?: { [k: string]: number | undefined }[];
   type: CELL_TYPE.TOKEN;
   fiatValue: number;
+  image: string;
   name: string;
   ticker: TOKEN_TICKER;
   balance: number;
