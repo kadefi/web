@@ -3,6 +3,9 @@ import { ProjectData, ProjectsList, WalletData } from "../../types/DashboardData
 import { getProjectData, getProjectsList } from "../Project.api";
 import { getWalletTokens } from "../Wallet.api";
 
+const WALLET_KEY = "WALLET_KEY";
+const PROJECT_KEY = "PROJECT_KEY";
+
 export const useGetDashboardData = (selectedProjectModules: string[] = [], walletAddress: string = "") => {
   const queries: {
     queryKey: string[];
@@ -13,14 +16,14 @@ export const useGetDashboardData = (selectedProjectModules: string[] = [], walle
   const isEnabled = selectedProjectModules?.length > 0 && walletAddress?.length > 0;
 
   queries.push({
-    queryKey: ["WALLET", walletAddress],
+    queryKey: [WALLET_KEY, walletAddress],
     queryFn: ({ signal }) => getWalletTokens(walletAddress, signal),
     enabled: isEnabled,
   });
 
   selectedProjectModules.forEach((projectModule) => {
     queries.push({
-      queryKey: [projectModule, walletAddress],
+      queryKey: [PROJECT_KEY, projectModule, walletAddress],
       queryFn: ({ signal }) => getProjectData(projectModule, walletAddress, signal),
       enabled: isEnabled,
     });
