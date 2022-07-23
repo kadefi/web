@@ -5,6 +5,7 @@ import { UseQueryResult } from "react-query";
 import theme from "../theme";
 import { NftCollectionData } from "../types/DashboardData.type";
 import { isEmpty } from "../utils/Object.util";
+import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
 import TypographyNeon from "./commons/TypographyNeon";
 import NftCard from "./NftCard";
 
@@ -15,11 +16,11 @@ type Props = {
 const NftCollection = (props: Props) => {
   const { collectionQuery } = props;
 
-  const { data: collection, isLoading, isFetching } = collectionQuery;
+  const { data: collection, isLoading, isFetching, isIdle } = collectionQuery;
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  if (isLoading || isFetching) {
+  if (isLoading || isIdle) {
     return <LoadingSkeleton variant="rectangular" />;
   }
 
@@ -41,7 +42,10 @@ const NftCollection = (props: Props) => {
 
   return (
     <CollectionContainer key={collection.name}>
-      <CollectionName variant="h4">{collection.name}</CollectionName>
+      <CollectionName variant="h4">
+        {collection.name}
+        {isFetching && <FetchLoadingIndicator />}
+      </CollectionName>
       <CollectionDescription variant="body1">
         {`${collection.description} - ${collection.nfts.length} NFT(s)`}
       </CollectionDescription>
@@ -99,6 +103,9 @@ const CollectionContainer = styled.div`
 
 const CollectionName = styled(TypographyNeon)`
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 export default NftCollection;

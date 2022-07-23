@@ -35,5 +35,5 @@ export const useGetDashboardData = (selectedProjectModules: string[] = [], walle
 };
 
 export const useGetProjectsList = (): UseQueryResult<ProjectsList> => {
-  return useQuery(["PROJECTS_LIST"], () => getProjectsList(), { cacheTime: 1000 * 60 * 10 });
+  return useQuery(["PROJECTS_LIST"], () => getProjectsList());
 };

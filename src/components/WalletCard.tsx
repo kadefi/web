@@ -9,6 +9,7 @@ import { getWalletTotalValue } from "../utils/NetWorth.util";
 import { formatFiatValue, roundToDecimalStr } from "../utils/Number.util";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
+import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
 import PngLogo from "./commons/PngLogo";
 import TypographyNeon from "./commons/TypographyNeon";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
@@ -26,7 +27,7 @@ const WalletCard = (props: Props) => {
     return null;
   }
 
-  const { isLoading, data: walletData, isIdle } = walletQuery;
+  const { isLoading, isFetching, data: walletData, isIdle } = walletQuery;
 
   if (isLoading || isIdle) {
     return <LoadingTableSkeleton />;
@@ -54,6 +55,7 @@ const WalletCard = (props: Props) => {
         <WalletHeaderContainer>
           <PngLogo src="/assets/wallet.png" size={1.75} />
           <WalletHeader>Wallet</WalletHeader>
+          {isFetching && <FetchLoadingIndicator />}
         </WalletHeaderContainer>
         <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>
       </Container>

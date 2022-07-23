@@ -1,5 +1,6 @@
 import round from "lodash/round";
 import { UseQueryResult } from "react-query";
+import { isEmpty } from "underscore";
 import { ProjectData, ProjectResponse, TokenCellType, WalletData } from "../types/DashboardData.type";
 
 export const getWalletTotalValue = (data: TokenCellType[]) => {
@@ -8,16 +9,16 @@ export const getWalletTotalValue = (data: TokenCellType[]) => {
 
 export const getNetWorth = (walletQuery: UseQueryResult<WalletData>, projectsQuery: UseQueryResult<ProjectData>[]) => {
   const { data: walletData } = walletQuery;
-
   let netWorth = 0;
-  if (walletData) {
+
+  if (walletData && !isEmpty(walletData)) {
     netWorth += getWalletTotalValue(walletData.data);
   }
 
   projectsQuery.forEach((projectQuery) => {
     const { data: projectData } = projectQuery;
 
-    if (!projectData) {
+    if (!projectData || isEmpty(projectData)) {
       return;
     }
 

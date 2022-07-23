@@ -2,7 +2,7 @@ import Container from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
@@ -17,6 +17,7 @@ import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
+import { isQueriesFetching, isQueriesLoading } from "../../src/utils/QueriesUtil";
 
 const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | undefined)[]) => {
   projectCards.sort((a, b) => {
@@ -30,6 +31,9 @@ const Dashboard: CustomNextPage = () => {
   // Contexts
   const { isDashboardLoading, setIsDashboardLoading, projectsList, selectedProjectModules } = usePageLayoutContext();
 
+  // States
+  const [isDashboardFetching, setIsDashboardFetching] = useState(true);
+
   // Custom Hooks
   useTrackPageVisit(ROUTE.DASHBOARD);
   const { walletAddress } = usePageLayoutContext();
@@ -39,16 +43,9 @@ const Dashboard: CustomNextPage = () => {
 
   // Effects
   useEffect(() => {
-    if (
-      walletQuery?.isLoading === false &&
-      projectsQuery?.length > 0 &&
-      projectsQuery?.every((collectionQuery) => collectionQuery.isLoading === false)
-    ) {
-      setIsDashboardLoading(false);
-    } else {
-      setIsDashboardLoading(true);
-    }
-  }, [walletQuery, projectsQuery, setIsDashboardLoading]);
+    setIsDashboardLoading(isQueriesLoading(...[walletQuery, ...projectsQuery]));
+    setIsDashboardFetching(isQueriesFetching(...[walletQuery, ...projectsQuery]));
+  }, [walletQuery, projectsQuery, setIsDashboardLoading, setIsDashboardFetching]);
 
   // Prevent rendering without queries
   if (!walletQuery || !projectsQuery || !projectsList) {
@@ -57,7 +54,11 @@ const Dashboard: CustomNextPage = () => {
 
   // Display components
   const dashboardErrorFab = (
-    <DashboardErrorFab loading={isDashboardLoading} walletQuery={walletQuery} projectsQuery={projectsQuery} />
+    <DashboardErrorFab
+      loading={isDashboardLoading || isDashboardFetching}
+      walletQuery={walletQuery}
+      projectsQuery={projectsQuery}
+    />
   );
 
   const walletCard = <WalletCard walletQuery={walletQuery} />;

@@ -7,6 +7,8 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import Image from "next/image";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
+import { persistQueryClient } from "react-query/persistQueryClient-experimental";
 import DesktopBackground from "../public/assets/desktop-background.svg";
 import MobileBackground from "../public/assets/mobile-background.svg";
 import { initializeAmplitude } from "../src/analytics/Analytics.util";
@@ -27,10 +29,19 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      cacheTime: 0,
+      cacheTime: 1000 * 60 * 60 * 24, // 24 hours
     },
   },
 });
+
+if (typeof window !== "undefined") {
+  const localStoragePersistor = createWebStoragePersistor({ storage: window.localStorage });
+
+  persistQueryClient({
+    queryClient,
+    persistor: localStoragePersistor,
+  });
+}
 
 initializeAmplitude();
 

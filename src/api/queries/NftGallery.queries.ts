@@ -28,5 +28,5 @@ export const useGetNftCollectionsData = (selectedNftModules: string[] = [], wall
 };
 
 export const useGetNftCollectionsList = (): UseQueryResult<NftCollectionsList> => {
-  return useQuery(["NFT_COLLECTIONS_LIST"], () => getNftCollectionsList(), { cacheTime: 1000 * 60 * 10 });
+  return useQuery(["NFT_COLLECTIONS_LIST"], () => getNftCollectionsList());
 };

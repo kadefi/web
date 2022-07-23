@@ -12,6 +12,7 @@ import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { NftCollectionData } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
+import { isQueriesLoading } from "../../src/utils/QueriesUtil";
 
 const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number | undefined)[]) => {
   collections.sort((a, b) => {
@@ -34,17 +35,7 @@ const NftGallery: CustomNextPage = () => {
 
   // Effects
   useEffect(() => {
-    setIsDashboardLoading(true);
-
-    // Update isDashboardLoading based on status of collections loading
-    if (
-      collectionsQueries?.length > 0 &&
-      collectionsQueries?.every((collectionQuery) => collectionQuery.isLoading === false)
-    ) {
-      setIsDashboardLoading(false);
-    } else {
-      setIsDashboardLoading(true);
-    }
+    setIsDashboardLoading(isQueriesLoading(...collectionsQueries));
   }, [collectionsQueries, setIsDashboardLoading]);
 
   // Prevent rendering without queries

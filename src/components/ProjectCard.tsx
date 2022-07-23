@@ -3,12 +3,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { UseQueryResult } from "react-query";
+import { isEmpty } from "underscore";
 import theme from "../theme";
 import { ProjectData, ProjectResponse, ProjectsList, Section, TableRowData } from "../types/DashboardData.type";
 import { formatFiatValue } from "../utils/Number.util";
 import { getRowDisplay } from "../utils/Table.util";
 import CustomPaper from "./commons/CustomPaper";
 import CustomTable from "./commons/CustomTable";
+import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
 import PngLogo from "./commons/PngLogo";
 import TypographyNeon from "./commons/TypographyNeon";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
@@ -64,11 +66,11 @@ const ProjectCard = (props: Props) => {
 
   const { data: projectData, isLoading, isFetching, isError } = projectQuery;
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return <LoadingTableSkeleton />;
   }
 
-  if (!projectData || isError) {
+  if (!projectData || isEmpty(projectData) || isError) {
     return null;
   }
 
@@ -100,7 +102,10 @@ const ProjectCard = (props: Props) => {
       <CardHeader>
         <ProjectHeader>
           <PngLogo src={projectImageSrc} size={1.75} />
-          {projectName}
+          <ProjectNameContainer>
+            {projectName}
+            {isFetching && <FetchLoadingIndicator />}
+          </ProjectNameContainer>
         </ProjectHeader>
         <ProjectTotalValue>{formatFiatValue(fiatValue)}</ProjectTotalValue>
       </CardHeader>
@@ -108,6 +113,12 @@ const ProjectCard = (props: Props) => {
     </CardWrapper>
   );
 };
+
+const ProjectNameContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
 
 const MobileLastCell = styled.div`
   font-size: 0.8rem;

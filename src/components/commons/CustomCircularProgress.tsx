@@ -1,7 +1,11 @@
 import styled from "@emotion/styled";
 import CircularProgress, { CircularProgressProps } from "@mui/material/CircularProgress";
 
-const CustomCircularProgress = (props: CircularProgressProps) => {
+type Props = {
+  className?: string;
+} & CircularProgressProps;
+
+const CustomCircularProgress = (props: Props) => {
   return <StyledCircularProgress disableShrink {...props} />;
 };
 
