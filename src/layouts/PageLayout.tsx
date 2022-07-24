@@ -226,6 +226,7 @@ const TwitterContainer = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: inherit;
   gap: 8px;
 `;
 
@@ -262,6 +263,7 @@ const FluxAttribution = styled.a`
   text-decoration: none;
   border-top: 0.5px dotted #5b5b5b;
   padding-top: 1rem;
+  color: inherit;
 
   ${theme.breakpoints.down("md")} {
     justify-content: flex-start;

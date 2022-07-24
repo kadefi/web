@@ -95,8 +95,10 @@ const Header = styled(Typography)`
 `;
 
 const IntegrationLink = styled(CustomLink)`
-  text-decoration: underline;
-  color: inherit;
+  text-decoration: none;
+  color: #ff007f;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const EmptyBoxImageContainer = styled.div`

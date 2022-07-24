@@ -3,6 +3,7 @@ import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
 import IntegrationPill from "../../src/components/commons/IntegrationPill";
+import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
 import { getPageLayout } from "../../src/layouts/PageLayout";
@@ -20,6 +21,9 @@ const Integrations = () => {
 
   return (
     <Container maxWidth="md">
+      <IntegrationRequestText>
+        <TwitterButton subtext="For integration request, contact us" />
+      </IntegrationRequestText>
       <IntegrationSection
         title="Project Integrations"
         subtitle="Please select the projects to be shown on the Dashboard page"
@@ -76,6 +80,14 @@ const IntegrationSection = (props: {
     </IntegrationsSectionContainer>
   );
 };
+
+const IntegrationRequestText = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+`;
 
 const Subtitle = styled(Typography)`
   margin-bottom: 2rem;

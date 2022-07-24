@@ -24,7 +24,7 @@ const Home: NextPage = () => {
       <Container maxWidth="md">
         <Header>
           <KadefiLogo />
-          <TwitterButton />
+          <TwitterButton isMobileResponsive />
         </Header>
         <Content>
           <Title>

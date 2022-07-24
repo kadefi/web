@@ -5,10 +5,11 @@ import theme from "../../../theme";
 type Props = {
   isLogoOnly?: boolean;
   subtext?: string;
+  isMobileResponsive?: boolean;
 };
 
 const TwitterButton = (props: Props) => {
-  const { isLogoOnly = false, subtext = "Follow Us" } = props;
+  const { isLogoOnly = false, subtext = "Follow Us", isMobileResponsive = false } = props;
 
   if (isLogoOnly) {
     return <TwitterIcon fontSize="small" />;
@@ -17,14 +18,18 @@ const TwitterButton = (props: Props) => {
   return (
     <Container target="__blank" href="https://twitter.com/kadefi_money/">
       <TwitterIcon fontSize="small" />
-      <Subtext>{subtext}</Subtext>
+      <Subtext isMobileResponsive={isMobileResponsive}>{subtext}</Subtext>
     </Container>
   );
 };
 
-const Subtext = styled.div`
+type SubtextProps = {
+  isMobileResponsive: boolean;
+};
+
+const Subtext = styled.div<SubtextProps>`
   ${theme.breakpoints.down("sm")} {
-    display: none;
+    display: ${(props) => (props.isMobileResponsive ? "none" : "block")};
   }
 `;
 
