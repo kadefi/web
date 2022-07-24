@@ -83,10 +83,7 @@ const IntegrationSection = (props: {
 
 const IntegrationRequestText = styled.div`
   display: flex;
-  gap: 8px;
-  align-items: center;
   margin-bottom: 2rem;
-  font-weight: 700;
 `;
 
 const Subtitle = styled(Typography)`
