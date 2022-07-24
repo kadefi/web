@@ -6,6 +6,7 @@ import { ReactElement, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
+import FetchLoadingIndicator from "../../src/components/commons/FetchLoadingIndicator";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
 import DashboardErrorFab from "../../src/components/DashboardErrorFab";
 import ProjectCard from "../../src/components/ProjectCard";
@@ -47,6 +48,8 @@ const Dashboard: CustomNextPage = () => {
     setIsDashboardFetching(isQueriesFetching(...[walletQuery, ...projectsQuery]));
   }, [walletQuery, projectsQuery, setIsDashboardLoading, setIsDashboardFetching]);
 
+  const isUpdating = isDashboardLoading || isDashboardFetching;
+
   // Prevent rendering without queries
   if (!walletQuery || !projectsQuery || !projectsList) {
     return null;
@@ -54,11 +57,7 @@ const Dashboard: CustomNextPage = () => {
 
   // Display components
   const dashboardErrorFab = (
-    <DashboardErrorFab
-      loading={isDashboardLoading || isDashboardFetching}
-      walletQuery={walletQuery}
-      projectsQuery={projectsQuery}
-    />
+    <DashboardErrorFab loading={isUpdating} walletQuery={walletQuery} projectsQuery={projectsQuery} />
   );
 
   const walletCard = <WalletCard walletQuery={walletQuery} />;
@@ -99,6 +98,7 @@ const Dashboard: CustomNextPage = () => {
         {netWorth}
         {walletCard}
         {projectCards}
+        {isUpdating && <FetchLoadingIndicator text="Retrieving latest projects data" />}
       </Content>
       {dashboardErrorFab}
     </div>

@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import MuiContainer from "@mui/material/Container";
 import Image from "next/image";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetNftCollectionsData } from "../../src/api/queries/NftGallery.queries";
+import FetchLoadingIndicator from "../../src/components/commons/FetchLoadingIndicator";
 import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
 import NftCollection from "../../src/components/NftCollection";
 import { ROUTE } from "../../src/constants/Routes.constant";
@@ -12,7 +13,7 @@ import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { NftCollectionData } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
-import { isQueriesLoading } from "../../src/utils/QueriesUtil";
+import { isQueriesFetching, isQueriesLoading } from "../../src/utils/QueriesUtil";
 
 const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number | undefined)[]) => {
   collections.sort((a, b) => {
@@ -26,6 +27,9 @@ const NftGallery: CustomNextPage = () => {
   // Contexts
   const { isDashboardLoading, setIsDashboardLoading, selectedNftModules } = usePageLayoutContext();
 
+  // States
+  const [isNftGalleryFetching, setIsNftGalleryFetching] = useState(true);
+
   // Custom Hooks
   useTrackPageVisit(ROUTE.NFT_GALLERY);
   const { walletAddress } = usePageLayoutContext();
@@ -36,7 +40,10 @@ const NftGallery: CustomNextPage = () => {
   // Effects
   useEffect(() => {
     setIsDashboardLoading(isQueriesLoading(...collectionsQueries));
+    setIsNftGalleryFetching(isQueriesFetching(...collectionsQueries));
   }, [collectionsQueries, setIsDashboardLoading]);
+
+  const isUpdating = isDashboardLoading || isNftGalleryFetching;
 
   // Prevent rendering without queries
   if (!collectionsQueries) {
@@ -53,7 +60,7 @@ const NftGallery: CustomNextPage = () => {
   sortNftCollections(nftCollections, numberOfNfts);
 
   // No NFT Collection
-  if (!isDashboardLoading && numberOfNfts.every((value) => value === undefined)) {
+  if (!isUpdating && numberOfNfts.every((value) => value === undefined)) {
     return (
       <CentralContainer maxWidth="md">
         <EmptyBoxImageContainer>
@@ -67,7 +74,12 @@ const NftGallery: CustomNextPage = () => {
     );
   }
 
-  return <Container maxWidth="md">{nftCollections}</Container>;
+  return (
+    <Container maxWidth="md">
+      {nftCollections}
+      {isUpdating && <FetchLoadingIndicator text="Retrieving NFT collections" />}
+    </Container>
+  );
 };
 
 const EmptyBoxImageContainer = styled.div`

@@ -12,7 +12,6 @@ import CustomTable from "./commons/CustomTable";
 import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
 import PngLogo from "./commons/PngLogo";
 import TypographyNeon from "./commons/TypographyNeon";
-import LoadingTableSkeleton from "./LoadingTableSkeleton";
 
 const HEADERS = ["Token Balance", "Price", "Value"];
 
@@ -23,14 +22,10 @@ type Props = {
 const WalletCard = (props: Props) => {
   const { walletQuery } = props;
 
-  if (!walletQuery) {
-    return null;
-  }
-
   const { isLoading, isFetching, data: walletData, isIdle } = walletQuery;
 
-  if (isLoading || isIdle) {
-    return <LoadingTableSkeleton />;
+  if (!walletQuery || isLoading || isIdle) {
+    return null;
   }
 
   const tokens = walletData ? walletData.data : [];

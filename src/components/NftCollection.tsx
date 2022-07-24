@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Skeleton, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useState } from "react";
 import { UseQueryResult } from "react-query";
 import theme from "../theme";
@@ -21,7 +21,7 @@ const NftCollection = (props: Props) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   if (isLoading || isIdle) {
-    return <LoadingSkeleton variant="rectangular" />;
+    return null;
   }
 
   if (!collection || isEmpty(collection)) {
@@ -74,11 +74,6 @@ const ShowAllToggleButton = styled.div`
   &:hover {
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.25);
   }
-`;
-
-const LoadingSkeleton = styled(Skeleton)`
-  height: 15rem;
-  margin-bottom: 2rem;
 `;
 
 const NftsContainer = styled.div`

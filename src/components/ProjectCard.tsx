@@ -13,7 +13,6 @@ import CustomTable from "./commons/CustomTable";
 import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
 import PngLogo from "./commons/PngLogo";
 import TypographyNeon from "./commons/TypographyNeon";
-import LoadingTableSkeleton from "./LoadingTableSkeleton";
 
 type Props = {
   projectQuery: UseQueryResult<ProjectData>;
@@ -66,11 +65,7 @@ const ProjectCard = (props: Props) => {
 
   const { data: projectData, isLoading, isFetching, isError } = projectQuery;
 
-  if (isLoading) {
-    return <LoadingTableSkeleton />;
-  }
-
-  if (!projectData || isEmpty(projectData) || isError) {
+  if (isLoading || !projectData || isEmpty(projectData) || isError) {
     return null;
   }
 
