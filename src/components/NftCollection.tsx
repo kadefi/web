@@ -20,11 +20,7 @@ const NftCollection = (props: Props) => {
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  if (isLoading || isIdle) {
-    return null;
-  }
-
-  if (!collection || isEmpty(collection)) {
+  if (isLoading || isIdle || !collection || isEmpty(collection)) {
     return null;
   }
 

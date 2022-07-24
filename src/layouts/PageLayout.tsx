@@ -378,7 +378,6 @@ const SideBar = styled.div<SideBarProps>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: width 0.3s;
 
   ${theme.breakpoints.down("md")} {
     transition: height 0.5s, padding 0.5s;

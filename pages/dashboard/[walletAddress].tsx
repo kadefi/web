@@ -51,7 +51,7 @@ const Dashboard: CustomNextPage = () => {
   const isUpdating = isDashboardLoading || isDashboardFetching;
 
   // Prevent rendering without queries
-  if (!walletQuery || !projectsQuery || !projectsList) {
+  if (!walletAddress || !walletQuery || !projectsQuery || !projectsList) {
     return null;
   }
 

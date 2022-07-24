@@ -47,7 +47,7 @@ const NftGallery: CustomNextPage = () => {
   const isUpdating = isDashboardLoading || isNftGalleryFetching;
 
   // Prevent rendering without queries
-  if (!collectionsQueries) {
+  if (!walletAddress || !collectionsQueries) {
     return null;
   }
 
@@ -63,7 +63,7 @@ const NftGallery: CustomNextPage = () => {
   // No NFT Collection
   if (!isUpdating && numberOfNfts.every((value) => value === undefined)) {
     return (
-      <CentralContainer maxWidth="md" sx={{ marginTop: 0 }}>
+      <CentralContainer maxWidth="md">
         <EmptyBoxImageContainer>
           <Image src="/assets/empty-box.png" alt="" layout="fill" objectFit="contain" priority />
         </EmptyBoxImageContainer>
@@ -76,7 +76,7 @@ const NftGallery: CustomNextPage = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: 0 }}>
+    <Container maxWidth="md">
       <Header>NFT Gallery</Header>
       {nftCollections}
       {isUpdating && <FetchLoadingIndicator text="Retrieving NFT collections" />}
