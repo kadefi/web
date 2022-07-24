@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
+import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
 import Image from "next/image";
 import { ReactElement, useEffect, useState } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetNftCollectionsData } from "../../src/api/queries/NftGallery.queries";
+import CustomLink from "../../src/components/commons/CustomLink";
 import FetchLoadingIndicator from "../../src/components/commons/FetchLoadingIndicator";
-import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
 import NftCollection from "../../src/components/NftCollection";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
@@ -62,25 +63,41 @@ const NftGallery: CustomNextPage = () => {
   // No NFT Collection
   if (!isUpdating && numberOfNfts.every((value) => value === undefined)) {
     return (
-      <CentralContainer maxWidth="md">
+      <CentralContainer maxWidth="md" sx={{ marginTop: 0 }}>
         <EmptyBoxImageContainer>
           <Image src="/assets/empty-box.png" alt="" layout="fill" objectFit="contain" priority />
         </EmptyBoxImageContainer>
-        <P>We didn&apos;t find any NFT here..</P>
-        <P>Maybe we should have?</P>
-        <P>If we missed your NFT, DM us!</P>
-        <TwitterButton subtext="Send Message" />
+        <P>No NFTs found</P>
+        <P>
+          View list of integrated NFT collections <IntegrationLink href={`${ROUTE.INTEGRATIONS}`}>here</IntegrationLink>
+        </P>
       </CentralContainer>
     );
   }
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ marginTop: 0 }}>
+      <Header>NFT Gallery</Header>
       {nftCollections}
       {isUpdating && <FetchLoadingIndicator text="Retrieving NFT collections" />}
     </Container>
   );
 };
+
+const Header = styled(Typography)`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+
+  ${theme.breakpoints.down("sm")} {
+    font-size: 20px;
+  }
+`;
+
+const IntegrationLink = styled(CustomLink)`
+  text-decoration: underline;
+  color: inherit;
+`;
 
 const EmptyBoxImageContainer = styled.div`
   margin-bottom: 1rem;
@@ -97,18 +114,15 @@ const EmptyBoxImageContainer = styled.div`
 const P = styled.p`
   margin-top: 0px;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
 const CentralContainer = styled(MuiContainer)`
-  margin-top: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  ${theme.breakpoints.down("md")} {
-    margin-top: 1rem;
-  }
+  height: 100%;
 `;
 
 const Container = styled(MuiContainer)`

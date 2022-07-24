@@ -15,6 +15,7 @@ import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react"
 import { KadefiLogo } from "../components/commons/KadefiLogo";
 import PngLogo from "../components/commons/PngLogo";
 import SearchWalletInput from "../components/SearchWalletInput";
+import { ROUTE } from "../constants/Routes.constant";
 import { PageLayoutContext } from "../contexts/PageLayoutContext";
 import { useNftCollectionsList } from "../hooks/useNftCollectionsList";
 import { useProjectsList } from "../hooks/useProjectsList";
@@ -37,19 +38,19 @@ enum MENU_TITLE {
 const MENU_CONFIG = {
   [MENU_TITLE.DASHBOARD]: {
     icon: <DashboardOutlinedIcon />,
-    route: "/dashboard",
+    route: ROUTE.DASHBOARD,
     isWalletSearch: true,
     isDisabled: false,
   },
   [MENU_TITLE.NFT]: {
     icon: <PhotoLibraryOutlinedIcon />,
-    route: "/gallery",
+    route: ROUTE.NFT_GALLERY,
     isWalletSearch: true,
     isDisabled: false,
   },
   [MENU_TITLE.INTEGRATIONS]: {
     icon: <CableOutlinedIcon />,
-    route: "/integrations",
+    route: ROUTE.INTEGRATIONS,
     isWalletSearch: false,
     isDisabled: false,
   },
