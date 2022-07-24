@@ -13,6 +13,8 @@ type Props = {
   collectionQuery: UseQueryResult<NftCollectionData>;
 };
 
+const MIN_COUNT = 8;
+
 const NftCollection = (props: Props) => {
   const { collectionQuery } = props;
 
@@ -24,16 +26,16 @@ const NftCollection = (props: Props) => {
     return null;
   }
 
-  let nfts = collection.nfts;
+  let shownNfts = collection.nfts;
 
   if (isCollapsed) {
-    nfts = nfts.slice(0, 8);
+    shownNfts = shownNfts.slice(0, MIN_COUNT);
   }
 
-  const remainingNftsCount = collection.nfts.length - nfts.length;
+  const remainingNftsCount = collection.nfts.length - shownNfts.length;
 
-  const handleExpand = () => {
-    setIsCollapsed(false);
+  const handleCollapseToggle = () => {
+    setIsCollapsed(!isCollapsed);
   };
 
   return (
@@ -46,12 +48,15 @@ const NftCollection = (props: Props) => {
         {`${collection.description} - ${collection.nfts.length} NFT(s)`}
       </CollectionDescription>
       <NftsContainer>
-        {nfts.map((nft, i) => (
+        {shownNfts.map((nft, i) => (
           <NftCard key={`${collection.description}-${nft.id}-${i}`} nftData={nft} collectionName={collection.name} />
         ))}
       </NftsContainer>
       {isCollapsed && remainingNftsCount > 0 && (
-        <ShowAllToggleButton onClick={handleExpand}>Show All</ShowAllToggleButton>
+        <ShowAllToggleButton onClick={handleCollapseToggle}>Show All</ShowAllToggleButton>
+      )}
+      {!isCollapsed && collection.nfts.length > MIN_COUNT && (
+        <ShowAllToggleButton onClick={handleCollapseToggle}>Show Less</ShowAllToggleButton>
       )}
     </CollectionContainer>
   );
