@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { ReactNode } from "react";
 import { UseQueryResult } from "react-query";
 import theme from "../theme";
 import { TokenCellType, WalletData } from "../types/DashboardData.type";
@@ -37,16 +38,38 @@ const WalletCard = (props: Props) => {
 
   const walletValue = getWalletTotalValue(tokens);
 
-  const walletDataRows = tokens.map((tokenData: TokenCellType, i: number) => {
-    const { ticker, balance, price, fiatValue, image } = tokenData;
-    return [
+  const walletDataRows: ReactNode[][] = [];
+  const expandedRows: ReactNode[] = [];
+
+  tokens.forEach((tokenData: TokenCellType, i: number) => {
+    const { ticker, balance, price, fiatValue, image, chains } = tokenData;
+
+    if (chains) {
+      expandedRows.push(
+        <div key={`expanded-row-${i}`}>
+          <ChainHeader>Chain Distribution</ChainHeader>
+          {Object.entries(chains).map(([chainId, balance]) => {
+            return (
+              <ChainInfo key={`${ticker}-chain-${chainId}`}>
+                <ChainId>Chain {chainId}: </ChainId>
+                <div>{`${roundToDecimalStr(balance, 2)} ${ticker}`}</div>
+              </ChainInfo>
+            );
+          })}
+        </div>,
+      );
+    } else {
+      expandedRows.push(null);
+    }
+
+    walletDataRows.push([
       <TickerContainer key={`ticker-${i}`}>
         {getTokenLogo(image)}
         {`${roundToDecimalStr(balance, 2)} ${ticker}`}
       </TickerContainer>,
       <div key={`price-${i}`}>{formatFiatValue(price, 4)}</div>,
       <div key={`fiat-${i}`}>{formatFiatValue(fiatValue)}</div>,
-    ];
+    ]);
   });
 
   return (
@@ -59,10 +82,30 @@ const WalletCard = (props: Props) => {
         </WalletHeaderContainer>
         <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>
       </Container>
-      <CustomTable tableKey="Wallet" headers={HEADERS} rows={walletDataRows} />
+      <CustomTable tableKey="Wallet" headers={HEADERS} rows={walletDataRows} expandedRows={expandedRows} />
     </CardWrapper>
   );
 };
+
+const ChainHeader = styled.div`
+  margin-bottom: 0.5rem;
+  padding: 4px 8px;
+  background-color: black;
+  border-radius: 4px;
+  width: fit-content;
+  font-weight: 500;
+`;
+
+const ChainId = styled.div`
+  margin-left: 8px;
+  flex-basis: 4rem;
+`;
+
+const ChainInfo = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+`;
 
 const TickerContainer = styled.div`
   display: flex;

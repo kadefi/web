@@ -87,7 +87,7 @@ const NftGallery: CustomNextPage = () => {
 const Header = styled(Typography)`
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 
   ${theme.breakpoints.down("sm")} {
     font-size: 20px;

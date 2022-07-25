@@ -1,4 +1,6 @@
-import { styled } from "@mui/material/styles";
+import styled from "@emotion/styled";
+import ChevronRightTwoToneIcon from "@mui/icons-material/ChevronRightTwoTone";
+import { styled as MuiStyled } from "@mui/material/styles";
 import MuiTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses, TableCellProps } from "@mui/material/TableCell";
@@ -6,17 +8,23 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useState } from "react";
+import _ from "underscore";
 import theme from "../../theme";
+import { transientOptions } from "../../utils/StyledComponent.util";
+import ExpandedTableRow from "./ExpandedTableRow";
 
 type Props = {
   tableKey: string;
   headers: ReactNode[];
   rows: ReactNode[][];
+  expandedRows?: ReactNode[];
 };
 
 const CustomTable = (props: Props) => {
-  const { tableKey, headers, rows } = props;
+  const { tableKey, headers, rows, expandedRows } = props;
+
+  const [expandedRowNumbers, setExpandedRowNumbers] = useState<number[]>([]);
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -37,38 +45,81 @@ const CustomTable = (props: Props) => {
   }, [tableKey, headers]);
 
   const tableRows = useMemo(() => {
-    return rows.map((rowCells, i) => (
-      <StyledTableRow key={`${tableKey}-row-${i}`}>
-        {rowCells.map((rowCell, j) => {
-          let align: TableCellProps["align"] = "left";
+    const handleRowExpandToggle = (rowNumber: number) => {
+      if (expandedRowNumbers.includes(rowNumber)) {
+        setExpandedRowNumbers((expandedRowNumbers) => _.without(expandedRowNumbers, rowNumber));
+      } else {
+        setExpandedRowNumbers((expandedRowNumbers) => [...expandedRowNumbers, rowNumber]);
+      }
+    };
 
-          // Change to <th> for first cell
-          if (j === 0) {
+    const displayRows: ReactNode[] = [];
+
+    rows.forEach((rowCells, rowNumber) => {
+      const isExpanded = expandedRowNumbers.includes(rowNumber);
+      const isExpandable = Boolean(expandedRows && expandedRows[rowNumber]);
+
+      const handleRowClick = isExpandable ? () => handleRowExpandToggle(rowNumber) : () => {};
+
+      displayRows.push(
+        <StyledTableRow
+          key={`${tableKey}-row-${rowNumber}`}
+          onClick={handleRowClick}
+          $isExpandable={isExpandable}
+          $isExpanded={isExpanded}
+        >
+          {rowCells.map((rowCell, j) => {
+            let align: TableCellProps["align"] = "left";
+
+            // Change to <th> for first cell
+            if (j === 0) {
+              return (
+                <StyledTableCell key={`${tableKey}-cell-${j}`} component="th" scope="row" align={align}>
+                  {isExpandable ? (
+                    <ExpandArrowContainer>
+                      <ExpandArrow $isExpanded={isExpanded} />
+                      {rowCell}
+                    </ExpandArrowContainer>
+                  ) : (
+                    rowCell
+                  )}
+                </StyledTableCell>
+              );
+            }
+
+            // Align right only for the last cell
+            if (j === rowCells.length - 1) {
+              align = "right";
+            }
+
+            const style = {
+              verticalAlign: isMobile ? "top" : "center",
+            };
+
             return (
-              <StyledTableCell key={`${tableKey}-cell-${j}`} component="th" scope="row" align={align}>
+              <StyledTableCell key={`${tableKey}-cell-${j}`} align={align} style={style}>
                 {rowCell}
               </StyledTableCell>
             );
-          }
+          })}
+        </StyledTableRow>,
+      );
 
-          // Align right only for the last cell
-          if (j === rowCells.length - 1) {
-            align = "right";
-          }
+      if (isExpandable && expandedRows && expandedRows[rowNumber]) {
+        displayRows.push(
+          <ExpandedTableRow
+            key={`${tableKey}-expanded-row-${rowNumber}`}
+            isExpanded={isExpanded}
+            colNums={rowCells.length}
+          >
+            {expandedRows[rowNumber]}
+          </ExpandedTableRow>,
+        );
+      }
+    });
 
-          const style = {
-            verticalAlign: isMobile ? "top" : "center",
-          };
-
-          return (
-            <StyledTableCell key={`${tableKey}-cell-${j}`} align={align} style={style}>
-              {rowCell}
-            </StyledTableCell>
-          );
-        })}
-      </StyledTableRow>
-    ));
-  }, [tableKey, rows, isMobile]);
+    return displayRows;
+  }, [rows, expandedRowNumbers, expandedRows, tableKey, isMobile]);
 
   const tableContent = tableRows.length === 0 ? <EmptyTable length={headerTableCells.length} /> : tableRows;
   return (
@@ -86,6 +137,7 @@ const CustomTable = (props: Props) => {
 type EmptyTableProps = {
   length: number;
 };
+
 const EmptyTable = ({ length }: EmptyTableProps) => (
   <StyledTableRow>
     <StyledTableCell style={{ height: "200px" }} colSpan={length} component="td" scope="row" align="center">
@@ -94,10 +146,31 @@ const EmptyTable = ({ length }: EmptyTableProps) => (
   </StyledTableRow>
 );
 
-const StyledTableBody = styled(TableBody)({
-  backgroundColor: "transparent",
-  whiteSpace: "nowrap",
-});
+const StyledTableBody = styled(TableBody)`
+  background-color: transparent;
+  white-space: nowrap;
+
+  tr:nth-of-type(1) {
+    border-top: none;
+  }
+`;
+
+const ExpandArrowContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: -0.5rem;
+`;
+
+type ExpandArrowProps = {
+  $isExpanded: boolean;
+};
+
+const ExpandArrow = styled(ChevronRightTwoToneIcon, transientOptions)<ExpandArrowProps>`
+  color: gray;
+  transition: transform 300ms;
+  transform: ${(props) => (props.$isExpanded ? "rotate(90deg)" : "rotate(0deg)")};
+`;
 
 const StyledTableContainer = styled(TableContainer)({
   backgroundColor: "transparent",
@@ -106,11 +179,11 @@ const StyledTableContainer = styled(TableContainer)({
   borderRadius: 0,
 });
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = MuiStyled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "rgba(23, 0, 23, 0.8)",
     color: theme.palette.common.white,
-    borderBottom: "none",
+    border: "none",
     padding: "0.5rem 1rem",
     fontSize: "0.875rem",
 
@@ -120,7 +193,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: "0.875rem",
-    borderBottom: "1px solid #512a53",
+    border: "none",
     padding: "0.5rem 1rem",
 
     [`${theme.breakpoints.down("sm")}`]: {
@@ -129,10 +202,20 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)({
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-});
+type StyledTableRowProps = {
+  $isExpanded?: boolean;
+  $isExpandable?: boolean;
+};
+
+const StyledTableRow = styled(TableRow, transientOptions)<StyledTableRowProps>`
+  transition: background 300ms;
+  cursor: ${(props) => (props.$isExpandable ? "pointer" : "default")};
+  background: ${(props) => props.$isExpanded && "rgba(34, 0, 35, 0.7)"};
+  border-top: 1px solid #512a53;
+
+  :hover {
+    background: ${(props) => (props.$isExpandable || props.$isExpanded ? "rgba(34, 0, 35, 0.7)" : "none")};
+  }
+`;
 
 export default CustomTable;
