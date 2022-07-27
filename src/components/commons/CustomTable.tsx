@@ -80,6 +80,7 @@ const CustomTable = (props: Props) => {
                   scope="row"
                   align={align}
                   $isSubTable={isSubTable}
+                  $isExpanded={isExpanded}
                 >
                   {isExpandable ? (
                     <ExpandArrowContainer>
@@ -103,7 +104,13 @@ const CustomTable = (props: Props) => {
             };
 
             return (
-              <StyledTableCell key={`${tableKey}-cell-${j}`} align={align} style={style} $isSubTable={isSubTable}>
+              <StyledTableCell
+                key={`${tableKey}-cell-${j}`}
+                align={align}
+                style={style}
+                $isSubTable={isSubTable}
+                $isExpanded={isExpanded}
+              >
                 {rowCell}
               </StyledTableCell>
             );
@@ -186,6 +193,7 @@ const StyledTableContainer = styled(TableContainer)({
 });
 
 type StyledTableCellProps = {
+  $isExpanded?: boolean;
   $isSubTable?: boolean;
 };
 
@@ -198,12 +206,15 @@ const StyledTableCell = styled(TableCell, transientOptions)<StyledTableCellProps
   }
 
   &.${tableCellClasses.head} {
-    background-color: ${(props) => (props.$isSubTable ? "rgba(50, 14, 50, 1)" : "rgba(23, 0, 23, 0.8)")};
+    background-color: ${(props) => (props.$isSubTable ? "rgba(0, 0, 0, 0.2)" : "rgba(23, 0, 23, 0.8)")};
+    font-weight: ${(props) => (props.$isSubTable ? "700" : "500")};
     border: none;
     padding: 0.5rem 1rem;
   }
 
   &.${tableCellClasses.body} {
+    text-shadow: ${(props) => (props.$isExpanded ? "0px 0px 10px #FF007F" : "none")};
+    font-weight: ${(props) => (props.$isExpanded ? "500" : "400")};
     border: none;
     padding: 0.5rem 1rem;
   }

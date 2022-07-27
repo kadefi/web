@@ -105,18 +105,22 @@ const InfoSection = styled.div`
   margin-bottom: 1rem;
 `;
 
-const InfoHeader = styled(TypographyNeon)`
-  margin-bottom: 0.5rem;
+const InfoHeader = styled.div`
+  margin-bottom: 0.25rem;
   border-radius: 4px;
   width: fit-content;
   font-weight: 500;
-  font-size: 0.875rem;
+  color: pink;
+  font-size: 0.65rem;
+  margin-left: 1rem;
+  text-transform: uppercase;
 `;
 
 const InfoContent = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.25rem;
+  margin-left: 1rem;
 `;
 
 const TickerContainer = styled.div`

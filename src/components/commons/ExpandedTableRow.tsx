@@ -48,8 +48,6 @@ const ExpandedContent = styled.div<ExpandedContentProps>`
   padding-bottom: ${(props) => (props.isExpanded ? `16px` : "0")};
   overflow: hidden;
   border: 0;
-  padding-left: 1rem;
-  padding-right: 1rem;
 `;
 
 const ExpandedTableCell = styled(TableCell)`
