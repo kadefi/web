@@ -121,6 +121,11 @@ const InfoContent = styled.div`
   align-items: center;
   margin-bottom: 0.25rem;
   margin-left: 1rem;
+  font-size: 0.75rem;
+
+  ${theme.breakpoints.down("sm")} {
+    font-size: 0.7rem;
+  }
 `;
 
 const TickerContainer = styled.div`

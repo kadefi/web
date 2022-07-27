@@ -202,7 +202,7 @@ const StyledTableCell = styled(TableCell, transientOptions)<StyledTableCellProps
   color: ${(props) => (props.$isSubTable ? "#cccccc" : "white")};
 
   ${theme.breakpoints.down("sm")} {
-    font-size: 0.75rem;
+    font-size: ${(props) => (props.$isSubTable ? "0.7rem" : "0.75rem")};
   }
 
   &.${tableCellClasses.head} {
