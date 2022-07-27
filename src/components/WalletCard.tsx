@@ -18,13 +18,13 @@ import LoadingTableSkeleton from "./LoadingTableSkeleton";
 const HEADERS = ["Token Balance", "Price", "Value"];
 
 const getChainsTable = (chains: ChainInfo, ticker: string, price: number) => {
-  const headers = ["Chain", "Balance", "Value"];
+  const headers = ["Balance", "Chain", "Value"];
   const rows: string[][] = [];
 
   Object.entries(chains).map(([chainId, balance]) => {
     rows.push([
-      `Chain ${chainId}`,
       `${roundToDecimalStr(balance, 2)} ${ticker}`,
+      `Chain ${chainId}`,
       `$${roundToDecimalStr(balance * price, 2)}`,
     ]);
   });
