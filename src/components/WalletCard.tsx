@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
 import { UseQueryResult } from "react-query";
 import theme from "../theme";
-import { TokenCellType, WalletData } from "../types/DashboardData.type";
+import { ChainInfo, TokenCellType, WalletData } from "../types/DashboardData.type";
 import { getTokenLogo } from "../utils/Logo.util";
 import { getWalletTotalValue } from "../utils/NetWorth.util";
 import { formatFiatValue, roundToDecimalStr } from "../utils/Number.util";
@@ -16,6 +16,21 @@ import TypographyNeon from "./commons/TypographyNeon";
 import LoadingTableSkeleton from "./LoadingTableSkeleton";
 
 const HEADERS = ["Token Balance", "Price", "Value"];
+
+const getChainsTable = (chains: ChainInfo, ticker: string, price: number) => {
+  const headers = ["Chain", "Balance", "Value"];
+  const rows: string[][] = [];
+
+  Object.entries(chains).map(([chainId, balance]) => {
+    rows.push([
+      `Chain ${chainId}`,
+      `${roundToDecimalStr(balance, 2)} ${ticker}`,
+      `$${roundToDecimalStr(balance * price, 2)}`,
+    ]);
+  });
+
+  return <CustomTable tableKey={`chains-${ticker}-subtable`} headers={headers} rows={rows} isSubTable />;
+};
 
 type Props = {
   walletQuery: UseQueryResult<WalletData>;
@@ -42,20 +57,19 @@ const WalletCard = (props: Props) => {
   const expandedRows: ReactNode[] = [];
 
   tokens.forEach((tokenData: TokenCellType, i: number) => {
-    const { ticker, balance, price, fiatValue, image, chains } = tokenData;
+    const { ticker, balance, price, fiatValue, image, chains, source } = tokenData;
 
     if (chains) {
       expandedRows.push(
         <div key={`expanded-row-${i}`}>
-          <ChainHeader>Chain Distribution</ChainHeader>
-          {Object.entries(chains).map(([chainId, balance]) => {
-            return (
-              <ChainInfo key={`${ticker}-chain-${chainId}`}>
-                <ChainId>Chain {chainId}: </ChainId>
-                <div>{`${roundToDecimalStr(balance, 2)} ${ticker}`}</div>
-              </ChainInfo>
-            );
-          })}
+          <InfoSection>
+            <InfoHeader>Chain Distribution</InfoHeader>
+            {getChainsTable(chains, ticker, price)}
+          </InfoSection>
+          <InfoSection>
+            <InfoHeader>Price Source</InfoHeader>
+            <InfoContent>{`${source.type}: ${source.address}`}</InfoContent>
+          </InfoSection>
         </div>,
       );
     } else {
@@ -87,21 +101,19 @@ const WalletCard = (props: Props) => {
   );
 };
 
-const ChainHeader = styled.div`
+const InfoSection = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const InfoHeader = styled(TypographyNeon)`
   margin-bottom: 0.5rem;
-  padding: 4px 8px;
-  background-color: rgba(23, 0, 23, 0.8);
   border-radius: 4px;
   width: fit-content;
   font-weight: 500;
+  font-size: 0.875rem;
 `;
 
-const ChainId = styled.div`
-  margin-left: 8px;
-  flex-basis: 4rem;
-`;
-
-const ChainInfo = styled.div`
+const InfoContent = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.25rem;

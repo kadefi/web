@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import ChevronRightTwoToneIcon from "@mui/icons-material/ChevronRightTwoTone";
-import { styled as MuiStyled } from "@mui/material/styles";
 import MuiTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses, TableCellProps } from "@mui/material/TableCell";
@@ -19,10 +18,11 @@ type Props = {
   headers: ReactNode[];
   rows: ReactNode[][];
   expandedRows?: ReactNode[];
+  isSubTable?: boolean;
 };
 
 const CustomTable = (props: Props) => {
-  const { tableKey, headers, rows, expandedRows } = props;
+  const { tableKey, headers, rows, expandedRows, isSubTable = false } = props;
 
   const [expandedRowNumbers, setExpandedRowNumbers] = useState<number[]>([]);
 
@@ -37,12 +37,12 @@ const CustomTable = (props: Props) => {
       }
 
       return (
-        <StyledTableCell key={`${tableKey}-header-${i}`} align={align}>
+        <StyledTableCell key={`${tableKey}-header-${i}`} align={align} $isSubTable={isSubTable}>
           {header}
         </StyledTableCell>
       );
     });
-  }, [tableKey, headers]);
+  }, [headers, tableKey, isSubTable]);
 
   const tableRows = useMemo(() => {
     const handleRowExpandToggle = (rowNumber: number) => {
@@ -62,14 +62,25 @@ const CustomTable = (props: Props) => {
       const handleRowClick = isExpandable ? () => handleRowExpandToggle(rowNumber) : () => {};
 
       displayRows.push(
-        <StyledTableRow key={`${tableKey}-row-${rowNumber}`} onClick={handleRowClick} $isExpandable={isExpandable}>
+        <StyledTableRow
+          key={`${tableKey}-row-${rowNumber}`}
+          onClick={handleRowClick}
+          $isExpandable={isExpandable}
+          $isSubTable={isSubTable}
+        >
           {rowCells.map((rowCell, j) => {
             let align: TableCellProps["align"] = "left";
 
             // Change to <th> for first cell
             if (j === 0) {
               return (
-                <StyledTableCell key={`${tableKey}-cell-${j}`} component="th" scope="row" align={align}>
+                <StyledTableCell
+                  key={`${tableKey}-cell-${j}`}
+                  component="th"
+                  scope="row"
+                  align={align}
+                  $isSubTable={isSubTable}
+                >
                   {isExpandable ? (
                     <ExpandArrowContainer>
                       <ExpandArrow $isExpanded={isExpanded} />
@@ -92,7 +103,7 @@ const CustomTable = (props: Props) => {
             };
 
             return (
-              <StyledTableCell key={`${tableKey}-cell-${j}`} align={align} style={style}>
+              <StyledTableCell key={`${tableKey}-cell-${j}`} align={align} style={style} $isSubTable={isSubTable}>
                 {rowCell}
               </StyledTableCell>
             );
@@ -114,7 +125,7 @@ const CustomTable = (props: Props) => {
     });
 
     return displayRows;
-  }, [rows, expandedRowNumbers, expandedRows, tableKey, isMobile]);
+  }, [rows, expandedRowNumbers, expandedRows, tableKey, isMobile, isSubTable]);
 
   const tableContent = tableRows.length === 0 ? <EmptyTable length={headerTableCells.length} /> : tableRows;
   return (
@@ -174,37 +185,39 @@ const StyledTableContainer = styled(TableContainer)({
   borderRadius: 0,
 });
 
-const StyledTableCell = MuiStyled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "rgba(23, 0, 23, 0.8)",
-    color: theme.palette.common.white,
-    border: "none",
-    padding: "0.5rem 1rem",
-    fontSize: "0.875rem",
+type StyledTableCellProps = {
+  $isSubTable?: boolean;
+};
 
-    [`${theme.breakpoints.down("sm")}`]: {
-      fontSize: "0.75rem",
-    },
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: "0.875rem",
-    border: "none",
-    padding: "0.5rem 1rem",
+const StyledTableCell = styled(TableCell, transientOptions)<StyledTableCellProps>`
+  font-size: ${(props) => (props.$isSubTable ? "0.75rem" : "0.875rem")};
+  color: ${(props) => (props.$isSubTable ? "#cccccc" : "white")};
 
-    [`${theme.breakpoints.down("sm")}`]: {
-      fontSize: "0.75rem",
-    },
-  },
-}));
+  ${theme.breakpoints.down("sm")} {
+    font-size: 0.75rem;
+  }
+
+  &.${tableCellClasses.head} {
+    background-color: ${(props) => (props.$isSubTable ? "rgba(50, 14, 50, 1)" : "rgba(23, 0, 23, 0.8)")};
+    border: none;
+    padding: 0.5rem 1rem;
+  }
+
+  &.${tableCellClasses.body} {
+    border: none;
+    padding: 0.5rem 1rem;
+  }
+`;
 
 type StyledTableRowProps = {
+  $isSubTable?: boolean;
   $isExpandable?: boolean;
 };
 
 const StyledTableRow = styled(TableRow, transientOptions)<StyledTableRowProps>`
   transition: background 300ms;
   cursor: ${(props) => (props.$isExpandable ? "pointer" : "default")};
-  border-top: 1px solid #512a53;
+  border-top: ${(props) => (props.$isSubTable ? "1px dotted #322232" : "1px solid #512a53")}; ;
 `;
 
 export default CustomTable;

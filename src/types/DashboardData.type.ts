@@ -20,7 +20,7 @@ export type PoolCellType = {
 
 export type TokenCellType = {
   id?: string;
-  chains?: { [k: string]: number };
+  chains?: ChainInfo;
   type: CELL_TYPE.TOKEN;
   fiatValue: number;
   image: string;
@@ -34,6 +34,8 @@ export type TokenCellType = {
   };
   price: number;
 };
+
+export type ChainInfo = { [k: string]: number };
 
 export type StringCellType = {
   id?: string;
