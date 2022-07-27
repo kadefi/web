@@ -19,10 +19,11 @@ type Props = {
   rows: ReactNode[][];
   expandedRows?: ReactNode[];
   isSubTable?: boolean;
+  isWalletTable?: boolean;
 };
 
 const CustomTable = (props: Props) => {
-  const { tableKey, headers, rows, expandedRows, isSubTable = false } = props;
+  const { tableKey, headers, rows, expandedRows, isSubTable = false, isWalletTable } = props;
 
   const [expandedRowNumbers, setExpandedRowNumbers] = useState<number[]>([]);
 
@@ -100,7 +101,7 @@ const CustomTable = (props: Props) => {
             }
 
             const style = {
-              verticalAlign: isMobile ? "top" : "center",
+              verticalAlign: !isMobile || isWalletTable ? "center" : "top",
             };
 
             return (

@@ -96,7 +96,13 @@ const WalletCard = (props: Props) => {
         </WalletHeaderContainer>
         <WalletTotalValue>{formatFiatValue(walletValue)}</WalletTotalValue>
       </Container>
-      <CustomTable tableKey="Wallet" headers={HEADERS} rows={walletDataRows} expandedRows={expandedRows} />
+      <CustomTable
+        tableKey="Wallet"
+        headers={HEADERS}
+        rows={walletDataRows}
+        expandedRows={expandedRows}
+        isWalletTable
+      />
     </CardWrapper>
   );
 };
