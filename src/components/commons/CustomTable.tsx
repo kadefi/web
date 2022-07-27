@@ -62,12 +62,7 @@ const CustomTable = (props: Props) => {
       const handleRowClick = isExpandable ? () => handleRowExpandToggle(rowNumber) : () => {};
 
       displayRows.push(
-        <StyledTableRow
-          key={`${tableKey}-row-${rowNumber}`}
-          onClick={handleRowClick}
-          $isExpandable={isExpandable}
-          $isExpanded={isExpanded}
-        >
+        <StyledTableRow key={`${tableKey}-row-${rowNumber}`} onClick={handleRowClick} $isExpandable={isExpandable}>
           {rowCells.map((rowCell, j) => {
             let align: TableCellProps["align"] = "left";
 
@@ -203,19 +198,13 @@ const StyledTableCell = MuiStyled(TableCell)(({ theme }) => ({
 }));
 
 type StyledTableRowProps = {
-  $isExpanded?: boolean;
   $isExpandable?: boolean;
 };
 
 const StyledTableRow = styled(TableRow, transientOptions)<StyledTableRowProps>`
   transition: background 300ms;
   cursor: ${(props) => (props.$isExpandable ? "pointer" : "default")};
-  background: ${(props) => props.$isExpanded && "rgba(34, 0, 35, 0.7)"};
   border-top: 1px solid #512a53;
-
-  :hover {
-    background: ${(props) => (props.$isExpandable || props.$isExpanded ? "rgba(34, 0, 35, 0.7)" : "none")};
-  }
 `;
 
 export default CustomTable;

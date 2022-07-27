@@ -90,7 +90,7 @@ const WalletCard = (props: Props) => {
 const ChainHeader = styled.div`
   margin-bottom: 0.5rem;
   padding: 4px 8px;
-  background-color: black;
+  background-color: rgba(23, 0, 23, 0.8);
   border-radius: 4px;
   width: fit-content;
   font-weight: 500;

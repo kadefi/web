@@ -55,7 +55,6 @@ const ExpandedContent = styled.div<ExpandedContentProps>`
 const ExpandedTableCell = styled(TableCell)`
   padding: 0;
   border: 0;
-  background: rgba(34, 0, 35, 0.7);
   color: #d3d3d3;
   font-size: 0.75rem;
 `;
