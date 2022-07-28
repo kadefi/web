@@ -133,7 +133,7 @@ const CustomTable = (props: Props) => {
     });
 
     return displayRows;
-  }, [rows, expandedRowNumbers, expandedRows, tableKey, isMobile, isSubTable]);
+  }, [rows, expandedRowNumbers, expandedRows, tableKey, isMobile, isSubTable, isWalletTable]);
 
   const tableContent = tableRows.length === 0 ? <EmptyTable length={headerTableCells.length} /> : tableRows;
   return (

@@ -6,7 +6,7 @@ export const getNftCollectionData = async (
   walletAddress: string,
   signal: AbortSignal | undefined,
 ): Promise<NftCollectionData> => {
-  const response = await ApiClient.get(`gallery/${collectionKey}/${walletAddress}`, { signal });
+  const response = await ApiClient.get(`gallery/${collectionKey}/${walletAddress}?cache=false`, { signal });
   return response.data as NftCollectionData;
 };
 
