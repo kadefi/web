@@ -107,9 +107,7 @@ const WalletCard = (props: Props) => {
   );
 };
 
-const InfoSection = styled.div`
-  margin-bottom: 1rem;
-`;
+const InfoSection = styled.div``;
 
 const InfoHeader = styled.div`
   margin-bottom: 0.25rem;
