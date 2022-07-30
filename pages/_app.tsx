@@ -39,6 +39,7 @@ if (typeof window !== "undefined") {
   persistQueryClient({
     queryClient,
     persistor: localStoragePersistor,
+    buster: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
   });
 }
 
