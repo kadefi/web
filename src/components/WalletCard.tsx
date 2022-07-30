@@ -57,7 +57,7 @@ const WalletCard = (props: Props) => {
   const expandedRows: ReactNode[] = [];
 
   tokens.forEach((tokenData: TokenCellType, i: number) => {
-    const { ticker, balance, price, fiatValue, image, chains, source } = tokenData;
+    const { ticker, balance, price, fiatValue, image, chains } = tokenData;
 
     if (chains) {
       expandedRows.push(
@@ -66,10 +66,10 @@ const WalletCard = (props: Props) => {
             <InfoHeader>Chain Distribution</InfoHeader>
             {getChainsTable(chains, ticker, price)}
           </InfoSection>
-          <InfoSection>
+          {/* <InfoSection>
             <InfoHeader>Price Source</InfoHeader>
             <InfoContent>{`${source.type}: ${source.address}`}</InfoContent>
-          </InfoSection>
+          </InfoSection> */}
         </div>,
       );
     } else {
@@ -122,17 +122,17 @@ const InfoHeader = styled.div`
   text-transform: uppercase;
 `;
 
-const InfoContent = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.25rem;
-  margin-left: 1rem;
-  font-size: 0.75rem;
+// const InfoContent = styled.div`
+//   display: flex;
+//   align-items: center;
+//   margin-bottom: 0.25rem;
+//   margin-left: 1rem;
+//   font-size: 0.75rem;
 
-  ${theme.breakpoints.down("sm")} {
-    font-size: 0.7rem;
-  }
-`;
+//   ${theme.breakpoints.down("sm")} {
+//     font-size: 0.7rem;
+//   }
+// `;
 
 const TickerContainer = styled.div`
   display: flex;
