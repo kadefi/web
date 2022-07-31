@@ -1,4 +1,5 @@
 import _ from "underscore";
+import { trackLocalStorageUpdate } from "../analytics/Analytics.util";
 import { LS_RECENT_SEARCHES_KEY } from "../constants/LocalStorage.constant";
 
 const SEPARATOR = ";";
@@ -37,13 +38,15 @@ export const arrayLocalStorage = (key: string) => {
     },
     addItem: (newItem: string) => {
       const currentList = getLocalStorageArray(key);
-      const newList = _.uniq([newItem, ...currentList].sort(), true);
-      localStorage.setItem(key, newList.join(SEPARATOR));
+      const newList = _.uniq([newItem, ...currentList].sort(), true).join(SEPARATOR);
+      trackLocalStorageUpdate({ key, value: newList });
+      localStorage.setItem(key, newList);
     },
     removeItem: (item: string) => {
       const currentList = getLocalStorageArray(key);
-      const newList = _.without(currentList, item);
-      localStorage.setItem(key, newList.join(SEPARATOR));
+      const newList = _.without(currentList, item).join(SEPARATOR);
+      trackLocalStorageUpdate({ key, value: newList });
+      localStorage.setItem(key, newList);
     },
     destroy: () => {
       localStorage.removeItem(key);

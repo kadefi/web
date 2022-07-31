@@ -1,7 +1,29 @@
 import axios, { AxiosError } from "axios";
-import { trackRequestError } from "../analytics/Analytics.util";
+import { trackApiResponseTime, trackRequestError } from "../analytics/Analytics.util";
 
 const ApiClient = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL });
+
+ApiClient.interceptors.request.use((config) => {
+  if (config.headers) {
+    config.headers["x-request-start-time"] = new Date().getTime();
+  }
+  return config;
+});
+
+ApiClient.interceptors.response.use((response) => {
+  if (response.config.headers) {
+    const endTime = new Date().getTime();
+    const startTime = response.config.headers["x-request-start-time"] as number;
+    const duration = (endTime - startTime) / 1000;
+
+    const { baseURL: baseUrl = "", url = "" } = response.config;
+
+    const shortenedUrl = url.replace(/\/k:.*/g, "");
+
+    trackApiResponseTime({ baseUrl, shortenedUrl, url, duration });
+  }
+  return response;
+});
 
 ApiClient.interceptors.response.use((res) => res, interceptErrorResponse);
 

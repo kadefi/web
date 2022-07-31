@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import _ from "underscore";
+import { trackDisabledIntegration } from "../analytics/Analytics.util";
 import { useGetProjectsList } from "../api/queries/Dashboard.queries";
 import { LS_DISABLED_PROJECT_MODULES, LS_SELECTED_PROJECT_MODULES } from "../constants/LocalStorage.constant";
 import { ProjectsList } from "../types/DashboardData.type";
@@ -33,9 +34,11 @@ export const useProjectsList = () => {
         return;
       }
       setSelectedProjectModules((selectedProjectModules) => _.without(selectedProjectModules, module));
+      trackDisabledIntegration({ key: LS_DISABLED_PROJECT_MODULES, action: "add", module });
       arrayLocalStorage(LS_DISABLED_PROJECT_MODULES).addItem(module);
     } else {
       setSelectedProjectModules((selectedProjectModules) => [...selectedProjectModules, module].sort());
+      trackDisabledIntegration({ key: LS_DISABLED_PROJECT_MODULES, action: "remove", module });
       arrayLocalStorage(LS_DISABLED_PROJECT_MODULES).removeItem(module);
     }
   };
