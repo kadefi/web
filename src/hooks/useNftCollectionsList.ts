@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import _ from "underscore";
+import { trackDisabledIntegration } from "../analytics/Analytics.util";
 import { useGetNftCollectionsList } from "../api/queries/NftGallery.queries";
 import { LS_DISABLED_NFT_MODULES, LS_SELECTED_NFT_MODULES } from "../constants/LocalStorage.constant";
 import { NftCollectionsList } from "../types/DashboardData.type";
@@ -33,9 +34,11 @@ export const useNftCollectionsList = () => {
         return;
       }
       setSelectedNftModules((selectedNftModules) => _.without(selectedNftModules, module));
+      trackDisabledIntegration({ key: LS_DISABLED_NFT_MODULES, action: "add", module });
       arrayLocalStorage(LS_DISABLED_NFT_MODULES).addItem(module);
     } else {
       setSelectedNftModules((selectedNftModules) => [...selectedNftModules, module].sort());
+      trackDisabledIntegration({ key: LS_DISABLED_NFT_MODULES, action: "remove", module });
       arrayLocalStorage(LS_DISABLED_NFT_MODULES).removeItem(module);
     }
   };

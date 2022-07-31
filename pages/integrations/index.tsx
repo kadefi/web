@@ -2,9 +2,11 @@ import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
+import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import IntegrationPill from "../../src/components/commons/IntegrationPill";
 import TwitterButton from "../../src/components/commons/SocialButtons/TwitterButton";
 import TypographyNeon from "../../src/components/commons/TypographyNeon";
+import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
 import { getPageLayout } from "../../src/layouts/PageLayout";
 import { NftCollectionsListItem, ProjectsListItem } from "../../src/types/DashboardData.type";
@@ -18,6 +20,8 @@ const Integrations = () => {
     selectedProjectModules,
     handleProjectModuleToggle,
   } = usePageLayoutContext();
+
+  useTrackPageVisit(ROUTE.INTEGRATIONS);
 
   return (
     <Container maxWidth="md">

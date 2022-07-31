@@ -42,3 +42,20 @@ export const trackRequestError = (config: {
 export const trackNftImageLoadError = (config: { collection: string; nftId: string }) => {
   trackEvent(AMPLITUDE_EVENT.IMAGE_LOAD_ERROR, config);
 };
+
+export const trackDisabledIntegration = (config: { key: string; action: "add" | "remove"; module: string }) => {
+  trackEvent(AMPLITUDE_EVENT.DISABLED_INTEGRATION_CHANGE, config);
+};
+
+export const trackLocalStorageUpdate = (config: { key: string; value: string }) => {
+  trackEvent(AMPLITUDE_EVENT.LOCAL_STORAGE_UPDATE, config);
+};
+
+export const trackApiResponseTime = (config: {
+  baseUrl: string;
+  shortenedUrl: string;
+  url: string;
+  duration: number;
+}) => {
+  trackEvent(AMPLITUDE_EVENT.API_RESPONSE_TIME, config);
+};
