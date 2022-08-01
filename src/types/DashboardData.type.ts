@@ -22,7 +22,7 @@ export type TokenCellType = {
   id?: string;
   chains?: ChainInfo;
   type: CELL_TYPE.TOKEN;
-  fiatValue: number;
+  fiatValue: number | null;
   image: string;
   name: string;
   ticker: string;
@@ -32,7 +32,7 @@ export type TokenCellType = {
     type: string;
     address: string;
   };
-  price: number;
+  price: number | null;
 };
 
 export type ChainInfo = { [k: string]: number };
