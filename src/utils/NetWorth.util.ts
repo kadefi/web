@@ -4,7 +4,7 @@ import { isEmpty } from "underscore";
 import { ProjectData, ProjectResponse, TokenCellType, WalletData } from "../types/DashboardData.type";
 
 export const getWalletTotalValue = (data: TokenCellType[]) => {
-  return data.reduce((prev, current) => prev + current.fiatValue, 0);
+  return data.reduce((prev, current) => (current.fiatValue ? prev + current.fiatValue : prev), 0);
 };
 
 export const getNetWorth = (walletQuery: UseQueryResult<WalletData>, projectsQuery: UseQueryResult<ProjectData>[]) => {

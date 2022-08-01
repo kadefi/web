@@ -5,7 +5,7 @@ import { formatFiatValue, roundToDecimalStr } from "../../utils/Number.util";
 type Props = {
   balance: number;
   ticker: string;
-  fiatValue: number;
+  fiatValue: number | null;
   image: string;
 };
 
@@ -19,7 +19,7 @@ const TokenDisplay = (props: Props) => {
         <div>
           {roundToDecimalStr(balance, 2)} {ticker}
         </div>
-        <FiatValue>{formatFiatValue(fiatValue)}</FiatValue>
+        <FiatValue>{fiatValue ? formatFiatValue(fiatValue) : "-"}</FiatValue>
       </div>
     </Container>
   );

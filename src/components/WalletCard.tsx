@@ -17,7 +17,7 @@ import LoadingTableSkeleton from "./LoadingTableSkeleton";
 
 const HEADERS = ["Token Balance", "Price", "Value"];
 
-const getChainsTable = (chains: ChainInfo, ticker: string, price: number) => {
+const getChainsTable = (chains: ChainInfo, ticker: string, price: number | null) => {
   const headers = ["Balance", "Chain", "Value"];
   const rows: string[][] = [];
 
@@ -25,7 +25,7 @@ const getChainsTable = (chains: ChainInfo, ticker: string, price: number) => {
     rows.push([
       `${roundToDecimalStr(balance, 2)} ${ticker}`,
       `Chain ${chainId}`,
-      `$${roundToDecimalStr(balance * price, 2)}`,
+      price ? `$${roundToDecimalStr(balance * price, 2)}` : "-",
     ]);
   });
 
@@ -81,8 +81,8 @@ const WalletCard = (props: Props) => {
         {getTokenLogo(image)}
         {`${roundToDecimalStr(balance, 2)} ${ticker}`}
       </TickerContainer>,
-      <div key={`price-${i}`}>{formatFiatValue(price, 4)}</div>,
-      <div key={`fiat-${i}`}>{formatFiatValue(fiatValue)}</div>,
+      <div key={`price-${i}`}>{price ? formatFiatValue(price, 4) : "-"}</div>,
+      <div key={`fiat-${i}`}>{fiatValue ? formatFiatValue(fiatValue) : "-"}</div>,
     ]);
   });
 
