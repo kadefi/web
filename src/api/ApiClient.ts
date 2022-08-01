@@ -16,11 +16,12 @@ ApiClient.interceptors.response.use((response) => {
     const startTime = response.config.headers["x-request-start-time"] as number;
     const duration = (endTime - startTime) / 1000;
 
-    const { baseURL: baseUrl = "", url = "" } = response.config;
-
-    const shortenedUrl = url.replace(/\/k:.*/g, "");
-
-    trackApiResponseTime({ baseUrl, shortenedUrl, url, duration });
+    // Only send events if API >= 7s
+    if (duration >= 7) {
+      const { baseURL: baseUrl = "", url = "" } = response.config;
+      const shortenedUrl = url.replace(/\/k:.*/g, "");
+      trackApiResponseTime({ baseUrl, shortenedUrl, url, duration });
+    }
   }
   return response;
 });
