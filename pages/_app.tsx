@@ -6,6 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Image from "next/image";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
 import { persistQueryClient } from "react-query/persistQueryClient-experimental";
@@ -15,6 +16,7 @@ import { initializeAmplitude } from "../src/analytics/Analytics.util";
 import createEmotionCache from "../src/createEmotionCache";
 import theme from "../src/theme";
 import { Page } from "../src/types/Page.type";
+import "./_app.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -52,29 +54,31 @@ export default function MyApp(props: MyAppProps) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <title>Kadefi Money | DeFi Dashboard for Kadena</title>
-        </Head>
-        <Background>
-          <Image
-            alt="Background"
-            src={isMobile ? MobileBackground : DesktopBackground}
-            layout="fill"
-            objectFit="cover"
-            quality={100}
-            priority
-          />
-        </Background>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
-      </CacheProvider>
-    </QueryClientProvider>
+    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || ""} language="en">
+      <QueryClientProvider client={queryClient}>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <meta name="viewport" content="initial-scale=1, width=device-width" />
+            <title>Kadefi Money | DeFi Dashboard for Kadena</title>
+          </Head>
+          <Background>
+            <Image
+              alt="Background"
+              src={isMobile ? MobileBackground : DesktopBackground}
+              layout="fill"
+              objectFit="cover"
+              quality={100}
+              priority
+            />
+          </Background>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </ThemeProvider>
+        </CacheProvider>
+      </QueryClientProvider>
+    </GoogleReCaptchaProvider>
   );
 }
 

@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { ReactElement, useEffect, useState } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
@@ -10,11 +11,13 @@ import FetchLoadingIndicator from "../../src/components/commons/FetchLoadingIndi
 import NftCollection from "../../src/components/NftCollection";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import useCaptcha from "../../src/hooks/useCaptcha";
 import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { NftCollectionData } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
 import { isQueriesFetching, isQueriesLoading } from "../../src/utils/QueriesUtil";
+import { getIpAddress } from "../../src/utils/Request.util";
 
 const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number | undefined)[]) => {
   collections.sort((a, b) => {
@@ -24,7 +27,13 @@ const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number |
   });
 };
 
-const NftGallery: CustomNextPage = () => {
+type Props = {
+  ip: string;
+};
+
+const NftGallery: CustomNextPage<Props> = (props: Props) => {
+  const { ip } = props;
+
   // Contexts
   const { isDashboardLoading, setIsDashboardLoading, selectedNftModules } = usePageLayoutContext();
 
@@ -34,6 +43,7 @@ const NftGallery: CustomNextPage = () => {
   // Custom Hooks
   useTrackPageVisit(ROUTE.NFT_GALLERY);
   const { walletAddress } = usePageLayoutContext();
+  const { isCaptchaVerified } = useCaptcha("VisitGalleryPage", ip);
 
   // Data Queries
   const { collectionsQueries } = useGetNftCollectionsData(selectedNftModules, walletAddress);
@@ -49,6 +59,11 @@ const NftGallery: CustomNextPage = () => {
   // Prevent rendering without queries
   if (!walletAddress || !collectionsQueries) {
     return null;
+  }
+
+  // Prevent rendering if captcha failed
+  if (!isCaptchaVerified) {
+    return <div>Captcha failed. Please try again later.</div>;
   }
 
   const numberOfNfts: (number | undefined)[] = [];
@@ -82,6 +97,12 @@ const NftGallery: CustomNextPage = () => {
       {isUpdating && <FetchLoadingIndicator text="Retrieving NFT collections" />}
     </Container>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  return {
+    props: { ip: getIpAddress(req) },
+  };
 };
 
 const Header = styled(Typography)`
