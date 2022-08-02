@@ -2,6 +2,7 @@ import Container from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { GetServerSideProps } from "next";
 import { ReactElement, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
@@ -13,12 +14,14 @@ import ProjectCard from "../../src/components/ProjectCard";
 import WalletCard from "../../src/components/WalletCard";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import useCaptcha from "../../src/hooks/useCaptcha";
 import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
 import { isQueriesFetching, isQueriesLoading } from "../../src/utils/QueriesUtil";
+import { getIpAddress } from "../../src/utils/Request.util";
 
 const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | undefined)[]) => {
   projectCards.sort((a, b) => {
@@ -28,7 +31,13 @@ const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | un
   });
 };
 
-const Dashboard: CustomNextPage = () => {
+type Props = {
+  ip: string;
+};
+
+const Dashboard: CustomNextPage<Props> = (props: Props) => {
+  const { ip } = props;
+
   // Contexts
   const { isDashboardLoading, setIsDashboardLoading, projectsList, selectedProjectModules } = usePageLayoutContext();
 
@@ -38,6 +47,7 @@ const Dashboard: CustomNextPage = () => {
   // Custom Hooks
   useTrackPageVisit(ROUTE.DASHBOARD);
   const { walletAddress } = usePageLayoutContext();
+  const { isCaptchaVerified } = useCaptcha("VisitDashboardPage", ip);
 
   // Data Queries
   const { walletQuery, projectsQuery } = useGetDashboardData(selectedProjectModules, walletAddress);
@@ -53,6 +63,10 @@ const Dashboard: CustomNextPage = () => {
   // Prevent rendering without queries
   if (!walletAddress || !walletQuery || !projectsQuery || !projectsList) {
     return null;
+  }
+
+  if (!isCaptchaVerified) {
+    return <div>Captcha failed. Please try again later.</div>;
   }
 
   // Display components
@@ -103,6 +117,12 @@ const Dashboard: CustomNextPage = () => {
       {dashboardErrorFab}
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  return {
+    props: { ip: getIpAddress(req) },
+  };
 };
 
 const NetWorthAmountSkeleton = styled(Skeleton)({
