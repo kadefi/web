@@ -22,6 +22,8 @@ import { useProjectsList } from "../hooks/useProjectsList";
 import { useWalletAddress } from "../hooks/useWalletAddress";
 import theme from "../theme";
 import { getRecentWalletsLS } from "../utils/LocalStorage.util";
+import Image from "next/image";
+import TwitterButton from "../components/commons/SocialButtons/TwitterButton";
 
 type Props = {
   children: ReactNode;
@@ -139,7 +141,7 @@ const PageLayout = (props: Props) => {
       </LeftNavBar>
       {MENU_CONFIG[activeMenu].isWalletSearch && (
         <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
-          <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
+          <SearchWalletInput initialWalletAddress={walletAddress} isLoading={false} />
         </RightNavBar>
       )}
     </NavBar>
@@ -189,6 +191,17 @@ const PageLayout = (props: Props) => {
     </SideBar>
   );
 
+  const maintenanceSection = (
+    <CentralContainer>
+      <Image src="/assets/construction.png" width={isMobile ? 300 : 500} height={isMobile ? 300 : 500} unoptimized />
+      <TextContainer>
+        <MaintenanceText>Site is currently under maintenance mode</MaintenanceText>
+        <MaintenanceText>Follow our Twitter for latest updates</MaintenanceText>
+        <TwitterButton />
+      </TextContainer>
+    </CentralContainer>
+  );
+
   return (
     <PageLayoutContext.Provider
       value={{
@@ -203,12 +216,32 @@ const PageLayout = (props: Props) => {
         {navBar}
         <Content onClick={handleSideBarClose}>
           {sideBar}
-          <ChildrenContainer>{children}</ChildrenContainer>
+          <ChildrenContainer>{maintenanceSection}</ChildrenContainer>
         </Content>
       </Wrapper>
     </PageLayoutContext.Provider>
   );
 };
+
+const CentralContainer = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TextContainer = styled.div`
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MaintenanceText = styled.p`
+  margin-top: 0px;
+`;
 
 const CopyrightText = styled.p`
   font-size: 8px;
