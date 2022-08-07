@@ -4,17 +4,19 @@ import numeral from "numeral";
 export const roundToDecimalStr = (num: number, decimalDigits: number) => {
   const minValue = Number(Math.pow(10, -decimalDigits).toPrecision(1));
 
-  if (num < minValue) {
-    return `<${minValue}`;
-  }
-
   let optionalDigits = "";
 
   for (let i = 0; i < decimalDigits - 2; i++) {
     optionalDigits += "0";
   }
 
-  return numeral(round(num, decimalDigits)).format(`0,0.00[${optionalDigits}]`);
+  const format = `0,0.00[${optionalDigits}]`;
+
+  if (num < minValue) {
+    return numeral(num).format(`0.00e+0`);
+  }
+
+  return numeral(round(num, decimalDigits)).format(format);
 };
 
 export const formatFiatValue = (num: number, decimals: number = 2) => {
