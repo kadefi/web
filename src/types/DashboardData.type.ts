@@ -123,6 +123,6 @@ export type NftCollectionData = {
 
 export type NftData = {
   id: string;
-  type: "base64" | "PNG";
+  type: "base64" | "PNG" | "WEBP";
   url: string;
 };
