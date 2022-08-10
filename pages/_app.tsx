@@ -57,6 +57,17 @@ export default function MyApp(props: MyAppProps) {
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
           <title>Kadefi Money | DeFi Dashboard for Kadena</title>
+          <meta
+            name="description"
+            content="Kadena Porfolio and Insights Dashboard. Track all your Kadena's investments on a single dashboard"
+          />
+          <meta property="og:title" content="Kadefi Money | DeFi Dashboard for Kadena" />
+          <meta
+            property="og:description"
+            content="Kadena Porfolio and Insights Dashboard. Track all your Kadena's investments on a single dashboard"
+          />
+          <meta property="og:image" content="https://kadefi.money/assets/logo.png" />
+          <meta name="twitter:site" content="@kadefi_money" />
         </Head>
         <Background>
           <Image
