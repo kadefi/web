@@ -45,6 +45,11 @@ if (typeof window !== "undefined") {
 
 initializeAmplitude();
 
+const TITLE = "Kadefi Money | DeFi Dashboard for Kadena";
+const DESCRIPTION = "Kadena Porfolio and Insights Dashboard. Track all your Kadena's investments on a single dashboard";
+const IMAGE_URL = "https://kadefi.money/assets/logo.png";
+const TWITTER_USERNAME = "@kadefi_money";
+
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -56,18 +61,16 @@ export default function MyApp(props: MyAppProps) {
       <CacheProvider value={emotionCache}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <title>Kadefi Money | DeFi Dashboard for Kadena</title>
-          <meta
-            name="description"
-            content="Kadena Porfolio and Insights Dashboard. Track all your Kadena's investments on a single dashboard"
-          />
-          <meta property="og:title" content="Kadefi Money | DeFi Dashboard for Kadena" />
-          <meta
-            property="og:description"
-            content="Kadena Porfolio and Insights Dashboard. Track all your Kadena's investments on a single dashboard"
-          />
-          <meta property="og:image" content="https://kadefi.money/assets/logo.png" />
-          <meta name="twitter:site" content="@kadefi_money" />
+          <title>{TITLE}</title>
+          <meta name="description" content={DESCRIPTION} />
+          <meta property="og:title" content={TITLE} />
+          <meta property="og:description" content={DESCRIPTION} />
+          <meta property="og:image" content={IMAGE_URL} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content={TWITTER_USERNAME} />
+          <meta property="twitter:title" content={TITLE} />
+          <meta property="twitter:description" content={DESCRIPTION} />
+          <meta property="twitter:image" content={IMAGE_URL} />
         </Head>
         <Background>
           <Image
