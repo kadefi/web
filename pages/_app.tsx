@@ -66,7 +66,7 @@ export default function MyApp(props: MyAppProps) {
           <meta property="og:title" content={TITLE} />
           <meta property="og:description" content={DESCRIPTION} />
           <meta property="og:image" content={IMAGE_URL} />
-          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content={TWITTER_USERNAME} />
           <meta property="twitter:title" content={TITLE} />
           <meta property="twitter:description" content={DESCRIPTION} />
