@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import theme from "../../../theme";
+import theme from "../../theme";
 
 type Props = {
   isLogoOnly?: boolean;

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Skeleton, Typography } from "@mui/material";
-import { useProjectsList } from "../../../hooks/useProjectsList";
-import { getTokenLogo } from "../../../utils/Logo.util";
+import { useProjectsList } from "../../hooks/useProjectsList";
+import { getTokenLogo } from "../../utils/Logo.util";
 
 const SupportedProjects = () => {
   const { projectsList } = useProjectsList();

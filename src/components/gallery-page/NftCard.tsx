@@ -3,8 +3,8 @@ import MuiBrokenImageIcon from "@mui/icons-material/BrokenImage";
 import Skeleton from "@mui/material/Skeleton";
 import Image from "next/image";
 import { useState } from "react";
-import { trackNftImageLoadError } from "../analytics/Analytics.util";
-import { NftData } from "../types/DashboardData.type";
+import { trackNftImageLoadError } from "../../analytics/Analytics.util";
+import { NftData } from "../../types/DashboardData.type";
 
 type Props = {
   nftData: NftData;

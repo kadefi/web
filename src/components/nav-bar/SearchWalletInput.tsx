@@ -2,11 +2,11 @@ import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import { ROUTE } from "../constants/Routes.constant";
-import { isValidWalletAddress } from "../utils/String.util";
-import CustomCircularProgress from "./commons/CustomCircularProgress";
-import CustomTextField from "./commons/CustomTextField";
-import SnackBarAlert from "./commons/SnackBarAlert";
+import CircularProgress from "../../commons/CircularProgress";
+import SnackBarAlert from "../../commons/SnackBarAlert";
+import TextField from "../../commons/TextField";
+import { ROUTE } from "../../constants/Routes.constant";
+import { isValidWalletAddress } from "../../utils/String.util";
 
 type Props = {
   initialWalletAddress?: string;
@@ -57,14 +57,14 @@ const SearchWalletInput = (props: Props) => {
 
   // Display components
   const endIconComponent = isLoading ? (
-    <CustomCircularProgress disableShrink size={20} sx={{ opacity: 0.5 }} />
+    <CircularProgress disableShrink size={20} sx={{ opacity: 0.5 }} />
   ) : (
     <ArrowForwardRoundedIcon sx={{ color: "#ffffff9e" }} />
   );
 
   return (
     <>
-      <CustomTextField
+      <TextField
         type="text"
         inputRef={ref}
         disabled={isLoading}

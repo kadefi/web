@@ -3,17 +3,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
 import { UseQueryResult } from "react-query";
-import theme from "../theme";
-import { ChainInfo, TokenCellType, WalletData } from "../types/DashboardData.type";
-import { getTokenLogo } from "../utils/Logo.util";
-import { getWalletTotalValue } from "../utils/NetWorth.util";
-import { formatFiatValue, roundToDecimalStr } from "../utils/Number.util";
-import CustomPaper from "./commons/CustomPaper";
-import CustomTable from "./commons/CustomTable";
-import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
-import PngLogo from "./commons/PngLogo";
-import TypographyNeon from "./commons/TypographyNeon";
-import LoadingTableSkeleton from "./LoadingTableSkeleton";
+import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
+import LoadingTableSkeleton from "../../commons/LoadingTableSkeleton";
+import Paper from "../../commons/Paper";
+import PngLogo from "../../commons/PngLogo";
+import CustomTable from "../../commons/Table/CustomTable";
+import TypographyNeon from "../../commons/TypographyNeon";
+import theme from "../../theme";
+import { ChainInfo, TokenCellType, WalletData } from "../../types/DashboardData.type";
+import { getTokenLogo } from "../../utils/Logo.util";
+import { getWalletTotalValue } from "../../utils/NetWorth.util";
+import { formatFiatValue, roundToDecimalStr } from "../../utils/Number.util";
 
 const HEADERS = ["Token Balance", "Price", "Value"];
 
@@ -161,7 +161,7 @@ const WalletTotalValue = styled(TypographyNeon)`
   }
 `;
 
-const CardWrapper = styled(CustomPaper)({
+const CardWrapper = styled(Paper)({
   paddingBottom: "1rem",
   marginBottom: "2rem",
 });

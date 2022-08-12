@@ -1,6 +1,6 @@
 import { toDate, format } from "date-fns";
-import TokenDisplay from "../components/commons/TokenDisplay";
-import TokenPoolDisplay from "../components/commons/TokenPoolDisplay";
+import TokenDisplay from "../components/dashboard-page/TokenDisplay";
+import TokenPoolDisplay from "../components/dashboard-page/TokenPoolDisplay";
 import { CELL_TYPE, TableRowData } from "../types/DashboardData.type";
 import { formatFiatValue, roundToDecimalStr } from "./Number.util";
 

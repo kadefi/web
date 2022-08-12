@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import { MouseEvent } from "react";
-import PngLogo from "./PngLogo";
+import PngLogo from "../../commons/PngLogo";
 
 type Props = {
   name: string;

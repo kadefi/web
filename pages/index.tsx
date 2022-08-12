@@ -3,11 +3,11 @@ import MuiContainer from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import { useTrackPageVisit } from "../src/analytics/useTrackPageVisit";
-import { KadefiLogo } from "../src/components/commons/KadefiLogo";
-import TwitterButton from "../src/components/commons/SocialButtons/TwitterButton";
-import SupportedProjects from "../src/components/commons/SupportedProjects/SupportedProjects";
-import RecentSearches from "../src/components/RecentSearches";
-import SearchWalletInput from "../src/components/SearchWalletInput";
+import RecentSearches from "../src/components/home-page/RecentSearches";
+import SupportedProjects from "../src/components/home-page/SupportedProjects";
+import TwitterButton from "../src/components/misc/TwitterButton";
+import { KadefiLogo } from "../src/components/nav-bar/KadefiLogo";
+import SearchWalletInput from "../src/components/nav-bar/SearchWalletInput";
 import { ROUTE } from "../src/constants/Routes.constant";
 import theme from "../src/theme";
 

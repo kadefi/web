@@ -7,11 +7,11 @@ import { styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import { useState } from "react";
 import { UseQueryResult } from "react-query";
-import theme from "../theme";
-import { ProjectData, TokenCellType, WalletData } from "../types/DashboardData.type";
-import { ProjectErrorResponse } from "../types/Project.type";
-import { getDashboardErrors } from "../utils/DashboardError.util";
-import CustomCircularProgress from "./commons/CustomCircularProgress";
+import CircularProgress from "../../commons/CircularProgress";
+import theme from "../../theme";
+import { ProjectData, TokenCellType, WalletData } from "../../types/DashboardData.type";
+import { ProjectErrorResponse } from "../../types/Project.type";
+import { getDashboardErrors } from "../../utils/DashboardError.util";
 
 type DashboardErrorFabProps = {
   loading: boolean;
@@ -35,7 +35,7 @@ const DashboardErrorFab = ({ loading, walletQuery, projectsQuery }: DashboardErr
   const color = hasError ? "warning" : "success";
   const content = loading ? (
     <Fab size="small" disableRipple>
-      <CustomCircularProgress size={20} color="secondary" />
+      <CircularProgress size={20} color="secondary" />
     </Fab>
   ) : (
     <ClickAwayListener onClickAway={handleClose}>

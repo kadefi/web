@@ -14,7 +14,7 @@ type CustomTextFieldProps = {
   };
 } & TextFieldProps;
 
-const CustomTextField = (props: CustomTextFieldProps) => {
+const TextField = (props: CustomTextFieldProps) => {
   const { startIcon, endIcon, initialValue, ...textFieldProps } = props;
   const [input, setInput] = useState<string>("");
 
@@ -79,4 +79,4 @@ const StyledInputAdornment = styled(InputAdornment)({
   cursor: "pointer",
 });
 
-export default CustomTextField;
+export default TextField;

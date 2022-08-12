@@ -2,11 +2,11 @@ import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import { UseQueryResult } from "react-query";
-import theme from "../theme";
-import { NftCollectionData } from "../types/DashboardData.type";
-import { isEmpty } from "../utils/Object.util";
-import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
-import TypographyNeon from "./commons/TypographyNeon";
+import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
+import TypographyNeon from "../../commons/TypographyNeon";
+import theme from "../../theme";
+import { NftCollectionData } from "../../types/DashboardData.type";
+import { isEmpty } from "../../utils/Object.util";
 import NftCard from "./NftCard";
 
 type Props = {

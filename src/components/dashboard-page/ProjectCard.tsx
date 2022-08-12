@@ -4,15 +4,15 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { UseQueryResult } from "react-query";
 import { isEmpty } from "underscore";
-import theme from "../theme";
-import { ProjectData, ProjectResponse, ProjectsList, Section, TableRowData } from "../types/DashboardData.type";
-import { formatFiatValue } from "../utils/Number.util";
-import { getRowDisplay } from "../utils/Table.util";
-import CustomPaper from "./commons/CustomPaper";
-import CustomTable from "./commons/CustomTable";
-import FetchLoadingIndicator from "./commons/FetchLoadingIndicator";
-import PngLogo from "./commons/PngLogo";
-import TypographyNeon from "./commons/TypographyNeon";
+import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
+import Paper from "../../commons/Paper";
+import PngLogo from "../../commons/PngLogo";
+import CustomTable from "../../commons/Table/CustomTable";
+import TypographyNeon from "../../commons/TypographyNeon";
+import theme from "../../theme";
+import { ProjectData, ProjectResponse, ProjectsList, Section, TableRowData } from "../../types/DashboardData.type";
+import { formatFiatValue } from "../../utils/Number.util";
+import { getRowDisplay } from "../../utils/Table.util";
 
 type Props = {
   projectQuery: UseQueryResult<ProjectData>;
@@ -163,7 +163,7 @@ const SectionHeader = styled(Box)({
   marginBottom: "0.5rem",
 });
 
-const CardWrapper = styled(CustomPaper)({
+const CardWrapper = styled(Paper)({
   paddingBottom: "1rem",
   marginBottom: "2rem",
 });
