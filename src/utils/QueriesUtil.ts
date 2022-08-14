@@ -1,4 +1,4 @@
-import { UseQueryResult } from "react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 
 export const isQueriesLoading = (...queries: UseQueryResult<any>[]) => {
   if (queries.length === 0) {
@@ -8,7 +8,7 @@ export const isQueriesLoading = (...queries: UseQueryResult<any>[]) => {
   for (let i = 0; i < queries.length; i++) {
     const query = queries[i];
 
-    if (!query || query.isIdle || query.isLoading) {
+    if (!query || query.isLoading) {
       return true;
     }
   }
@@ -24,7 +24,7 @@ export const isQueriesFetching = (...queries: UseQueryResult<any>[]) => {
   for (let i = 0; i < queries.length; i++) {
     const query = queries[i];
 
-    if (!query || query.isIdle || query.isFetching) {
+    if (!query || query.isFetching) {
       return true;
     }
   }

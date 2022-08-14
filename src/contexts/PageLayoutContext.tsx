@@ -4,8 +4,6 @@ import { isEmpty } from "../utils/Object.util";
 
 type PageLayoutContextType = {
   walletAddress: string | undefined;
-  isDashboardLoading: boolean;
-  setIsDashboardLoading: Dispatch<SetStateAction<boolean>>;
 
   // Projects
   projectsList?: ProjectsList;

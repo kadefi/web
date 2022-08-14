@@ -1,5 +1,5 @@
 import round from "lodash/round";
-import { UseQueryResult } from "react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 import { isEmpty } from "underscore";
 import { ProjectData, ProjectResponse, TokenCellType, WalletData } from "../types/DashboardData.type";
 

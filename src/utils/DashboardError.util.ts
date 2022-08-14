@@ -1,4 +1,4 @@
-import { UseQueryResult } from "react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 import { ProjectData, WalletData } from "../types/DashboardData.type";
 
 export const getDashboardErrors = (

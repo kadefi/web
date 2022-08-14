@@ -1,4 +1,4 @@
-import { QueryFunction, useQueries, useQuery, UseQueryResult } from "react-query";
+import { QueryFunction, useQueries, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { NftCollectionData, NftCollectionsList as NftCollectionsList } from "../../types/DashboardData.type";
 import { isValidWalletAddress } from "../../utils/String.util";
 import { getNftCollectionsList, getNftCollectionData } from "../Nft.api";
@@ -22,7 +22,7 @@ export const useGetNftCollectionsData = (selectedNftModules: string[] = [], wall
     });
   });
 
-  const [...collectionsQueries] = useQueries(queries);
+  const [...collectionsQueries] = useQueries({ queries });
 
   return { collectionsQueries } as {
     collectionsQueries: UseQueryResult<NftCollectionData>[];

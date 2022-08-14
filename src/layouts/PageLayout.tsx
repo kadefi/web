@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/system";
+import { useIsFetching } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react";
 import PngLogo from "../commons/PngLogo";
@@ -76,7 +77,6 @@ const PageLayout = (props: Props) => {
 
   // States
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // Default to close sidebar (only for mobile)
-  const [isDashboardLoading, setIsDashboardLoading] = useState(true); // Default to loading true
 
   const projectListStates = useProjectsList();
   const nftCollectionsListStates = useNftCollectionsList();
@@ -84,6 +84,7 @@ const PageLayout = (props: Props) => {
   // Custom Hooks
   const { walletAddress } = useWalletAddress();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isPageFetching = useIsFetching() !== 0;
 
   // Effects
   useEffect(() => {
@@ -139,7 +140,7 @@ const PageLayout = (props: Props) => {
       </LeftNavBar>
       {MENU_CONFIG[activeMenu].isWalletSearch && (
         <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
-          <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isDashboardLoading} />
+          <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isPageFetching} />
         </RightNavBar>
       )}
     </NavBar>
@@ -193,8 +194,6 @@ const PageLayout = (props: Props) => {
     <PageLayoutContext.Provider
       value={{
         walletAddress,
-        isDashboardLoading,
-        setIsDashboardLoading,
         ...projectListStates,
         ...nftCollectionsListStates,
       }}

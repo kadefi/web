@@ -2,7 +2,8 @@ import Container from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { ReactElement, useEffect, useState } from "react";
+import { useIsFetching } from "@tanstack/react-query";
+import { ReactElement } from "react";
 import CountUp from "react-countup";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetDashboardData } from "../../src/api/queries/Dashboard.queries";
@@ -18,7 +19,6 @@ import theme from "../../src/theme";
 import { ProjectResponse } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
 import { getNetWorth } from "../../src/utils/NetWorth.util";
-import { isQueriesFetching, isQueriesLoading } from "../../src/utils/QueriesUtil";
 
 const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | undefined)[]) => {
   projectCards.sort((a, b) => {
@@ -30,10 +30,7 @@ const sortProjectCards = (projectCards: ReactElement[], fiatValues: (number | un
 
 const Dashboard: CustomNextPage = () => {
   // Contexts
-  const { isDashboardLoading, setIsDashboardLoading, projectsList, selectedProjectModules } = usePageLayoutContext();
-
-  // States
-  const [isDashboardFetching, setIsDashboardFetching] = useState(true);
+  const { projectsList, selectedProjectModules } = usePageLayoutContext();
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.DASHBOARD);
@@ -42,13 +39,7 @@ const Dashboard: CustomNextPage = () => {
   // Data Queries
   const { walletQuery, projectsQuery } = useGetDashboardData(selectedProjectModules, walletAddress);
 
-  // Effects
-  useEffect(() => {
-    setIsDashboardLoading(isQueriesLoading(...[walletQuery, ...projectsQuery]));
-    setIsDashboardFetching(isQueriesFetching(...[walletQuery, ...projectsQuery]));
-  }, [walletQuery, projectsQuery, setIsDashboardLoading, setIsDashboardFetching]);
-
-  const isUpdating = isDashboardLoading || isDashboardFetching;
+  const isPageFetching = useIsFetching() !== 0;
 
   // Prevent rendering without queries
   if (!walletAddress || !walletQuery || !projectsQuery || !projectsList) {
@@ -57,7 +48,7 @@ const Dashboard: CustomNextPage = () => {
 
   // Display components
   const dashboardErrorFab = (
-    <DashboardErrorFab loading={isUpdating} walletQuery={walletQuery} projectsQuery={projectsQuery} />
+    <DashboardErrorFab loading={isPageFetching} walletQuery={walletQuery} projectsQuery={projectsQuery} />
   );
 
   const walletCard = <WalletCard walletQuery={walletQuery} />;
@@ -75,7 +66,7 @@ const Dashboard: CustomNextPage = () => {
     <>
       <NetWorthTitle>Net Worth</NetWorthTitle>
       <NetWorthAmount>
-        {isDashboardLoading ? (
+        {isPageFetching ? (
           <NetWorthAmountSkeleton />
         ) : (
           <span>
@@ -98,7 +89,7 @@ const Dashboard: CustomNextPage = () => {
         {netWorth}
         {walletCard}
         {projectCards}
-        {isUpdating && <FetchLoadingIndicator text="Retrieving latest projects data" />}
+        {isPageFetching && <FetchLoadingIndicator text="Retrieving latest projects data" />}
       </Content>
       {dashboardErrorFab}
     </div>

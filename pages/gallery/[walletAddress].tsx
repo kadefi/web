@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
+import { useIsFetching } from "@tanstack/react-query";
 import Image from "next/image";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import { useGetNftCollectionsData } from "../../src/api/queries/NftGallery.queries";
 import CustomLink from "../../src/commons/CustomLink";
@@ -14,7 +15,6 @@ import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { NftCollectionData } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
-import { isQueriesFetching, isQueriesLoading } from "../../src/utils/QueriesUtil";
 
 const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number | undefined)[]) => {
   collections.sort((a, b) => {
@@ -26,10 +26,7 @@ const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number |
 
 const NftGallery: CustomNextPage = () => {
   // Contexts
-  const { isDashboardLoading, setIsDashboardLoading, selectedNftModules } = usePageLayoutContext();
-
-  // States
-  const [isNftGalleryFetching, setIsNftGalleryFetching] = useState(true);
+  const { selectedNftModules } = usePageLayoutContext();
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.NFT_GALLERY);
@@ -38,13 +35,7 @@ const NftGallery: CustomNextPage = () => {
   // Data Queries
   const { collectionsQueries } = useGetNftCollectionsData(selectedNftModules, walletAddress);
 
-  // Effects
-  useEffect(() => {
-    setIsDashboardLoading(isQueriesLoading(...collectionsQueries));
-    setIsNftGalleryFetching(isQueriesFetching(...collectionsQueries));
-  }, [collectionsQueries, setIsDashboardLoading]);
-
-  const isUpdating = isDashboardLoading || isNftGalleryFetching;
+  const isPageFetching = useIsFetching() !== 0;
 
   // Prevent rendering without queries
   if (!walletAddress || !collectionsQueries) {
@@ -61,7 +52,7 @@ const NftGallery: CustomNextPage = () => {
   sortNftCollections(nftCollections, numberOfNfts);
 
   // No NFT Collection
-  if (!isUpdating && numberOfNfts.every((value) => value === undefined)) {
+  if (!isPageFetching && numberOfNfts.every((value) => value === undefined)) {
     return (
       <CentralContainer maxWidth="md">
         <EmptyBoxImageContainer>
@@ -79,7 +70,7 @@ const NftGallery: CustomNextPage = () => {
     <Container maxWidth="md">
       <Header>NFT Gallery</Header>
       {nftCollections}
-      {isUpdating && <FetchLoadingIndicator text="Retrieving NFT collections" />}
+      {isPageFetching && <FetchLoadingIndicator text="Retrieving NFT collections" />}
     </Container>
   );
 };

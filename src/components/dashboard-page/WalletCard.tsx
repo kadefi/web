@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { UseQueryResult } from "@tanstack/react-query";
 import { ReactNode } from "react";
-import { UseQueryResult } from "react-query";
 import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
 import LoadingTableSkeleton from "../../commons/LoadingTableSkeleton";
 import Paper from "../../commons/Paper";
@@ -43,9 +43,9 @@ const WalletCard = (props: Props) => {
     return null;
   }
 
-  const { isLoading, isFetching, data: walletData, isIdle } = walletQuery;
+  const { isLoading, isFetching, data: walletData } = walletQuery;
 
-  if (isLoading || isIdle) {
+  if (isLoading) {
     return <LoadingTableSkeleton />;
   }
 

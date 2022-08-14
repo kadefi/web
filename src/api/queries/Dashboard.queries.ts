@@ -1,4 +1,4 @@
-import { QueryFunction, useQueries, useQuery, UseQueryResult } from "react-query";
+import { QueryFunction, useQueries, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ProjectData, ProjectsList, WalletData } from "../../types/DashboardData.type";
 import { getProjectData, getProjectsList } from "../Project.api";
 import { getWalletTokens } from "../Wallet.api";
@@ -29,7 +29,7 @@ export const useGetDashboardData = (selectedProjectModules: string[] = [], walle
     });
   });
 
-  const [walletQuery, ...projectsQuery] = useQueries(queries);
+  const [walletQuery, ...projectsQuery] = useQueries({ queries });
 
   return { walletQuery, projectsQuery } as {
     walletQuery: UseQueryResult<WalletData>;

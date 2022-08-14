@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { UseQueryResult } from "react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 import { isEmpty } from "underscore";
 import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
 import Paper from "../../commons/Paper";
@@ -63,9 +63,9 @@ const ProjectCard = (props: Props) => {
     return null;
   }
 
-  const { data: projectData, isLoading, isFetching, isError } = projectQuery;
+  const { data: projectData, isFetching, isError } = projectQuery;
 
-  if (isLoading || !projectData || isEmpty(projectData) || isError) {
+  if (!projectData || isEmpty(projectData) || isError) {
     return null;
   }
 

@@ -3,12 +3,13 @@ import styled from "@emotion/styled";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Image from "next/image";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
-import { persistQueryClient } from "react-query/persistQueryClient-experimental";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import DesktopBackground from "../public/assets/desktop-background.svg";
 import MobileBackground from "../public/assets/mobile-background.svg";
 import { initializeAmplitude } from "../src/analytics/Analytics.util";
@@ -34,11 +35,11 @@ const queryClient = new QueryClient({
 });
 
 if (typeof window !== "undefined") {
-  const localStoragePersistor = createWebStoragePersistor({ storage: window.localStorage });
+  const localStoragePersister = createSyncStoragePersister({ storage: window.localStorage });
 
   persistQueryClient({
     queryClient,
-    persistor: localStoragePersistor,
+    persister: localStoragePersister,
     buster: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
   });
 }
@@ -88,6 +89,7 @@ export default function MyApp(props: MyAppProps) {
           {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </CacheProvider>
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
+import { UseQueryResult } from "@tanstack/react-query";
 import { useState } from "react";
-import { UseQueryResult } from "react-query";
 import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
 import TypographyNeon from "../../commons/TypographyNeon";
 import theme from "../../theme";
@@ -18,11 +18,11 @@ const MIN_COUNT = 8;
 const NftCollection = (props: Props) => {
   const { collectionQuery } = props;
 
-  const { data: collection, isLoading, isFetching, isIdle } = collectionQuery;
+  const { data: collection, isFetching } = collectionQuery;
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  if (isLoading || isIdle || !collection || isEmpty(collection)) {
+  if (!collection || isEmpty(collection)) {
     return null;
   }
 
