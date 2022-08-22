@@ -4,7 +4,7 @@ import { trackWalletSearchEvent } from "../analytics/Analytics.util";
 import { addNewRecentWalletLS } from "../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../utils/String.util";
 
-type WalletAddresses = string[] | undefined;
+export type WalletAddresses = string[] | undefined;
 
 export const useWalletAddresses = () => {
   const router = useRouter();

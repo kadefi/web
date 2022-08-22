@@ -6,10 +6,10 @@ import FetchLoadingIndicator from "../../src/commons/FetchLoadingIndicator";
 import NetWorth from "../../src/components/dashboard-page/NetWorth";
 import ProjectCard from "../../src/components/dashboard-page/ProjectCard/ProjectCard";
 import WalletCard from "../../src/components/dashboard-page/WalletCard/WalletCard";
+import { getPageLayout } from "../../src/components/layouts/PageLayout/PageLayout";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
 import useIsPageFetching from "../../src/hooks/useIsPageFetching";
-import { getPageLayout } from "../../src/layouts/PageLayout";
 import { ProjectsNetWorth } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
 

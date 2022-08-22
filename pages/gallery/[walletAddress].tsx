@@ -6,10 +6,10 @@ import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import CustomLink from "../../src/commons/CustomLink";
 import FetchLoadingIndicator from "../../src/commons/FetchLoadingIndicator";
 import NftCollection from "../../src/components/gallery-page/NftCollection";
+import { getPageLayout } from "../../src/components/layouts/PageLayout/PageLayout";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
 import useIsPageFetching from "../../src/hooks/useIsPageFetching";
-import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
 import { CustomNextPage } from "../../src/types/Page.type";
 
