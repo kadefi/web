@@ -20,37 +20,27 @@ type Props = {
   handleNetWorthUpdate: (module: string, netWorth: number) => void;
 };
 
-const MOCK_WALLET_ADDRESSES = [
-  "k:ca237063d821a34f8004e52d93b36715d75566a85164c6268c4aa61ecf176a57",
-  "k:001ad386f24013dade4cc2ea9d1fd7ef27605591172e69ce4282a634584acfa9",
-  "k:456ff7642ec4f59f1685bd8bbe35f4b7ab7b2c688e16582a823e596370401258",
-  "k:609466382bc22b6c19f030acddaacba0d5f2aeb299dca4694d3bc104e34df654",
-  "k:991a3f4acc07275e732231031a3c7522b6e918c214b4a94d6ac485451e55593e",
-];
+// const MOCK_WALLET_ADDRESSES = [
+//   "k:ca237063d821a34f8004e52d93b36715d75566a85164c6268c4aa61ecf176a57",
+//   "k:001ad386f24013dade4cc2ea9d1fd7ef27605591172e69ce4282a634584acfa9",
+//   "k:456ff7642ec4f59f1685bd8bbe35f4b7ab7b2c688e16582a823e596370401258",
+//   "k:609466382bc22b6c19f030acddaacba0d5f2aeb299dca4694d3bc104e34df654",
+//   "k:991a3f4acc07275e732231031a3c7522b6e918c214b4a94d6ac485451e55593e",
+// ];
 
 const ProjectCard = (props: Props) => {
   const { projectModule, handleNetWorthUpdate: handleProjectNetWorthUpdate } = props;
   const [projectName, setProjectName] = useState<string | null>(null);
   const [projectImgSrc, setProjectImgSrc] = useState<string | null>(null);
   const [projectNetWorth, setProjectNetWorth] = useState<number | null>(null);
-  const {
-    // TODO: Use walletAddresses from page layout context
-    // walletAddresses,
-    projectsList,
-    selectedProjectModules,
-  } = usePageLayoutContext();
+  const { walletAddresses, projectsList, selectedProjectModules } = usePageLayoutContext();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const queries = useGetProjectData(
-    projectModule,
-    // TODO: Remove mock wallet address
-    MOCK_WALLET_ADDRESSES,
-    selectedProjectModules.includes(projectModule),
-  );
+  const queries = useGetProjectData(projectModule, walletAddresses, selectedProjectModules.includes(projectModule));
   const isFetching = Boolean(useIsFetching([projectModule]));
   const projectsData = getQueriesResults(queries);
-  const isDataAvailable = !isFetching && projectsData.length > 0;
-  const isDataNotAvailable = projectsData.length === 0;
-  const isMultiWallet = MOCK_WALLET_ADDRESSES.length >= 2;
+  const isDataAvailable = walletAddresses && !isFetching && projectsData.length > 0;
+  const isDataNotAvailable = !walletAddresses || projectsData.length === 0;
+  const isMultiWallet = walletAddresses ? walletAddresses.length >= 2 : false;
 
   useEffect(() => {
     if (projectsList) {

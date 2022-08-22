@@ -9,6 +9,7 @@ import { useWalletAddresses } from "../../../hooks/useWalletAddress";
 import theme from "../../../theme";
 import { getRecentWalletsLS } from "../../../utils/LocalStorage.util";
 import { MENU_CONFIG, MENU_TITLE } from "./Menu.config";
+import MultiWalletPills from "./MultiWalletPills";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 
@@ -76,7 +77,10 @@ const PageLayout = (props: Props) => {
         <NavBar handleSideBarToggle={handleSideBarToggle} handleSideBarClose={handleSideBarClose} />
         <Content onClick={handleSideBarClose}>
           <SideBar isSideBarOpen={isSideBarOpen} handleMenuClick={handleMenuClick} />
-          <ChildrenContainer>{children}</ChildrenContainer>
+          <ChildrenContainer>
+            <MultiWalletPills />
+            {children}
+          </ChildrenContainer>
         </Content>
       </Wrapper>
     </PageLayoutContext.Provider>

@@ -42,7 +42,7 @@ const Dashboard: CustomNextPage = () => {
 };
 
 const Content = styled(Container)({
-  marginTop: "32px",
+  marginTop: "1rem",
   marginBottom: "80px",
 });
 

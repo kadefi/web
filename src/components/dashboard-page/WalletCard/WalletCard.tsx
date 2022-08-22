@@ -10,19 +10,19 @@ import Paper from "../../../commons/Paper";
 import PngLogo from "../../../commons/PngLogo";
 import TypographyNeon from "../../../commons/TypographyNeon";
 import { WALLET_KEY } from "../../../constants/QueriesKey.constant";
-// import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
+import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import theme from "../../../theme";
 import { formatFiatValue } from "../../../utils/Number.util";
 import { getQueriesResults } from "../../../utils/QueriesUtil";
 import WalletDataTable from "./WalletDataTable";
 
-const MOCK_WALLET_ADDRESSES = [
-  "k:ca237063d821a34f8004e52d93b36715d75566a85164c6268c4aa61ecf176a57",
-  "k:001ad386f24013dade4cc2ea9d1fd7ef27605591172e69ce4282a634584acfa9",
-  "k:456ff7642ec4f59f1685bd8bbe35f4b7ab7b2c688e16582a823e596370401258",
-  "k:609466382bc22b6c19f030acddaacba0d5f2aeb299dca4694d3bc104e34df654",
-  "k:991a3f4acc07275e732231031a3c7522b6e918c214b4a94d6ac485451e55593e",
-];
+// const MOCK_WALLET_ADDRESSES = [
+//   "k:ca237063d821a34f8004e52d93b36715d75566a85164c6268c4aa61ecf176a57",
+//   "k:001ad386f24013dade4cc2ea9d1fd7ef27605591172e69ce4282a634584acfa9",
+//   "k:456ff7642ec4f59f1685bd8bbe35f4b7ab7b2c688e16582a823e596370401258",
+//   "k:609466382bc22b6c19f030acddaacba0d5f2aeb299dca4694d3bc104e34df654",
+//   "k:991a3f4acc07275e732231031a3c7522b6e918c214b4a94d6ac485451e55593e",
+// ];
 
 type Props = {
   handleNetWorthUpdate: (module: string, netWorth: number) => void;
@@ -31,14 +31,14 @@ type Props = {
 const WalletCard = (props: Props) => {
   const { handleNetWorthUpdate } = props;
 
-  // const { walletAddresses } = usePageLayoutContext();
+  const { walletAddresses } = usePageLayoutContext();
   const [walletsNetWorth, setWalletsNetWorth] = useState<number | null>(null);
-  const walletQueries = useGetWalletData(MOCK_WALLET_ADDRESSES, true);
+  const walletQueries = useGetWalletData(walletAddresses, true);
   const isFetching = Boolean(useIsFetching([WALLET_KEY]));
   const walletsData = getQueriesResults(walletQueries);
   const isDataAvailable = !isFetching && walletsData.length > 0;
   const isDataNotAvailable = walletsData.length === 0;
-  const isMultiWallet = MOCK_WALLET_ADDRESSES.length > 1;
+  const isMultiWallet = walletAddresses ? walletAddresses.length > 1 : false;
 
   useEffect(() => {
     if (isDataAvailable) {
@@ -99,6 +99,7 @@ const WalletHeader = styled(Typography)`
 
 const WalletTotalValue = styled(TypographyNeon)`
   font-size: 1.25rem;
+  font-weight: 500;
 
   ${theme.breakpoints.down("sm")} {
     font-size: 1rem;

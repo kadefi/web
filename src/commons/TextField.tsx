@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
 import InputAdornment from "@mui/material/InputAdornment";
 import MuiTextField, { TextFieldProps } from "@mui/material/TextField";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 
 type CustomTextFieldProps = {
-  initialValue?: string;
   startIcon?: {
     component: ReactNode;
   };
@@ -15,12 +14,8 @@ type CustomTextFieldProps = {
 } & TextFieldProps;
 
 const TextField = (props: CustomTextFieldProps) => {
-  const { startIcon, endIcon, initialValue, ...textFieldProps } = props;
+  const { startIcon, endIcon, ...textFieldProps } = props;
   const [input, setInput] = useState<string>("");
-
-  useEffect(() => {
-    initialValue && setInput(initialValue);
-  }, [initialValue]);
 
   const handleEndIconClick = () => {
     if (input && endIcon && endIcon.onClick) {

@@ -9,22 +9,15 @@ import { ROUTE } from "../../constants/Routes.constant";
 import { isValidWalletAddress } from "../../utils/String.util";
 
 type Props = {
-  initialWalletAddress?: string;
   isLoading?: boolean;
 };
 
 const SearchWalletInput = (props: Props) => {
-  // Props
-  const { initialWalletAddress, isLoading = false } = props;
-
-  // States
+  const { isLoading = false } = props;
   const [isErrorNotiOpen, setIsErrorNotiOpen] = useState(false);
-
-  // Custom hooks
   const router = useRouter();
   const ref = useRef<HTMLInputElement>();
 
-  // Handlers
   const handleSearchWallet = (value: string) => {
     const cleanedAddress = value.toLowerCase().trim();
 
@@ -55,7 +48,6 @@ const SearchWalletInput = (props: Props) => {
     setIsErrorNotiOpen(false);
   };
 
-  // Display components
   const endIconComponent = isLoading ? (
     <CircularProgress disableShrink size={20} sx={{ opacity: 0.5 }} />
   ) : (
@@ -67,10 +59,10 @@ const SearchWalletInput = (props: Props) => {
       <TextField
         type="text"
         inputRef={ref}
-        initialValue={initialWalletAddress}
+        disabled={isLoading}
         onKeyDown={handleWalletInputEnter}
         fullWidth
-        placeholder="Enter your wallet address"
+        placeholder="Search a wallet address"
         startIcon={{ component: <SearchIcon sx={{ color: "#ffffff9e" }} /> }}
         endIcon={{
           component: endIconComponent,

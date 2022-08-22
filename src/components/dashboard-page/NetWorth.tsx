@@ -39,8 +39,9 @@ const NetWorthAmountSkeleton = styled(Skeleton)({
 });
 
 const NetWorthAmount = styled(TypographyNeon)`
-  font-size: 48px;
+  font-size: 52px;
   margin-bottom: 1rem;
+  font-weight: 400;
 
   ${theme.breakpoints.down("sm")} {
     font-size: 40px;
@@ -50,7 +51,6 @@ const NetWorthAmount = styled(TypographyNeon)`
 const NetWorthTitle = styled(Typography)`
   font-size: 24px;
   font-weight: bold;
-  margin-top: 1rem;
 
   ${theme.breakpoints.down("sm")} {
     font-size: 20px;

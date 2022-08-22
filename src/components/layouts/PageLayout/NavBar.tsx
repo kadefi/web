@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import { Container, Box, useMediaQuery } from "@mui/material";
-import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import { useActiveMenu } from "../../../hooks/useActiveMenu";
 import useIsPageFetching from "../../../hooks/useIsPageFetching";
 import theme from "../../../theme";
@@ -17,7 +16,6 @@ type Props = {
 const NavBar = (props: Props) => {
   const { handleSideBarToggle, handleSideBarClose } = props;
 
-  const { walletAddresses } = usePageLayoutContext();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isPageFetching = useIsPageFetching();
   const activeMenu = useActiveMenu();
@@ -30,7 +28,7 @@ const NavBar = (props: Props) => {
       </LeftNavBar>
       {MENU_CONFIG[activeMenu].isWalletSearch && (
         <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
-          <SearchWalletInput initialWalletAddress={walletAddresses && walletAddresses[0]} isLoading={isPageFetching} />
+          <SearchWalletInput isLoading={isPageFetching} />
         </RightNavBar>
       )}
     </NavBarContainer>
