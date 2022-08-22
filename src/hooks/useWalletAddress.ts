@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { trackWalletSearchEvent } from "../analytics/Analytics.util";
-import { addNewRecentWalletLS } from "../utils/LocalStorage.util";
+// import { trackWalletSearchEvent } from "../analytics/Analytics.util";
+// import { addNewRecentWalletLS } from "../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../utils/String.util";
 
 export type WalletAddresses = string[] | undefined;
@@ -13,33 +13,46 @@ export const useWalletAddresses = () => {
 
   // Whenever route query changes
   useEffect(() => {
-    const queryWalletAddress = router.query.walletAddress as string | undefined;
+    if (router.isReady) {
+      let queryWalletAddresses = router.query.wallet as string | string[] | undefined;
 
-    if (!queryWalletAddress) {
-      return;
+      if (!queryWalletAddresses) {
+        router.push("/");
+        return;
+      }
+
+      if (typeof queryWalletAddresses === "string") {
+        queryWalletAddresses = [queryWalletAddresses];
+      }
+
+      if (queryWalletAddresses.length > 5) {
+        router.push("/");
+      }
+
+      const cleanedAddresses = queryWalletAddresses.map((address) => address.toLowerCase().trim());
+
+      // Back to homepage if invalide route wallet address is invalid
+      for (let i = 0; i < cleanedAddresses.length; i++) {
+        if (!isValidWalletAddress(cleanedAddresses[i])) {
+          router.push("/");
+          return;
+        }
+      }
+
+      // Set walletAddress based on route
+      setWalletAddresses(cleanedAddresses);
     }
-
-    const cleanedAddress = queryWalletAddress.toLowerCase().trim();
-
-    // Back to homepage if invalide route wallet address is invalid
-    if (!isValidWalletAddress(cleanedAddress)) {
-      router.push("/");
-      return;
-    }
-
-    // Set walletAddress based on route
-    setWalletAddresses([cleanedAddress]);
   }, [router]);
 
-  useEffect(() => {
-    if (walletAddresses && walletAddresses[0]) {
-      // Save recent wallet to local storage
-      addNewRecentWalletLS(walletAddresses[0]);
+  // useEffect(() => {
+  //   if (walletAddresses && walletAddresses[0]) {
+  //     // Save recent wallet to local storage
+  //     addNewRecentWalletLS(walletAddresses[0]);
 
-      // Track new wallet search event on Amplitude
-      trackWalletSearchEvent(walletAddresses[0]);
-    }
-  }, [walletAddresses]);
+  //     // Track new wallet search event on Amplitude
+  //     trackWalletSearchEvent(walletAddresses[0]);
+  //   }
+  // }, [walletAddresses]);
 
   return { walletAddresses };
 };
