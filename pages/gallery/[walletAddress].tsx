@@ -1,28 +1,17 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import MuiContainer from "@mui/material/Container";
-import { useIsFetching } from "@tanstack/react-query";
 import Image from "next/image";
-import { ReactElement } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
-import { useGetNftCollectionsData } from "../../src/api/queries/NftGallery.queries";
 import CustomLink from "../../src/commons/CustomLink";
 import FetchLoadingIndicator from "../../src/commons/FetchLoadingIndicator";
 import NftCollection from "../../src/components/gallery-page/NftCollection";
 import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import useIsPageFetching from "../../src/hooks/useIsPageFetching";
 import { getPageLayout } from "../../src/layouts/PageLayout";
 import theme from "../../src/theme";
-import { NftCollectionData } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
-
-const sortNftCollections = (collections: ReactElement[], numberOfNfts: (number | undefined)[]) => {
-  collections.sort((a, b) => {
-    const first = numberOfNfts[collections.indexOf(a)];
-    const second = numberOfNfts[collections.indexOf(b)];
-    return (second || 0) - (first || 0);
-  });
-};
 
 const NftGallery: CustomNextPage = () => {
   // Contexts
@@ -30,29 +19,14 @@ const NftGallery: CustomNextPage = () => {
 
   // Custom Hooks
   useTrackPageVisit(ROUTE.NFT_GALLERY);
-  const { walletAddress } = usePageLayoutContext();
+  const isPageFetching = useIsPageFetching();
 
-  // Data Queries
-  const { collectionsQueries } = useGetNftCollectionsData(selectedNftModules, walletAddress);
-
-  const isPageFetching = useIsFetching() !== 0;
-
-  // Prevent rendering without queries
-  if (!walletAddress || !collectionsQueries) {
-    return null;
-  }
-
-  const numberOfNfts: (number | undefined)[] = [];
-
-  const nftCollections = collectionsQueries.map((collectionQuery, i) => {
-    numberOfNfts[i] = (collectionQuery.data as NftCollectionData)?.nfts?.length || undefined;
-    return <NftCollection key={`collection-${i}`} collectionQuery={collectionQuery} />;
+  const nftCollections = selectedNftModules.map((nftModule, i) => {
+    return <NftCollection key={`collection-${i}`} nftModule={nftModule} />;
   });
 
-  sortNftCollections(nftCollections, numberOfNfts);
-
   // No NFT Collection
-  if (!isPageFetching && numberOfNfts.every((value) => value === undefined)) {
+  if (!isPageFetching) {
     return (
       <CentralContainer maxWidth="md">
         <EmptyBoxImageContainer>

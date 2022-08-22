@@ -1,42 +1,41 @@
 import { QueryFunction, useQueries, useQuery, UseQueryResult } from "@tanstack/react-query";
+import { WALLET_KEY } from "../../constants/QueriesKey.constant";
 import { ProjectData, ProjectsList, WalletData } from "../../types/DashboardData.type";
 import { getProjectData, getProjectsList } from "../Project.api";
 import { getWalletTokens } from "../Wallet.api";
 
-const WALLET_KEY = "WALLET_KEY";
-const PROJECT_KEY = "PROJECT_KEY";
-
-export const useGetDashboardData = (selectedProjectModules: string[] = [], walletAddress: string = "") => {
+export const useGetWalletData = (walletAddresseses: string[] | undefined, isEnabled: boolean) => {
   const queries: {
     queryKey: string[];
-    queryFn: QueryFunction<WalletData | ProjectData>;
+    queryFn: QueryFunction<WalletData>;
     enabled: boolean;
-  }[] = [];
+  }[] = walletAddresseses
+    ? walletAddresseses.map((walletAddress) => ({
+        queryKey: [WALLET_KEY, walletAddress],
+        queryFn: ({ signal }) => getWalletTokens(walletAddress, signal),
+        enabled: isEnabled,
+      }))
+    : [];
 
-  const isEnabled = selectedProjectModules?.length > 0 && walletAddress?.length > 0;
-
-  queries.push({
-    queryKey: [WALLET_KEY, walletAddress],
-    queryFn: ({ signal }) => getWalletTokens(walletAddress, signal),
-    enabled: isEnabled,
-  });
-
-  selectedProjectModules.forEach((projectModule) => {
-    queries.push({
-      queryKey: [PROJECT_KEY, projectModule, walletAddress],
-      queryFn: ({ signal }) => getProjectData(projectModule, walletAddress, signal),
-      enabled: isEnabled,
-    });
-  });
-
-  const [walletQuery, ...projectsQuery] = useQueries({ queries });
-
-  return { walletQuery, projectsQuery } as {
-    walletQuery: UseQueryResult<WalletData>;
-    projectsQuery: UseQueryResult<ProjectData>[];
-  };
+  return useQueries({ queries });
 };
 
 export const useGetProjectsList = (): UseQueryResult<ProjectsList> => {
   return useQuery(["PROJECTS_LIST"], () => getProjectsList());
+};
+
+export const useGetProjectData = (projectModule: string, walletAddresses: string[] | undefined, isEnabled: boolean) => {
+  const queries: {
+    queryKey: string[];
+    queryFn: QueryFunction<ProjectData>;
+    enabled: boolean;
+  }[] = walletAddresses
+    ? walletAddresses.map((walletAddress) => ({
+        queryKey: [projectModule, walletAddress],
+        queryFn: ({ signal }) => getProjectData(projectModule, signal, walletAddress),
+        enabled: isEnabled,
+      }))
+    : [];
+
+  return useQueries({ queries });
 };

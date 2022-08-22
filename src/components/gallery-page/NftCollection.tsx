@@ -1,22 +1,28 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
-import { UseQueryResult } from "@tanstack/react-query";
 import { useState } from "react";
+import { useGetNftCollectionData } from "../../api/queries/NftGallery.queries";
 import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
 import TypographyNeon from "../../commons/TypographyNeon";
+import { usePageLayoutContext } from "../../contexts/PageLayoutContext";
 import theme from "../../theme";
-import { NftCollectionData } from "../../types/DashboardData.type";
 import { isEmpty } from "../../utils/Object.util";
 import NftCard from "./NftCard";
 
 type Props = {
-  collectionQuery: UseQueryResult<NftCollectionData>;
+  nftModule: string;
 };
 
 const MIN_COUNT = 8;
 
 const NftCollection = (props: Props) => {
-  const { collectionQuery } = props;
+  const { nftModule } = props;
+
+  const { walletAddresses, selectedNftModules } = usePageLayoutContext();
+
+  const collectionQueries = useGetNftCollectionData(nftModule, walletAddresses, selectedNftModules.includes(nftModule));
+
+  const collectionQuery = collectionQueries[0];
 
   const { data: collection, isFetching } = collectionQuery;
 

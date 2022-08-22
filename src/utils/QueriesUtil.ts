@@ -31,3 +31,23 @@ export const isQueriesFetching = (...queries: UseQueryResult<any>[]) => {
 
   return false;
 };
+
+export const getQueriesResults = <T>(queries: UseQueryResult<T>[]) => {
+  if (queries.length === 0) {
+    return [];
+  }
+
+  const queryResults: T[] = [];
+
+  for (let i = 0; i < queries.length; i++) {
+    const query = queries[i];
+
+    const { data, isError, isLoading } = query;
+
+    if (data && !isLoading && !isError) {
+      queryResults.push(data);
+    }
+  }
+
+  return queryResults;
+};

@@ -33,12 +33,21 @@ const CustomTable = (props: Props) => {
     return headers.map((header, i) => {
       let align: TableCellProps["align"] = "left";
 
-      if (i === headers.length - 1) {
+      let sx = {};
+
+      if (i === 0) {
+        sx = {
+          borderRadius: "6px 0 0 6px",
+        };
+      } else if (i === headers.length - 1) {
         align = "right";
+        sx = {
+          borderRadius: "0 6px 6px 0",
+        };
       }
 
       return (
-        <StyledTableCell key={`${tableKey}-header-${i}`} align={align} $isSubTable={isSubTable}>
+        <StyledTableCell key={`${tableKey}-header-${i}`} align={align} $isSubTable={isSubTable} sx={sx}>
           {header}
         </StyledTableCell>
       );
@@ -207,7 +216,7 @@ const StyledTableCell = styled(TableCell, transientOptions)<StyledTableCellProps
   }
 
   &.${tableCellClasses.head} {
-    background-color: ${(props) => (props.$isSubTable ? "rgba(0, 0, 0, 0.2)" : "rgba(23, 0, 23, 0.8)")};
+    background-color: ${(props) => (props.$isSubTable ? "rgba(0, 0, 0, 0.2)" : "rgb(152 152 152 / 10%)")};
     font-weight: ${(props) => (props.$isSubTable ? "700" : "500")};
     border: none;
     padding: 0.5rem 1rem;

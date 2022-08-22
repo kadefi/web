@@ -5,6 +5,7 @@ import CustomLink from "../../commons/CustomLink";
 import { ROUTE } from "../../constants/Routes.constant";
 import theme from "../../theme";
 import { getRecentWalletsLS } from "../../utils/LocalStorage.util";
+import { shortenWalletAddress } from "../../utils/String.util";
 
 const RecentSearches = () => {
   const [wallets, setWallets] = useState<string[]>([]);
@@ -22,21 +23,13 @@ const RecentSearches = () => {
       <Typography fontSize="14px">Recent Searches</Typography>
       <RecentSearchesWallets>
         {wallets.map((wallet, i) => (
-          <div key={`recent-searches-${i}`}>{getWalletPill(wallet)}</div>
+          <div key={`recent-searches-${i}`}>
+            <WalletPill href={`${ROUTE.DASHBOARD}/${wallet}`}>{shortenWalletAddress(wallet)}</WalletPill>
+          </div>
         ))}
       </RecentSearchesWallets>
     </Container>
   );
-};
-
-const getWalletPill = (wallet: string) => {
-  let shortenedWallet = wallet;
-
-  if (wallet.length > 11) {
-    shortenedWallet = `${wallet.slice(0, 7)}...${wallet.slice(-4)}`;
-  }
-
-  return <WalletPill href={`${ROUTE.DASHBOARD}/${wallet}`}>{shortenedWallet}</WalletPill>;
 };
 
 const WalletPill = styled(CustomLink)`

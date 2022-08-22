@@ -3,7 +3,7 @@ import { NftCollectionsList, ProjectsList } from "../types/DashboardData.type";
 import { isEmpty } from "../utils/Object.util";
 
 type PageLayoutContextType = {
-  walletAddress: string | undefined;
+  walletAddresses: string[] | undefined;
 
   // Projects
   projectsList?: ProjectsList;

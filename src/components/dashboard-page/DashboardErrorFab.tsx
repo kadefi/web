@@ -10,7 +10,6 @@ import { useState } from "react";
 import CircularProgress from "../../commons/CircularProgress";
 import theme from "../../theme";
 import { ProjectData, TokenCellType, WalletData } from "../../types/DashboardData.type";
-import { ProjectErrorResponse } from "../../types/Project.type";
 import { getDashboardErrors } from "../../utils/DashboardError.util";
 
 type DashboardErrorFabProps = {
@@ -73,7 +72,7 @@ const FabContainer = styled(Box)({
 
 type ErrorsTooltipProps = {
   tokenErrors: TokenCellType[] | null;
-  projectErrors: ProjectErrorResponse[];
+  projectErrors: ProjectData[];
   hasError: boolean;
 };
 
@@ -83,7 +82,7 @@ const ErrorsTooltip = ({ hasError, tokenErrors, projectErrors }: ErrorsTooltipPr
   }
   const tokenFetchError = !tokenErrors && "Failed to query wallet balance";
   const individualTokenError = tokenErrors && tokenErrors.map((error) => <p key={error.ticker}>{error.ticker}</p>);
-  const individualProjectsError = projectErrors.map((error) => <p key={error.name}>{error.name}</p>);
+  const individualProjectsError = projectErrors.map((error) => <p key={error.projectName}>{error.projectName}</p>);
 
   return (
     <div>

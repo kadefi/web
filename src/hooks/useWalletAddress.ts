@@ -4,10 +4,12 @@ import { trackWalletSearchEvent } from "../analytics/Analytics.util";
 import { addNewRecentWalletLS } from "../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../utils/String.util";
 
-export const useWalletAddress = () => {
+type WalletAddresses = string[] | undefined;
+
+export const useWalletAddresses = () => {
   const router = useRouter();
 
-  const [walletAddress, setWalletAddress] = useState<string | undefined>();
+  const [walletAddresses, setWalletAddresses] = useState<WalletAddresses>();
 
   // Whenever route query changes
   useEffect(() => {
@@ -26,18 +28,18 @@ export const useWalletAddress = () => {
     }
 
     // Set walletAddress based on route
-    setWalletAddress(cleanedAddress);
+    setWalletAddresses([cleanedAddress]);
   }, [router]);
 
   useEffect(() => {
-    if (walletAddress) {
+    if (walletAddresses && walletAddresses[0]) {
       // Save recent wallet to local storage
-      addNewRecentWalletLS(walletAddress);
+      addNewRecentWalletLS(walletAddresses[0]);
 
       // Track new wallet search event on Amplitude
-      trackWalletSearchEvent(walletAddress);
+      trackWalletSearchEvent(walletAddresses[0]);
     }
-  }, [walletAddress]);
+  }, [walletAddresses]);
 
-  return { walletAddress };
+  return { walletAddresses };
 };

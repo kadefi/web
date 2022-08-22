@@ -3,10 +3,10 @@ import ApiClient from "./ApiClient";
 
 export const getProjectData = async (
   projectKey: string,
-  walletAddress: string,
   signal: AbortSignal | undefined,
+  walletAddress?: string,
 ): Promise<ProjectData> => {
-  const response = await ApiClient.get(`projects/${projectKey}/${walletAddress}`, { signal });
+  const response = await ApiClient.get(`projects/${projectKey}/${walletAddress}?cache=false`, { signal });
   return response.data as ProjectData;
 };
 

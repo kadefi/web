@@ -9,6 +9,7 @@ import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import DesktopBackground from "../public/assets/desktop-background.svg";
 import MobileBackground from "../public/assets/mobile-background.svg";
@@ -34,16 +35,6 @@ const queryClient = new QueryClient({
   },
 });
 
-if (typeof window !== "undefined") {
-  const localStoragePersister = createSyncStoragePersister({ storage: window.localStorage });
-
-  persistQueryClient({
-    queryClient,
-    persister: localStoragePersister,
-    buster: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
-  });
-}
-
 initializeAmplitude();
 
 const TITLE = "Kadefi Money | DeFi Dashboard for Kadena";
@@ -53,6 +44,22 @@ const TWITTER_USERNAME = "@kadefi_money";
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const [isSSR, setIsSSR] = useState(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
+  if (!isSSR) {
+    const localStoragePersister = createSyncStoragePersister({ storage: window.localStorage });
+
+    persistQueryClient({
+      queryClient,
+      persister: localStoragePersister,
+      buster: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
+    });
+  }
+
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const getLayout = Component.getLayout ?? ((page) => page);

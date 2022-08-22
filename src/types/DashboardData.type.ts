@@ -1,5 +1,3 @@
-import { ProjectErrorResponse } from "./Project.type";
-
 export enum CELL_TYPE {
   TOKEN = "token",
   POOL = "pool",
@@ -77,18 +75,19 @@ export type Section = {
   rows: TableRowData[];
 };
 
-export type ProjectResponse = {
+export type ProjectData = {
   projectName: string;
   module: string;
-  fiatValue: number;
-  sections: Section[];
+  address?: string;
+  fiatValue?: number;
+  sections?: Section[];
 };
 
-export type ProjectData = ProjectResponse | ProjectErrorResponse;
-
 export type WalletData = {
+  address: string;
   data: TokenCellType[];
   errors: TokenCellType[];
+  fiatValue: number;
 };
 
 export type ProjectsList = ProjectsListItem[];
@@ -125,4 +124,8 @@ export type NftData = {
   id: string;
   type: "base64" | "PNG" | "WEBP";
   url: string;
+};
+
+export type ProjectsNetWorth = {
+  [projectModule: string]: number;
 };

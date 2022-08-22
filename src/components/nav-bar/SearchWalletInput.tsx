@@ -67,7 +67,6 @@ const SearchWalletInput = (props: Props) => {
       <TextField
         type="text"
         inputRef={ref}
-        disabled={isLoading}
         initialValue={initialWalletAddress}
         onKeyDown={handleWalletInputEnter}
         fullWidth

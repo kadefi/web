@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Container } from "@mui/system";
-import { useIsFetching } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react";
 import PngLogo from "../commons/PngLogo";
@@ -18,9 +17,10 @@ import { KadefiLogo } from "../components/nav-bar/KadefiLogo";
 import SearchWalletInput from "../components/nav-bar/SearchWalletInput";
 import { ROUTE } from "../constants/Routes.constant";
 import { PageLayoutContext } from "../contexts/PageLayoutContext";
+import useIsPageFetching from "../hooks/useIsPageFetching";
 import { useNftCollectionsList } from "../hooks/useNftCollectionsList";
 import { useProjectsList } from "../hooks/useProjectsList";
-import { useWalletAddress } from "../hooks/useWalletAddress";
+import { useWalletAddresses } from "../hooks/useWalletAddress";
 import theme from "../theme";
 import { getRecentWalletsLS } from "../utils/LocalStorage.util";
 
@@ -82,9 +82,9 @@ const PageLayout = (props: Props) => {
   const nftCollectionsListStates = useNftCollectionsList();
 
   // Custom Hooks
-  const { walletAddress } = useWalletAddress();
+  const { walletAddresses } = useWalletAddresses();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isPageFetching = useIsFetching() !== 0;
+  const isPageFetching = useIsPageFetching();
 
   // Effects
   useEffect(() => {
@@ -109,7 +109,7 @@ const PageLayout = (props: Props) => {
       return;
     }
 
-    let redirectWallet = walletAddress;
+    let redirectWallet = walletAddresses && walletAddresses[0];
 
     if (!redirectWallet) {
       const recentWallets = getRecentWalletsLS();
@@ -140,7 +140,7 @@ const PageLayout = (props: Props) => {
       </LeftNavBar>
       {MENU_CONFIG[activeMenu].isWalletSearch && (
         <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
-          <SearchWalletInput initialWalletAddress={walletAddress} isLoading={isPageFetching} />
+          <SearchWalletInput initialWalletAddress={walletAddresses && walletAddresses[0]} isLoading={isPageFetching} />
         </RightNavBar>
       )}
     </NavBar>
@@ -193,7 +193,7 @@ const PageLayout = (props: Props) => {
   return (
     <PageLayoutContext.Provider
       value={{
-        walletAddress,
+        walletAddresses,
         ...projectListStates,
         ...nftCollectionsListStates,
       }}
