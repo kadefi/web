@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import InputAdornment from "@mui/material/InputAdornment";
 import MuiTextField, { TextFieldProps } from "@mui/material/TextField";
 import { ReactNode } from "react";
+import { transientOptions } from "../utils/StyledComponent.util";
 
 type CustomTextFieldProps = {
   input: string;
@@ -46,7 +47,7 @@ const TextField = (props: CustomTextFieldProps) => {
       value={input}
       onChange={(e) => onInputChange(e.target.value)}
       disabled={additionalTextFieldProps.disabled}
-      hasStartIcon={Boolean(startIcon)}
+      $hasStartIcon={Boolean(startIcon)}
       {...additionalTextFieldProps}
     />
   );
@@ -54,17 +55,17 @@ const TextField = (props: CustomTextFieldProps) => {
 
 type StyledProps = {
   disabled?: boolean;
-  hasStartIcon?: boolean;
+  $hasStartIcon?: boolean;
 };
 
-const StyledTextField = styled(MuiTextField)<StyledProps>`
+const StyledTextField = styled(MuiTextField, transientOptions)<StyledProps>`
   opacity: ${(props) => (props.disabled ? 0.9 : 1)};
   & .MuiInputBase-root {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10rem;
   }
   & .MuiInputBase-input {
-    padding: ${(props) => (props.hasStartIcon ? "0.5rem 0.25rem" : "0.5rem 1rem")};
+    padding: ${(props) => (props.$hasStartIcon ? "0.5rem 0.25rem" : "0.5rem 1rem")};
   }
   & .MuiOutlinedInput-root {
     & fieldset {
