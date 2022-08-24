@@ -42,7 +42,7 @@ const SearchWalletInput = (props: Props) => {
       return;
     }
 
-    router.replace({ query: { wallet: [cleanedAddress] } });
+    router.push({ pathname: "/dashboard", query: { wallet: [cleanedAddress] } });
   };
 
   const handleWalletInputEnter = (e: any) => {
