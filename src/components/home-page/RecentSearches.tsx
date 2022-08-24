@@ -24,7 +24,9 @@ const RecentSearches = () => {
       <RecentSearchesWallets>
         {wallets.map((wallet, i) => (
           <div key={`recent-searches-${i}`}>
-            <WalletPill href={`${ROUTE.DASHBOARD}/${wallet}`}>{shortenWalletAddress(wallet)}</WalletPill>
+            <WalletPill href={`${ROUTE.DASHBOARD}?wallet=${encodeURIComponent(wallet)}`}>
+              {shortenWalletAddress(wallet)}
+            </WalletPill>
           </div>
         ))}
       </RecentSearchesWallets>

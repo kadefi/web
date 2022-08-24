@@ -1,3 +1,4 @@
+import { uniq } from "lodash";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 // import { trackWalletSearchEvent } from "../analytics/Analytics.util";
@@ -25,9 +26,7 @@ export const useWalletAddresses = () => {
         queryWalletAddresses = [queryWalletAddresses];
       }
 
-      if (queryWalletAddresses.length > 5) {
-        router.push("/");
-      }
+      queryWalletAddresses = uniq(queryWalletAddresses.slice(0, 5));
 
       const cleanedAddresses = queryWalletAddresses.map((address) => address.toLowerCase().trim());
 
@@ -39,7 +38,10 @@ export const useWalletAddresses = () => {
         }
       }
 
-      // Set walletAddress based on route
+      if (cleanedAddresses.length > 5) {
+        router.push("/");
+      }
+
       setWalletAddresses(cleanedAddresses);
     }
   }, [router]);

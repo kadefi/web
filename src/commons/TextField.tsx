@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
 import InputAdornment from "@mui/material/InputAdornment";
 import MuiTextField, { TextFieldProps } from "@mui/material/TextField";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 type CustomTextFieldProps = {
+  input: string;
+  onInputChange: (value: string) => void;
   startIcon?: {
     component: ReactNode;
   };
@@ -14,8 +16,7 @@ type CustomTextFieldProps = {
 } & TextFieldProps;
 
 const TextField = (props: CustomTextFieldProps) => {
-  const { startIcon, endIcon, ...textFieldProps } = props;
-  const [input, setInput] = useState<string>("");
+  const { input, onInputChange, startIcon, endIcon, ...textFieldProps } = props;
 
   const handleEndIconClick = () => {
     if (input && endIcon && endIcon.onClick) {
@@ -43,8 +44,9 @@ const TextField = (props: CustomTextFieldProps) => {
   return (
     <StyledTextField
       value={input}
-      onChange={(e) => setInput(e.target.value)}
+      onChange={(e) => onInputChange(e.target.value)}
       disabled={additionalTextFieldProps.disabled}
+      hasStartIcon={Boolean(startIcon)}
       {...additionalTextFieldProps}
     />
   );
@@ -52,6 +54,7 @@ const TextField = (props: CustomTextFieldProps) => {
 
 type StyledProps = {
   disabled?: boolean;
+  hasStartIcon?: boolean;
 };
 
 const StyledTextField = styled(MuiTextField)<StyledProps>`
@@ -61,7 +64,7 @@ const StyledTextField = styled(MuiTextField)<StyledProps>`
     border-radius: 10rem;
   }
   & .MuiInputBase-input {
-    padding: 0.5rem 0.25rem;
+    padding: ${(props) => (props.hasStartIcon ? "0.5rem 0.25rem" : "0.5rem 1rem")};
   }
   & .MuiOutlinedInput-root {
     & fieldset {

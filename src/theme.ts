@@ -12,7 +12,7 @@ let theme = createTheme({
       default: "#5b133f",
     },
     primary: {
-      main: "#556cd6",
+      main: "#ff007fcc",
     },
     secondary: {
       main: "#19857b",
@@ -48,6 +48,11 @@ let theme = createTheme({
           body2: "span",
         },
         variant: "body1",
+      },
+    },
+    MuiButton: {
+      defaultProps: {
+        disableRipple: true,
       },
     },
   },

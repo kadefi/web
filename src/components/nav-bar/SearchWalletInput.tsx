@@ -15,8 +15,13 @@ type Props = {
 const SearchWalletInput = (props: Props) => {
   const { isLoading = false } = props;
   const [isErrorNotiOpen, setIsErrorNotiOpen] = useState(false);
+  const [input, setInput] = useState("");
   const router = useRouter();
   const ref = useRef<HTMLInputElement>();
+
+  const handleInputChange = (value: string) => {
+    setInput(value);
+  };
 
   const handleSearchWallet = (value: string) => {
     const cleanedAddress = value.toLowerCase().trim();
@@ -30,12 +35,14 @@ const SearchWalletInput = (props: Props) => {
       ref.current.blur();
     }
 
+    setInput("");
+
     if (router.pathname === ROUTE.HOME) {
-      router.push(`${ROUTE.DASHBOARD}/${cleanedAddress}`);
+      router.push({ pathname: "/dashboard", query: { wallet: [cleanedAddress] } });
       return;
     }
 
-    router.push(`${router.pathname}`.replace("[walletAddress]", cleanedAddress));
+    router.replace({ query: { wallet: [cleanedAddress] } });
   };
 
   const handleWalletInputEnter = (e: any) => {
@@ -57,6 +64,8 @@ const SearchWalletInput = (props: Props) => {
   return (
     <>
       <TextField
+        input={input}
+        onInputChange={handleInputChange}
         type="text"
         inputRef={ref}
         disabled={isLoading}

@@ -36,7 +36,10 @@ const Container = styled.div`
 `;
 
 const SectionContainer = styled.div`
-  margin: 0 8px;
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 const WalletBalance = styled.div`
@@ -48,7 +51,7 @@ const WalletBalanceContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 8px 12px;
+  margin: 4px 16px 8px 16px;
 `;
 
 export default WalletSectionWrapper;

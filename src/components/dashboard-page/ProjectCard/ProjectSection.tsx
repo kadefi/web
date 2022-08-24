@@ -110,7 +110,6 @@ const SectionHeader = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop: "1rem",
   marginBottom: "0.5rem",
 });
 
