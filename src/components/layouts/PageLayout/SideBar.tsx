@@ -2,20 +2,20 @@ import styled from "@emotion/styled";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import PngLogo from "../../../commons/PngLogo";
 import theme from "../../../theme";
-import { MENU_TITLE } from "./Menu.config";
+import { MENU_CONFIG } from "./Menu.config";
 import MenuButtons from "./MenuButtons";
 
 type Props = {
-  isSideBarOpen: boolean;
-  handleMenuClick: (e: React.MouseEvent<HTMLDivElement>, title: MENU_TITLE) => void;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
 const SideBar = (props: Props) => {
-  const { isSideBarOpen, handleMenuClick } = props;
+  const { isOpen, onClose } = props;
 
   return (
-    <SideBarContainer isOpen={isSideBarOpen} numMenuItems={Object.values(MENU_TITLE).length}>
-      <MenuButtons handleMenuClick={handleMenuClick} />
+    <SideBarContainer isOpen={isOpen} numMenuItems={MENU_CONFIG.length}>
+      <MenuButtons onClose={onClose} />
       <SidebarFooter>
         <SocialIcons>
           <TwitterContainer target="__blank" href="https://twitter.com/kadefi_money/">

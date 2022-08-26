@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import { Container, Box, useMediaQuery } from "@mui/material";
-import { useActiveMenu } from "../../../hooks/useActiveMenu";
+import { useCurrentMenu } from "../../../hooks/useCurrentMenu";
 import useIsPageFetching from "../../../hooks/useIsPageFetching";
 import theme from "../../../theme";
 import { KadefiLogo } from "../../nav-bar/KadefiLogo";
 import SearchWalletInput from "../../nav-bar/SearchWalletInput";
-import { MENU_CONFIG } from "./Menu.config";
 
 type Props = {
   handleSideBarToggle: () => void;
@@ -18,7 +17,8 @@ const NavBar = (props: Props) => {
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isPageFetching = useIsPageFetching();
-  const activeMenu = useActiveMenu();
+  const { currentMenu } = useCurrentMenu();
+  const { isWalletSearch } = currentMenu;
 
   return (
     <NavBarContainer>
@@ -26,7 +26,7 @@ const NavBar = (props: Props) => {
         <KadefiLogo />
         {isMobile ? <HamburgerMenu onClick={handleSideBarToggle} fontSize="medium" sx={{ color: "#b3b3b3" }} /> : null}
       </LeftNavBar>
-      {MENU_CONFIG[activeMenu].isWalletSearch && (
+      {isWalletSearch && (
         <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
           <SearchWalletInput isLoading={isPageFetching} />
         </RightNavBar>

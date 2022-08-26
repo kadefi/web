@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { ROUTE } from "../constants/Routes.constant";
+import { Route } from "../enums/Route.enum";
 import { trackPageVisit } from "./Analytics.util";
 
-export const useTrackPageVisit = (route: ROUTE) => {
+export const useTrackPageVisit = (route: Route) => {
   useEffect(() => {
     trackPageVisit(route);
   }, [route]);

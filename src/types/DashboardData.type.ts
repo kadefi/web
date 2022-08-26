@@ -1,15 +1,8 @@
-export enum CELL_TYPE {
-  TOKEN = "token",
-  POOL = "pool",
-  STRING = "string",
-  NUMBER = "number",
-  FIAT = "fiat",
-  DATE = "date",
-}
+import { CellType } from "../enums/CellType.enum";
 
 export type PoolCellType = {
   id?: string;
-  type: CELL_TYPE.POOL;
+  type: CellType.Pool;
   balance: number;
   fiatValue: number;
   token0: TokenCellType;
@@ -19,7 +12,7 @@ export type PoolCellType = {
 export type TokenCellType = {
   id?: string;
   chains?: ChainInfo;
-  type: CELL_TYPE.TOKEN;
+  type: CellType.Token;
   fiatValue: number | null;
   image: string;
   name: string;
@@ -37,25 +30,25 @@ export type ChainInfo = { [k: string]: number };
 
 export type StringCellType = {
   id?: string;
-  type: CELL_TYPE.STRING;
+  type: CellType.String;
   value: string;
 };
 
 export type NumberCellType = {
   id?: string;
-  type: CELL_TYPE.NUMBER;
+  type: CellType.Number;
   value: number;
 };
 
 export type FiatCellType = {
   id?: string;
-  type: CELL_TYPE.FIAT;
+  type: CellType.Fiat;
   value: number;
 };
 
 export type DateCellType = {
   id?: string;
-  type: CELL_TYPE.DATE;
+  type: CellType.Date;
   value: string;
 };
 

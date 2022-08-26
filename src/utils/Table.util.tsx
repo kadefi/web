@@ -1,16 +1,17 @@
 import { toDate, format } from "date-fns";
 import TokenDisplay from "../components/dashboard-page/TokenDisplay";
 import TokenPoolDisplay from "../components/dashboard-page/TokenPoolDisplay";
-import { CELL_TYPE, TableRowData } from "../types/DashboardData.type";
+import { CellType } from "../enums/CellType.enum";
+import { TableRowData } from "../types/DashboardData.type";
 import { formatFiatValue, roundToDecimalStr } from "./Number.util";
 
 export const getRowDisplay = (rowData: TableRowData) => {
   return rowData.map((rowCell) => {
-    if (rowCell.type === CELL_TYPE.POOL) {
+    if (rowCell.type === CellType.Pool) {
       return <TokenPoolDisplay token0={rowCell.token0} token1={rowCell.token1} fiatValue={rowCell.fiatValue} />;
     }
 
-    if (rowCell.type === CELL_TYPE.TOKEN) {
+    if (rowCell.type === CellType.Token) {
       return (
         <TokenDisplay
           balance={rowCell.balance}
@@ -21,19 +22,19 @@ export const getRowDisplay = (rowData: TableRowData) => {
       );
     }
 
-    if (rowCell.type === CELL_TYPE.NUMBER) {
+    if (rowCell.type === CellType.Number) {
       return <div>{roundToDecimalStr(rowCell.value, 2)}</div>;
     }
 
-    if (rowCell.type === CELL_TYPE.STRING) {
+    if (rowCell.type === CellType.String) {
       return <div>{rowCell.value}</div>;
     }
 
-    if (rowCell.type === CELL_TYPE.FIAT) {
+    if (rowCell.type === CellType.Fiat) {
       return <div>{formatFiatValue(rowCell.value)}</div>;
     }
 
-    if (rowCell.type === CELL_TYPE.DATE) {
+    if (rowCell.type === CellType.Date) {
       const date = toDate(Date.parse(rowCell.value));
       return <div>{format(date, "MMM dd yyyy, HH:mm")}</div>;
     }

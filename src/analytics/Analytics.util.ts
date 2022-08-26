@@ -1,5 +1,5 @@
 import amplitude from "amplitude-js";
-import { ROUTE } from "../constants/Routes.constant";
+import { Route } from "../enums/Route.enum";
 import { AMPLITUDE_EVENT } from "./AmplitudeEvent";
 
 export const initializeAmplitude = () => {
@@ -19,7 +19,7 @@ export const trackEvent = (eventName: AMPLITUDE_EVENT, data: Object) => {
   amplitude.getInstance().logEvent(eventName, data);
 };
 
-export const trackPageVisit = (route: ROUTE) => {
+export const trackPageVisit = (route: Route) => {
   trackEvent(AMPLITUDE_EVENT.PAGE_VIST, { route });
 };
 

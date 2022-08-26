@@ -7,8 +7,8 @@ import TypographyNeon from "../../src/commons/TypographyNeon";
 import IntegrationPill from "../../src/components/integrations-page/IntegrationPill";
 import { getPageLayout } from "../../src/components/layouts/PageLayout/PageLayout";
 import TwitterButton from "../../src/components/misc/TwitterButton";
-import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import { Route } from "../../src/enums/Route.enum";
 import { NftCollectionsListItem, ProjectsListItem } from "../../src/types/DashboardData.type";
 
 const Integrations = () => {
@@ -21,7 +21,7 @@ const Integrations = () => {
     handleProjectModuleToggle,
   } = usePageLayoutContext();
 
-  useTrackPageVisit(ROUTE.INTEGRATIONS);
+  useTrackPageVisit(Route.Integrations);
 
   return (
     <Container maxWidth="md">

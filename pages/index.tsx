@@ -8,11 +8,11 @@ import SupportedProjects from "../src/components/home-page/SupportedProjects";
 import TwitterButton from "../src/components/misc/TwitterButton";
 import { KadefiLogo } from "../src/components/nav-bar/KadefiLogo";
 import SearchWalletInput from "../src/components/nav-bar/SearchWalletInput";
-import { ROUTE } from "../src/constants/Routes.constant";
+import { Route } from "../src/enums/Route.enum";
 import theme from "../src/theme";
 
 const Home: NextPage = () => {
-  useTrackPageVisit(ROUTE.HOME);
+  useTrackPageVisit(Route.Home);
 
   const titleProps = {
     display: "inline",

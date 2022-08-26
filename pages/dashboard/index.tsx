@@ -7,14 +7,14 @@ import NetWorth from "../../src/components/dashboard-page/NetWorth";
 import ProjectCard from "../../src/components/dashboard-page/ProjectCard/ProjectCard";
 import WalletCard from "../../src/components/dashboard-page/WalletCard/WalletCard";
 import { getPageLayout } from "../../src/components/layouts/PageLayout/PageLayout";
-import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import { Route } from "../../src/enums/Route.enum";
 import useIsPageFetching from "../../src/hooks/useIsPageFetching";
 import { ProjectsNetWorth } from "../../src/types/DashboardData.type";
 import { CustomNextPage } from "../../src/types/Page.type";
 
 const Dashboard: CustomNextPage = () => {
-  useTrackPageVisit(ROUTE.DASHBOARD);
+  useTrackPageVisit(Route.Dashboard);
   const [netWorthMap, setNetWorthMap] = useState<ProjectsNetWorth>({});
   const { selectedProjectModules } = usePageLayoutContext();
   const isPageFetching = useIsPageFetching();

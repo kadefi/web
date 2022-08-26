@@ -4,17 +4,19 @@ import { useState, useEffect } from "react";
 // import { trackWalletSearchEvent } from "../analytics/Analytics.util";
 // import { addNewRecentWalletLS } from "../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../utils/String.util";
+import { useCurrentMenu } from "./useCurrentMenu";
 
 export type WalletAddresses = string[] | undefined;
 
 export const useWalletAddresses = () => {
   const router = useRouter();
-
+  const { currentMenu } = useCurrentMenu();
   const [walletAddresses, setWalletAddresses] = useState<WalletAddresses>();
+  const { isWalletSearch } = currentMenu;
 
   // Whenever route query changes
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && isWalletSearch) {
       let queryWalletAddresses = router.query.wallet as string | string[] | undefined;
 
       if (!queryWalletAddresses) {
@@ -44,7 +46,7 @@ export const useWalletAddresses = () => {
 
       setWalletAddresses(cleanedAddresses);
     }
-  }, [router]);
+  }, [router, isWalletSearch]);
 
   // useEffect(() => {
   //   if (walletAddresses && walletAddresses[0]) {

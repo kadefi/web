@@ -1,34 +1,59 @@
 import styled from "@emotion/styled";
 import { Tooltip } from "@mui/material";
+import { useRouter } from "next/router";
 import React from "react";
-import { useActiveMenu } from "../../../hooks/useActiveMenu";
+import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
+import { useCurrentMenu } from "../../../hooks/useCurrentMenu";
 import theme from "../../../theme";
-import { MENU_CONFIG, MENU_TITLE } from "./Menu.config";
+import { MenuConfigItem } from "../../../types/Menu.type";
+import { MENU_CONFIG } from "./Menu.config";
 
 type Props = {
-  handleMenuClick: (e: React.MouseEvent<HTMLDivElement>, title: MENU_TITLE) => void;
+  onClose: () => void;
 };
 
 const MenuButtons = (props: Props) => {
-  const { handleMenuClick } = props;
-  const activeMenu = useActiveMenu();
+  const { onClose } = props;
+  const router = useRouter();
+  const { currentMenu } = useCurrentMenu();
+  const { walletAddresses } = usePageLayoutContext();
+
+  const handleMenuClick = (e: React.MouseEvent<HTMLDivElement>, config: MenuConfigItem) => {
+    e.stopPropagation();
+
+    const { isDisabled, isWalletSearch, route } = config;
+
+    if (isDisabled) {
+      return;
+    }
+
+    if (isWalletSearch) {
+      router.push({ pathname: route, query: { wallet: walletAddresses } });
+    } else {
+      router.push(`${route}`);
+    }
+
+    onClose();
+  };
 
   return (
     <MenuButtonsContainer>
-      {Object.values(MENU_TITLE).map((title) => {
+      {MENU_CONFIG.map((config) => {
+        const { title, isDisabled, icon } = config;
+
         const menuButton = (
           <MenuButton
             key={title}
-            isActive={title === activeMenu}
-            isDisabled={MENU_CONFIG[title].isDisabled}
-            onClick={(e) => handleMenuClick(e, title)}
+            isActive={title === currentMenu.title}
+            isDisabled={isDisabled}
+            onClick={(e) => handleMenuClick(e, config)}
           >
-            {MENU_CONFIG[title].icon}
+            {icon}
             {title}
           </MenuButton>
         );
 
-        if (MENU_CONFIG[title].isDisabled) {
+        if (isDisabled) {
           return (
             <Tooltip key={`tooltip-${title}`} title="Under development" placement="right" arrow>
               {menuButton}

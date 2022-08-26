@@ -1,14 +1,11 @@
 import styled from "@emotion/styled";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useRouter } from "next/router";
-import { ReactElement, ReactNode, useEffect, useState, MouseEvent } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { PageLayoutContext } from "../../../contexts/PageLayoutContext";
 import { useNftCollectionsList } from "../../../hooks/useNftCollectionsList";
 import { useProjectsList } from "../../../hooks/useProjectsList";
 import { useWalletAddresses } from "../../../hooks/useWalletAddress";
 import theme from "../../../theme";
-import { getRecentWalletsLS } from "../../../utils/LocalStorage.util";
-import { MENU_CONFIG, MENU_TITLE } from "./Menu.config";
 import MultiWalletPills from "./MultiWalletPills";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
@@ -19,7 +16,6 @@ type Props = {
 
 const PageLayout = (props: Props) => {
   const { children } = props;
-  const router = useRouter();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // Default to close sidebar (only for mobile)
   const projectListStates = useProjectsList();
   const nftCollectionsListStates = useNftCollectionsList();
@@ -40,31 +36,6 @@ const PageLayout = (props: Props) => {
     }
   };
 
-  const handleMenuClick = (e: MouseEvent<HTMLDivElement>, title: MENU_TITLE) => {
-    e.stopPropagation();
-
-    if (MENU_CONFIG[title].isDisabled) {
-      return;
-    }
-
-    let redirectWallet = walletAddresses && walletAddresses[0];
-
-    if (!redirectWallet) {
-      const recentWallets = getRecentWalletsLS();
-      if (recentWallets) {
-        redirectWallet = recentWallets[0];
-      }
-    }
-
-    if (MENU_CONFIG[title].isWalletSearch) {
-      router.push(`${MENU_CONFIG[title].route}/${redirectWallet}`);
-    } else {
-      router.push(`${MENU_CONFIG[title].route}`);
-    }
-
-    handleSideBarClose();
-  };
-
   return (
     <PageLayoutContext.Provider
       value={{
@@ -76,7 +47,7 @@ const PageLayout = (props: Props) => {
       <Wrapper>
         <NavBar handleSideBarToggle={handleSideBarToggle} handleSideBarClose={handleSideBarClose} />
         <Content onClick={handleSideBarClose}>
-          <SideBar isSideBarOpen={isSideBarOpen} handleMenuClick={handleMenuClick} />
+          <SideBar isOpen={isSideBarOpen} onClose={handleSideBarClose} />
           <ChildrenContainer>
             <MultiWalletPills />
             {children}

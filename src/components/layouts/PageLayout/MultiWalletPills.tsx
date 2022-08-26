@@ -3,17 +3,18 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { Container, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
-import { useActiveMenu } from "../../../hooks/useActiveMenu";
+import { useCurrentMenu } from "../../../hooks/useCurrentMenu";
 import theme from "../../../theme";
 import WalletPill from "../../misc/WalletPill";
 import AddWalletModal from "./AddWalletModal";
-import { MENU_CONFIG } from "./Menu.config";
 
 const MultiWalletPills = () => {
-  const activeMenu = useActiveMenu();
+  const { currentMenu } = useCurrentMenu();
   const { walletAddresses } = usePageLayoutContext();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { isWalletSearch } = currentMenu;
 
   const handleOpen = () => {
     setIsModalOpen(true);
@@ -25,7 +26,7 @@ const MultiWalletPills = () => {
 
   return (
     <Wrapper maxWidth="md">
-      {MENU_CONFIG[activeMenu].isWalletSearch && (
+      {isWalletSearch && (
         <WalletPillsContainer>
           {walletAddresses?.map((walletAddress) => (
             <WalletPill key={`wallet-selector-${walletAddress}`} walletAddress={walletAddress} isPillShape />

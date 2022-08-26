@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import CustomLink from "../../commons/CustomLink";
-import { ROUTE } from "../../constants/Routes.constant";
+import { Route } from "../../enums/Route.enum";
 import theme from "../../theme";
 import { getRecentWalletsLS } from "../../utils/LocalStorage.util";
 import { shortenWalletAddress } from "../../utils/String.util";
@@ -24,7 +24,7 @@ const RecentSearches = () => {
       <RecentSearchesWallets>
         {wallets.map((wallet, i) => (
           <div key={`recent-searches-${i}`}>
-            <WalletPill href={`${ROUTE.DASHBOARD}?wallet=${encodeURIComponent(wallet)}`}>
+            <WalletPill href={`${Route.Dashboard}?wallet=${encodeURIComponent(wallet)}`}>
               {shortenWalletAddress(wallet)}
             </WalletPill>
           </div>

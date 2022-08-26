@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import CircularProgress from "../../commons/CircularProgress";
 import SnackBarAlert from "../../commons/SnackBarAlert";
 import TextField from "../../commons/TextField";
-import { ROUTE } from "../../constants/Routes.constant";
+import { Route } from "../../enums/Route.enum";
 import { isValidWalletAddress } from "../../utils/String.util";
 
 type Props = {
@@ -37,7 +37,7 @@ const SearchWalletInput = (props: Props) => {
 
     setInput("");
 
-    if (router.pathname === ROUTE.HOME) {
+    if (router.pathname === Route.Home) {
       router.push({ pathname: "/dashboard", query: { wallet: [cleanedAddress] } });
       return;
     }

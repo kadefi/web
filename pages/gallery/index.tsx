@@ -7,8 +7,8 @@ import CustomLink from "../../src/commons/CustomLink";
 import FetchLoadingIndicator from "../../src/commons/FetchLoadingIndicator";
 import NftCollection from "../../src/components/gallery-page/NftCollection";
 import { getPageLayout } from "../../src/components/layouts/PageLayout/PageLayout";
-import { ROUTE } from "../../src/constants/Routes.constant";
 import { usePageLayoutContext } from "../../src/contexts/PageLayoutContext";
+import { Route } from "../../src/enums/Route.enum";
 import useIsPageFetching from "../../src/hooks/useIsPageFetching";
 import theme from "../../src/theme";
 import { CustomNextPage } from "../../src/types/Page.type";
@@ -18,7 +18,7 @@ const NftGallery: CustomNextPage = () => {
   const { selectedNftModules } = usePageLayoutContext();
 
   // Custom Hooks
-  useTrackPageVisit(ROUTE.NFT_GALLERY);
+  useTrackPageVisit(Route.NftGallery);
   const isPageFetching = useIsPageFetching();
 
   const nftCollections = selectedNftModules.map((nftModule, i) => {
@@ -34,7 +34,7 @@ const NftGallery: CustomNextPage = () => {
         </EmptyBoxImageContainer>
         <P>No NFTs found</P>
         <P>
-          View list of integrated NFT collections <IntegrationLink href={`${ROUTE.INTEGRATIONS}`}>here</IntegrationLink>
+          View list of integrated NFT collections <IntegrationLink href={`${Route.Integrations}`}>here</IntegrationLink>
         </P>
       </CentralContainer>
     );

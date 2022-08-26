@@ -3,45 +3,43 @@ import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import { ROUTE } from "../../../constants/Routes.constant";
+import { Route } from "../../../enums/Route.enum";
+import { MenuConfigItem } from "../../../types/Menu.type";
 
-export enum MENU_TITLE {
-  DASHBOARD = "Dashboard",
-  NFT = "NFT Gallery",
-  INTEGRATIONS = "Integrations",
-  PROJECT_HISTORY = "Portfolio History",
-  TOOLS = "Tools",
-}
-
-export const MENU_CONFIG = {
-  [MENU_TITLE.DASHBOARD]: {
+export const MENU_CONFIG: MenuConfigItem[] = [
+  {
+    title: "Dashboard",
     icon: <DashboardOutlinedIcon />,
-    route: ROUTE.DASHBOARD,
+    route: Route.Dashboard,
     isWalletSearch: true,
     isDisabled: false,
   },
-  [MENU_TITLE.NFT]: {
+  {
+    title: "NFT Gallery",
     icon: <PhotoLibraryOutlinedIcon />,
-    route: ROUTE.NFT_GALLERY,
+    route: Route.NftGallery,
     isWalletSearch: true,
     isDisabled: false,
   },
-  [MENU_TITLE.INTEGRATIONS]: {
+  {
+    title: "Integrations",
     icon: <CableOutlinedIcon />,
-    route: ROUTE.INTEGRATIONS,
+    route: Route.Integrations,
     isWalletSearch: false,
     isDisabled: false,
   },
-  [MENU_TITLE.PROJECT_HISTORY]: {
+  {
+    title: "Project History",
     icon: <TimelineOutlinedIcon />,
-    route: "",
+    route: null,
     isWalletSearch: false,
     isDisabled: true,
   },
-  [MENU_TITLE.TOOLS]: {
+  {
+    title: "Tools",
     icon: <ConstructionOutlinedIcon />,
-    route: "",
+    route: null,
     isWalletSearch: false,
     isDisabled: true,
   },
-};
+];
