@@ -39,7 +39,7 @@ export const trackRequestError = (config: {
   trackEvent(AMPLITUDE_EVENT.REQUEST_ERROR, config);
 };
 
-export const trackNftImageLoadError = (config: { collection: string; nftId: string }) => {
+export const trackNftImageLoadError = (config: { collection: string | null; nftId: string }) => {
   trackEvent(AMPLITUDE_EVENT.IMAGE_LOAD_ERROR, config);
 };
 

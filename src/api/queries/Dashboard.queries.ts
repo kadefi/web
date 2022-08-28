@@ -1,6 +1,7 @@
 import { QueryFunction, useQueries, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { WALLET_KEY } from "../../constants/QueriesKey.constant";
 import { ProjectData, ProjectsList, WalletData } from "../../types/DashboardData.type";
+import { getProjectQueryKey } from "../../utils/QueriesUtil";
 import { getProjectData, getProjectsList } from "../Project.api";
 import { getWalletTokens } from "../Wallet.api";
 
@@ -31,7 +32,7 @@ export const useGetProjectData = (projectModule: string, walletAddresses: string
     enabled: boolean;
   }[] = walletAddresses
     ? walletAddresses.map((walletAddress) => ({
-        queryKey: [projectModule, walletAddress],
+        queryKey: [getProjectQueryKey(projectModule), walletAddress],
         queryFn: ({ signal }) => getProjectData(projectModule, signal, walletAddress),
         enabled: isEnabled,
       }))

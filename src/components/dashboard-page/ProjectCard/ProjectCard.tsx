@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useIsFetching } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useGetProjectData } from "../../../api/queries/Dashboard.queries";
 import FetchLoadingIndicator from "../../../commons/FetchLoadingIndicator";
@@ -12,21 +11,13 @@ import TypographyNeon from "../../../commons/TypographyNeon";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import theme from "../../../theme";
 import { formatFiatValue } from "../../../utils/Number.util";
-import { getQueriesResults } from "../../../utils/QueriesUtil";
+import { getQueriesResults, isQueriesFetching } from "../../../utils/QueriesUtil";
 import ProjectDataTable from "./ProjectDataTable";
 
 type Props = {
   projectModule: string;
   handleNetWorthUpdate: (module: string, netWorth: number) => void;
 };
-
-// const MOCK_WALLET_ADDRESSES = [
-//   "k:ca237063d821a34f8004e52d93b36715d75566a85164c6268c4aa61ecf176a57",
-//   "k:001ad386f24013dade4cc2ea9d1fd7ef27605591172e69ce4282a634584acfa9",
-//   "k:456ff7642ec4f59f1685bd8bbe35f4b7ab7b2c688e16582a823e596370401258",
-//   "k:609466382bc22b6c19f030acddaacba0d5f2aeb299dca4694d3bc104e34df654",
-//   "k:991a3f4acc07275e732231031a3c7522b6e918c214b4a94d6ac485451e55593e",
-// ];
 
 const ProjectCard = (props: Props) => {
   const { projectModule, handleNetWorthUpdate: handleProjectNetWorthUpdate } = props;
@@ -35,9 +26,13 @@ const ProjectCard = (props: Props) => {
   const [projectNetWorth, setProjectNetWorth] = useState<number | null>(null);
   const { walletAddresses, projectsList, selectedProjectModules } = usePageLayoutContext();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const queries = useGetProjectData(projectModule, walletAddresses, selectedProjectModules.includes(projectModule));
-  const isFetching = Boolean(useIsFetching([projectModule]));
-  const projectsData = getQueriesResults(queries);
+  const projectQueries = useGetProjectData(
+    projectModule,
+    walletAddresses,
+    selectedProjectModules.includes(projectModule),
+  );
+  const isFetching = isQueriesFetching(projectQueries);
+  const projectsData = getQueriesResults(projectQueries);
   const isDataAvailable = walletAddresses && !isFetching && projectsData.length > 0;
   const isDataNotAvailable = !walletAddresses || projectsData.length === 0;
   const isMultiWallet = walletAddresses ? walletAddresses.length >= 2 : false;
@@ -57,7 +52,7 @@ const ProjectCard = (props: Props) => {
       }, 0);
       setProjectNetWorth(totalValue);
     }
-  }, [isDataAvailable, projectModule, projectsData]);
+  }, [isDataAvailable, projectsData]);
 
   useEffect(() => {
     if (projectNetWorth) {

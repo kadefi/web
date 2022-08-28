@@ -8,7 +8,7 @@ import { NftData } from "../../types/DashboardData.type";
 
 type Props = {
   nftData: NftData;
-  collectionName: string;
+  collectionName: string | null;
 };
 
 const NftCard = (props: Props) => {

@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import { Container, Box, useMediaQuery } from "@mui/material";
+import { useIsFetching } from "@tanstack/react-query";
 import { useCurrentMenu } from "../../../hooks/useCurrentMenu";
-import useIsPageFetching from "../../../hooks/useIsPageFetching";
 import theme from "../../../theme";
 import { KadefiLogo } from "../../nav-bar/KadefiLogo";
 import SearchWalletInput from "../../nav-bar/SearchWalletInput";
@@ -16,7 +16,7 @@ const NavBar = (props: Props) => {
   const { handleSideBarToggle, handleSideBarClose } = props;
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isPageFetching = useIsPageFetching();
+  const isPageFetching = Boolean(useIsFetching());
   const { currentMenu } = useCurrentMenu();
   const { isWalletSearch } = currentMenu;
 

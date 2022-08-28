@@ -1,67 +1,77 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
-import { useState } from "react";
+import { flatten } from "lodash";
+import { useEffect, useState } from "react";
 import { useGetNftCollectionData } from "../../api/queries/NftGallery.queries";
 import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
 import TypographyNeon from "../../commons/TypographyNeon";
 import { usePageLayoutContext } from "../../contexts/PageLayoutContext";
 import theme from "../../theme";
-import { isEmpty } from "../../utils/Object.util";
+import { getQueriesResults, isQueriesFetching } from "../../utils/QueriesUtil";
 import NftCard from "./NftCard";
 
 type Props = {
   nftModule: string;
+  setCollections: React.Dispatch<
+    React.SetStateAction<{
+      [k: string]: number;
+    }>
+  >;
 };
 
 const MIN_COUNT = 8;
 
 const NftCollection = (props: Props) => {
-  const { nftModule } = props;
-
-  const { walletAddresses, selectedNftModules } = usePageLayoutContext();
-
-  const collectionQueries = useGetNftCollectionData(nftModule, walletAddresses, selectedNftModules.includes(nftModule));
-
-  const collectionQuery = collectionQueries[0];
-
-  const { data: collection, isFetching } = collectionQuery;
-
+  const { nftModule, setCollections } = props;
+  console.log(nftModule);
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const { walletAddresses, selectedNftModules } = usePageLayoutContext();
+  const collectionQueries = useGetNftCollectionData(nftModule, walletAddresses, selectedNftModules.includes(nftModule));
+  const isFetching = isQueriesFetching(collectionQueries);
+  const nftCollectionResults = getQueriesResults(collectionQueries);
 
-  if (!collection || isEmpty(collection)) {
+  const collectionName = nftCollectionResults[0]?.name || null;
+  const collectionDescription = nftCollectionResults[0]?.description || null;
+  const nftDatas = flatten(nftCollectionResults.map((collection) => collection.nfts));
+  const isDataNotAvailable = !walletAddresses || nftDatas.length === 0;
+
+  useEffect(() => {
+    !isFetching && setCollections((prev) => ({ ...prev, [nftModule]: nftDatas.length }));
+  }, [isFetching, nftDatas.length, nftModule, setCollections]);
+
+  if (isDataNotAvailable) {
     return null;
   }
 
-  let shownNfts = collection.nfts;
-
+  let displayNfts = [...nftDatas];
   if (isCollapsed) {
-    shownNfts = shownNfts.slice(0, MIN_COUNT);
+    displayNfts = displayNfts.slice(0, MIN_COUNT);
   }
 
-  const remainingNftsCount = collection.nfts.length - shownNfts.length;
+  const remainingNftsCount = nftDatas.length - displayNfts.length;
 
   const handleCollapseToggle = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   return (
-    <CollectionContainer key={collection.name}>
+    <CollectionContainer key={collectionName}>
       <CollectionName variant="h4">
-        {collection.name}
+        {collectionName}
         {isFetching && <FetchLoadingIndicator />}
       </CollectionName>
       <CollectionDescription variant="body1">
-        {`${collection.description} - ${collection.nfts.length} NFT(s)`}
+        {`${collectionDescription} - ${nftDatas.length} NFT(s)`}
       </CollectionDescription>
       <NftsContainer>
-        {shownNfts.map((nft, i) => (
-          <NftCard key={`${collection.description}-${nft.id}-${i}`} nftData={nft} collectionName={collection.name} />
+        {displayNfts.map((nft, i) => (
+          <NftCard key={`${collectionDescription}-${nft.id}-${i}`} nftData={nft} collectionName={collectionName} />
         ))}
       </NftsContainer>
       {isCollapsed && remainingNftsCount > 0 && (
         <ShowAllToggleButton onClick={handleCollapseToggle}>Show All</ShowAllToggleButton>
       )}
-      {!isCollapsed && collection.nfts.length > MIN_COUNT && (
+      {!isCollapsed && displayNfts.length > MIN_COUNT && (
         <ShowAllToggleButton onClick={handleCollapseToggle}>Show Less</ShowAllToggleButton>
       )}
     </CollectionContainer>

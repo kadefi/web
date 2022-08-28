@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { Skeleton, Typography } from "@mui/material";
+import { useIsFetching } from "@tanstack/react-query";
 import CountUp from "react-countup";
 import TypographyNeon from "../../commons/TypographyNeon";
-import useIsPageFetching from "../../hooks/useIsPageFetching";
 import theme from "../../theme";
 import { ProjectsNetWorth } from "../../types/DashboardData.type";
 
@@ -16,7 +16,7 @@ type Props = {
 
 const NetWorth = (props: Props) => {
   const { netWorthMap: projectsNetWorth } = props;
-  const isPageFetching = useIsPageFetching();
+  const isPageFetching = Boolean(useIsFetching());
 
   return (
     <>

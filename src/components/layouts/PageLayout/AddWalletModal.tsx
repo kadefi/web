@@ -75,7 +75,7 @@ const AddWalletModal = (props: Props) => {
   const handleUpdateButtonClick = () => {
     if (input.length === 0) {
       handleClose();
-      router.push({ pathname: "/dashboard", query: { wallet: wallets } });
+      router.push({ pathname: router.pathname, query: { wallet: wallets } });
     }
 
     const { isValid, cleanedAddress } = checkValidWallet(input);
@@ -87,7 +87,7 @@ const AddWalletModal = (props: Props) => {
 
     if (router.isReady) {
       handleClose();
-      router.push({ pathname: "/dashboard", query: { wallet: uniq([...wallets, cleanedAddress]) } });
+      router.push({ pathname: router.pathname, query: { wallet: uniq([...wallets, cleanedAddress]) } });
     }
   };
 
