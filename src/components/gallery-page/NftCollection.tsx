@@ -23,7 +23,6 @@ const MIN_COUNT = 8;
 
 const NftCollection = (props: Props) => {
   const { nftModule, setCollections } = props;
-  console.log(nftModule);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { walletAddresses, selectedNftModules } = usePageLayoutContext();
   const collectionQueries = useGetNftCollectionData(nftModule, walletAddresses, selectedNftModules.includes(nftModule));

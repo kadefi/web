@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import MuiContainer from "@mui/material/Container";
 import { useIsFetching } from "@tanstack/react-query";
-import { isEqual, sum } from "lodash";
+import { sum } from "lodash";
 import { useState } from "react";
 import { useTrackPageVisit } from "../../src/analytics/useTrackPageVisit";
 import FetchLoadingIndicator from "../../src/commons/FetchLoadingIndicator";
@@ -16,12 +16,8 @@ const NftGallery: CustomNextPage = () => {
   const [collections, setCollections] = useState<{ [k: string]: number }>({});
   const { selectedNftModules } = usePageLayoutContext();
   useTrackPageVisit(Route.NftGallery);
-  const isPageFetching = Boolean(useIsFetching()) || !isEqual(selectedNftModules, Object.keys(collections));
+  const isPageFetching = Boolean(useIsFetching());
   const hasNft = sum(Object.values(collections)) > 0;
-
-  if (!isPageFetching && !hasNft) {
-    return <NoNftFound />;
-  }
 
   return (
     <Container maxWidth="md">
@@ -29,6 +25,7 @@ const NftGallery: CustomNextPage = () => {
         <NftCollection key={`collection-${nftModule}-${i}`} nftModule={nftModule} setCollections={setCollections} />
       ))}
       {isPageFetching && <FetchLoadingIndicator text="Retrieving NFT collections" />}
+      {!isPageFetching && !hasNft && <NoNftFound />}
     </Container>
   );
 };
