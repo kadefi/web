@@ -23,7 +23,6 @@ export const KadefiLogo = () => {
         <ProjectName>KADEFI</ProjectName>
         <ProjectName color="#FF007F">.MONEY</ProjectName>
       </div>
-      <BetaTag>BETA</BetaTag>
     </ProjectLogo>
   );
 };
@@ -40,14 +39,6 @@ const ProjectLogo = styled.div`
     padding: 0;
     gap: 8px;
   }
-`;
-
-const BetaTag = styled.div`
-  background-color: #ff007f;
-  padding: 2px 8px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  border-radius: 8rem;
 `;
 
 const ProjectName = styled(Typography)`
