@@ -30,7 +30,7 @@ const Dashboard: CustomNextPage = () => {
         <WalletCard handleNetWorthUpdate={handleNetWorthUpdate} />
         {selectedProjectModules.map((projectModule, i) => (
           <ProjectCard
-            key={`project-card-${i}`}
+            key={`project-card-${projectModule}-${i}`}
             projectModule={projectModule}
             handleNetWorthUpdate={handleNetWorthUpdate}
           />

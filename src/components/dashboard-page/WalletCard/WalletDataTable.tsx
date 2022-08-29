@@ -8,7 +8,7 @@ import { roundToDecimalStr, formatFiatValue } from "../../../utils/Number.util";
 import WalletSectionWrapper from "../WalletSectionWrapper";
 import TokenChainDistribution from "./TokenChainDistribution";
 
-const HEADERS = ["Token Balance", "Price", "Value"];
+export const WALLET_TABLE_HEADERS = ["Token Balance", "Price", "Value"];
 
 type Props = {
   walletData: WalletData;
@@ -58,7 +58,7 @@ const WalletDataTable = (props: Props) => {
       <WalletSectionWrapper walletAddress={address} fiatValue={fiatValue} isMultiWallet={isMultiWallet}>
         <CustomTable
           tableKey="Wallet"
-          headers={HEADERS}
+          headers={WALLET_TABLE_HEADERS}
           rows={walletDataRows}
           expandedRows={expandedRows}
           isWalletTable

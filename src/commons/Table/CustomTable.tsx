@@ -20,10 +20,19 @@ type Props = {
   expandedRows?: ReactNode[];
   isSubTable?: boolean;
   isWalletTable?: boolean;
+  emptyTablePlaceholder?: string;
 };
 
 const CustomTable = (props: Props) => {
-  const { tableKey, headers, rows, expandedRows, isSubTable = false, isWalletTable } = props;
+  const {
+    tableKey,
+    headers,
+    rows,
+    expandedRows,
+    isSubTable = false,
+    isWalletTable,
+    emptyTablePlaceholder = "No Data Available",
+  } = props;
 
   const [expandedRowNumbers, setExpandedRowNumbers] = useState<number[]>([]);
 
@@ -144,7 +153,13 @@ const CustomTable = (props: Props) => {
     return displayRows;
   }, [rows, expandedRowNumbers, expandedRows, tableKey, isMobile, isSubTable, isWalletTable]);
 
-  const tableContent = tableRows.length === 0 ? <EmptyTable length={headerTableCells.length} /> : tableRows;
+  const tableContent =
+    tableRows.length === 0 ? (
+      <EmptyTable length={headerTableCells.length} emptyTablePlaceholder={emptyTablePlaceholder} />
+    ) : (
+      tableRows
+    );
+
   return (
     <StyledTableContainer>
       <MuiTable size="small" aria-label="customized table">
@@ -159,12 +174,13 @@ const CustomTable = (props: Props) => {
 
 type EmptyTableProps = {
   length: number;
+  emptyTablePlaceholder: string;
 };
 
-const EmptyTable = ({ length }: EmptyTableProps) => (
+const EmptyTable = ({ length, emptyTablePlaceholder }: EmptyTableProps) => (
   <StyledTableRow>
     <StyledTableCell style={{ height: "200px" }} colSpan={length} component="td" scope="row" align="center">
-      Your wallet is empty
+      {emptyTablePlaceholder}
     </StyledTableCell>
   </StyledTableRow>
 );

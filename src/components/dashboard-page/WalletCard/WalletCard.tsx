@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useGetWalletData } from "../../../api/queries/Dashboard.queries";
 import FetchLoadingIndicator from "../../../commons/FetchLoadingIndicator";
 import LoadingTableSkeleton from "../../../commons/LoadingTableSkeleton";
@@ -12,6 +12,7 @@ import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import theme from "../../../theme";
 import { formatFiatValue } from "../../../utils/Number.util";
 import { getQueriesResults, isQueriesFetching } from "../../../utils/QueriesUtil";
+import EmptyWallet from "./EmptyWallet";
 import WalletDataTable from "./WalletDataTable";
 
 type Props = {
@@ -22,28 +23,21 @@ const WalletCard = (props: Props) => {
   const { handleNetWorthUpdate } = props;
 
   const { walletAddresses } = usePageLayoutContext();
-  const [walletsNetWorth, setWalletsNetWorth] = useState<number | null>(null);
   const walletQueries = useGetWalletData(walletAddresses, true);
-  const isFetching = isQueriesFetching(walletQueries);
-  const walletsData = getQueriesResults(walletQueries);
-  const isDataAvailable = !isFetching && walletsData.length > 0;
-  const isDataNotAvailable = walletsData.length === 0;
-  const isMultiWallet = walletAddresses ? walletAddresses.length > 1 : false;
+  const isFetching = useMemo(() => isQueriesFetching(walletQueries), [walletQueries]);
+  const walletsData = useMemo(() => getQueriesResults(walletQueries), [walletQueries]);
+  const isDataAvailable = useMemo(() => !isFetching && walletsData.length > 0, [isFetching, walletsData.length]);
+  const isMultiWallet = useMemo(() => (walletAddresses ? walletAddresses.length > 1 : false), [walletAddresses]);
+  const totalWalletValue = useMemo(
+    () => walletsData.reduce((acc, current) => acc + current.fiatValue || 0, 0),
+    [walletsData],
+  );
 
   useEffect(() => {
-    if (isDataAvailable) {
-      const totalValue = walletsData.reduce((acc, current) => acc + current.fiatValue || 0, 0);
-      setWalletsNetWorth(totalValue);
-    }
-  }, [isDataAvailable, walletsData]);
+    !isFetching && handleNetWorthUpdate("wallet", totalWalletValue);
+  }, [handleNetWorthUpdate, isFetching, totalWalletValue]);
 
-  useEffect(() => {
-    if (walletsNetWorth) {
-      handleNetWorthUpdate("wallet", walletsNetWorth);
-    }
-  }, [handleNetWorthUpdate, walletsNetWorth]);
-
-  if (isDataNotAvailable) {
+  if (isFetching) {
     return <LoadingTableSkeleton />;
   }
 
@@ -55,12 +49,18 @@ const WalletCard = (props: Props) => {
           <WalletHeader>Wallet</WalletHeader>
           {isFetching && <FetchLoadingIndicator />}
         </WalletHeaderContainer>
-        {walletsNetWorth && <WalletTotalValue>{formatFiatValue(walletsNetWorth)}</WalletTotalValue>}
+        {totalWalletValue && <WalletTotalValue>{formatFiatValue(totalWalletValue)}</WalletTotalValue>}
       </Container>
       <WalletsContainer>
-        {walletsData.map((walletData) => (
-          <WalletDataTable key={`wallet-${walletData.address}`} walletData={walletData} isMultiWallet={isMultiWallet} />
-        ))}
+        {isDataAvailable &&
+          walletsData.map((walletData) => (
+            <WalletDataTable
+              key={`wallet-${walletData.address}`}
+              walletData={walletData}
+              isMultiWallet={isMultiWallet}
+            />
+          ))}
+        {!isDataAvailable && <EmptyWallet />}
       </WalletsContainer>
     </CardWrapper>
   );

@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useGetProjectData } from "../../../api/queries/Dashboard.queries";
 import FetchLoadingIndicator from "../../../commons/FetchLoadingIndicator";
 import Paper from "../../../commons/Paper";
@@ -21,9 +21,6 @@ type Props = {
 
 const ProjectCard = (props: Props) => {
   const { projectModule, handleNetWorthUpdate: handleProjectNetWorthUpdate } = props;
-  const [projectName, setProjectName] = useState<string | null>(null);
-  const [projectImgSrc, setProjectImgSrc] = useState<string | null>(null);
-  const [projectNetWorth, setProjectNetWorth] = useState<number | null>(null);
   const { walletAddresses, projectsList, selectedProjectModules } = usePageLayoutContext();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const projectQueries = useGetProjectData(
@@ -31,36 +28,34 @@ const ProjectCard = (props: Props) => {
     walletAddresses,
     selectedProjectModules.includes(projectModule),
   );
-  const isFetching = isQueriesFetching(projectQueries);
-  const projectsData = getQueriesResults(projectQueries);
-  const isDataAvailable = walletAddresses && !isFetching && projectsData.length > 0;
-  const isDataNotAvailable = !walletAddresses || projectsData.length === 0;
-  const isMultiWallet = walletAddresses ? walletAddresses.length >= 2 : false;
-
-  useEffect(() => {
-    if (projectsList) {
-      const project = projectsList.filter((p) => p.module === projectModule)[0];
-      setProjectName(project.name);
-      setProjectImgSrc(project.image);
-    }
-  }, [projectModule, projectsList]);
-
-  useEffect(() => {
-    if (isDataAvailable) {
-      const totalValue = projectsData.reduce((acc, current) => {
+  const isFetching = useMemo(() => isQueriesFetching(projectQueries), [projectQueries]);
+  const projectsData = useMemo(() => getQueriesResults(projectQueries), [projectQueries]);
+  const isDataAvailable = useMemo(
+    () => walletAddresses && !isFetching && projectsData.length > 0,
+    [isFetching, projectsData.length, walletAddresses],
+  );
+  const isMultiWallet = useMemo(() => (walletAddresses ? walletAddresses.length >= 2 : false), [walletAddresses]);
+  const project = useMemo(
+    () => (projectsList ? projectsList.filter((p) => p.module === projectModule)[0] : null),
+    [projectModule, projectsList],
+  );
+  const [projectName, projectImgSrc] = useMemo(
+    () => (project ? [project.name, project.image] : [null, null]),
+    [project],
+  );
+  const totalProjectValue = useMemo(
+    () =>
+      projectsData.reduce((acc, current) => {
         return acc + (current.fiatValue || 0);
-      }, 0);
-      setProjectNetWorth(totalValue);
-    }
-  }, [isDataAvailable, projectsData]);
+      }, 0),
+    [projectsData],
+  );
 
   useEffect(() => {
-    if (projectNetWorth) {
-      handleProjectNetWorthUpdate(projectModule, projectNetWorth);
-    }
-  }, [projectModule, projectNetWorth, handleProjectNetWorthUpdate]);
+    !isFetching && handleProjectNetWorthUpdate(projectModule, totalProjectValue);
+  }, [totalProjectValue, projectModule, handleProjectNetWorthUpdate, isFetching]);
 
-  if (isDataNotAvailable) {
+  if (!isDataAvailable) {
     return null;
   }
 
@@ -74,7 +69,7 @@ const ProjectCard = (props: Props) => {
             {isFetching && <FetchLoadingIndicator />}
           </ProjectNameContainer>
         </ProjectHeader>
-        <ProjectNetWorth>{projectNetWorth && formatFiatValue(projectNetWorth)}</ProjectNetWorth>
+        <ProjectNetWorth>{totalProjectValue && formatFiatValue(totalProjectValue)}</ProjectNetWorth>
       </CardHeader>
       <ProjectDataTable projectsData={projectsData} isMobile={isMobile} isMultiWallet={isMultiWallet} />
     </CardWrapper>
