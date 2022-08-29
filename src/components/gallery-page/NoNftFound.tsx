@@ -50,6 +50,7 @@ const CentralContainer = styled(MuiContainer)`
   align-items: center;
   justify-content: center;
   height: 100%;
+  margin-top: 2rem;
 `;
 
 export default NoNftFound;

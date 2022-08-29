@@ -111,12 +111,14 @@ export type NftCollectionData = {
   name: string;
   description: string;
   nfts: NftData[];
+  address: string;
 };
 
 export type NftData = {
   id: string;
   type: "base64" | "PNG" | "WEBP";
   url: string;
+  owner: string;
 };
 
 export type ProjectsNetWorth = {

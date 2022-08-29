@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { trackNftImageLoadError } from "../../analytics/Analytics.util";
 import { NftData } from "../../types/DashboardData.type";
+import { shortenWalletAddress } from "../../utils/String.util";
 
 type Props = {
   nftData: NftData;
@@ -49,10 +50,15 @@ const NftCard = (props: Props) => {
       <ImageCaption>
         <CollectionName>{collectionName}</CollectionName>
         <NftId>{nft.id}</NftId>
+        <OwnerAddress>{shortenWalletAddress(nft.owner)}</OwnerAddress>
       </ImageCaption>
     </NftCardContainer>
   );
 };
+
+const OwnerAddress = styled.div`
+  color: #ff0080bf;
+`;
 
 const BrokenImageContainer = styled.div`
   display: flex;
@@ -70,11 +76,12 @@ const BrokenImageIcon = styled(MuiBrokenImageIcon)`
 `;
 
 const NftId = styled.div`
-  color: #a3a3a3;
+  color: #e1e1e1;
 `;
 
 const CollectionName = styled.div`
   font-weight: 500;
+  color: #e1e1e1;
 `;
 
 const ImageSkeleton = styled(Skeleton)`
