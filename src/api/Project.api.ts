@@ -6,7 +6,7 @@ export const getProjectData = async (
   signal: AbortSignal | undefined,
   walletAddress?: string,
 ): Promise<ProjectData> => {
-  const response = await ApiClient.get(`projects/${projectKey}/${walletAddress}?cache=false`, { signal });
+  const response = await ApiClient.get(`projects/${projectKey}/${walletAddress}`, { signal });
   return response.data as ProjectData;
 };
 
