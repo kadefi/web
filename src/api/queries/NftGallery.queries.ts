@@ -1,6 +1,6 @@
 import { QueryFunction, useQueries, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { NftCollectionData, NftCollectionsList as NftCollectionsList } from "../../types/DashboardData.type";
-import { getNftQueryKey } from "../../utils/QueriesUtil";
+import { getQueriesResults, isQueriesLoading, isQueriesFetching } from "../../utils/QueriesUtil";
 import { getNftCollectionsList, getNftCollectionData } from "../Nft.api";
 
 export const useGetNftCollectionData = (
@@ -8,19 +8,25 @@ export const useGetNftCollectionData = (
   walletAddresses: string[] | undefined,
   isEnabled: boolean,
 ) => {
-  const queries: {
+  const queriesConfig: {
     queryKey: string[];
     queryFn: QueryFunction<NftCollectionData>;
     enabled: boolean;
   }[] = walletAddresses
     ? walletAddresses.map((walletAddress) => ({
-        queryKey: [getNftQueryKey(nftModule), walletAddress],
+        queryKey: [`NFT-QUERY-${nftModule}`, walletAddress],
         queryFn: ({ signal }) => getNftCollectionData(nftModule, walletAddress, signal),
         enabled: isEnabled,
       }))
     : [];
 
-  return useQueries({ queries });
+  const queries = useQueries({ queries: queriesConfig });
+
+  return {
+    nftCollectionsData: getQueriesResults(queries),
+    isLoading: isQueriesLoading(queries),
+    isFetching: isQueriesFetching(queries),
+  };
 };
 
 export const useGetNftCollectionsList = (): UseQueryResult<NftCollectionsList> => {

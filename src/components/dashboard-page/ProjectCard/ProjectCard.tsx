@@ -11,7 +11,6 @@ import TypographyNeon from "../../../commons/TypographyNeon";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import theme from "../../../theme";
 import { formatFiatValue } from "../../../utils/Number.util";
-import { getQueriesResults, isQueriesFetching } from "../../../utils/QueriesUtil";
 import ProjectDataTable from "./ProjectDataTable";
 
 type Props = {
@@ -23,26 +22,30 @@ const ProjectCard = (props: Props) => {
   const { projectModule, handleNetWorthUpdate: handleProjectNetWorthUpdate } = props;
   const { walletAddresses, projectsList, selectedProjectModules } = usePageLayoutContext();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const projectQueries = useGetProjectData(
+
+  const { projectsData, isLoading, isFetching } = useGetProjectData(
     projectModule,
     walletAddresses,
     selectedProjectModules.includes(projectModule),
   );
-  const isFetching = useMemo(() => isQueriesFetching(projectQueries), [projectQueries]);
-  const projectsData = useMemo(() => getQueriesResults(projectQueries), [projectQueries]);
+
   const isDataAvailable = useMemo(
-    () => walletAddresses && !isFetching && projectsData.length > 0,
-    [isFetching, projectsData.length, walletAddresses],
+    () => walletAddresses && !isLoading && projectsData.length > 0,
+    [isLoading, projectsData.length, walletAddresses],
   );
+
   const isMultiWallet = useMemo(() => (walletAddresses ? walletAddresses.length >= 2 : false), [walletAddresses]);
+
   const project = useMemo(
     () => (projectsList ? projectsList.filter((p) => p.module === projectModule)[0] : null),
     [projectModule, projectsList],
   );
+
   const [projectName, projectImgSrc] = useMemo(
     () => (project ? [project.name, project.image] : [null, null]),
     [project],
   );
+
   const totalProjectValue = useMemo(
     () =>
       projectsData.reduce((acc, current) => {

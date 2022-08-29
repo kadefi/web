@@ -1,44 +1,54 @@
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import { flatten } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useGetNftCollectionData } from "../../api/queries/NftGallery.queries";
 import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
 import TypographyNeon from "../../commons/TypographyNeon";
 import { usePageLayoutContext } from "../../contexts/PageLayoutContext";
 import theme from "../../theme";
-import { getQueriesResults, isQueriesFetching } from "../../utils/QueriesUtil";
 import NftCard from "./NftCard";
 
 type Props = {
   nftModule: string;
-  setCollections: React.Dispatch<
-    React.SetStateAction<{
-      [k: string]: number;
-    }>
-  >;
+  handleAddCountPerCollection: (module: string, nftCount: number) => void;
 };
 
 const MIN_COUNT = 8;
 
 const NftCollection = (props: Props) => {
-  const { nftModule, setCollections } = props;
+  const { nftModule, handleAddCountPerCollection } = props;
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { walletAddresses, selectedNftModules } = usePageLayoutContext();
-  const collectionQueries = useGetNftCollectionData(nftModule, walletAddresses, selectedNftModules.includes(nftModule));
-  const isFetching = isQueriesFetching(collectionQueries);
-  const nftCollectionResults = getQueriesResults(collectionQueries);
 
-  const collectionName = nftCollectionResults[0]?.name || null;
-  const collectionDescription = nftCollectionResults[0]?.description || null;
-  const nftDatas = flatten(nftCollectionResults.map((collection) => collection.nfts));
-  const isDataNotAvailable = !walletAddresses || nftDatas.length === 0;
+  const { nftCollectionsData, isLoading, isFetching } = useGetNftCollectionData(
+    nftModule,
+    walletAddresses,
+    selectedNftModules.includes(nftModule),
+  );
+
+  const [collectionName, collectionDescription] = useMemo(
+    () => [nftCollectionsData[0]?.name, nftCollectionsData[0]?.description] || [null, null],
+    [nftCollectionsData],
+  );
+
+  const nftDatas = useMemo(
+    () => flatten(nftCollectionsData.map((collection) => collection.nfts)),
+    [nftCollectionsData],
+  );
+
+  const nftCount = useMemo(() => nftDatas.length, [nftDatas]);
+
+  const isDataAvailable = useMemo(
+    () => walletAddresses && !isLoading && nftCount > 0,
+    [isLoading, nftCount, walletAddresses],
+  );
 
   useEffect(() => {
-    !isFetching && setCollections((prev) => ({ ...prev, [nftModule]: nftDatas.length }));
-  }, [isFetching, nftDatas.length, nftModule, setCollections]);
+    !isLoading && handleAddCountPerCollection(nftModule, nftCount);
+  }, [handleAddCountPerCollection, isLoading, nftCount, nftModule]);
 
-  if (isDataNotAvailable) {
+  if (!isDataAvailable) {
     return null;
   }
 

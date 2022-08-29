@@ -1,24 +1,29 @@
 import { QueryFunction, useQueries, useQuery, UseQueryResult } from "@tanstack/react-query";
-import { WALLET_KEY } from "../../constants/QueriesKey.constant";
 import { ProjectData, ProjectsList, WalletData } from "../../types/DashboardData.type";
-import { getProjectQueryKey } from "../../utils/QueriesUtil";
+import { getQueriesResults, isQueriesFetching, isQueriesLoading } from "../../utils/QueriesUtil";
 import { getProjectData, getProjectsList } from "../Project.api";
 import { getWalletTokens } from "../Wallet.api";
 
 export const useGetWalletData = (walletAddresseses: string[] | undefined, isEnabled: boolean) => {
-  const queries: {
+  const queriesConfig: {
     queryKey: string[];
     queryFn: QueryFunction<WalletData>;
     enabled: boolean;
   }[] = walletAddresseses
     ? walletAddresseses.map((walletAddress) => ({
-        queryKey: [WALLET_KEY, walletAddress],
+        queryKey: ["WALLET-QUERY", walletAddress],
         queryFn: ({ signal }) => getWalletTokens(walletAddress, signal),
         enabled: isEnabled,
       }))
     : [];
 
-  return useQueries({ queries });
+  const queries = useQueries({ queries: queriesConfig });
+
+  return {
+    walletsData: getQueriesResults(queries),
+    isLoading: isQueriesLoading(queries),
+    isFetching: isQueriesFetching(queries),
+  };
 };
 
 export const useGetProjectsList = (): UseQueryResult<ProjectsList> => {
@@ -26,17 +31,23 @@ export const useGetProjectsList = (): UseQueryResult<ProjectsList> => {
 };
 
 export const useGetProjectData = (projectModule: string, walletAddresses: string[] | undefined, isEnabled: boolean) => {
-  const queries: {
+  const queriesConfig: {
     queryKey: string[];
     queryFn: QueryFunction<ProjectData>;
     enabled: boolean;
   }[] = walletAddresses
     ? walletAddresses.map((walletAddress) => ({
-        queryKey: [getProjectQueryKey(projectModule), walletAddress],
+        queryKey: [`PROJECT-QUERY-${projectModule}`, walletAddress],
         queryFn: ({ signal }) => getProjectData(projectModule, signal, walletAddress),
         enabled: isEnabled,
       }))
     : [];
 
-  return useQueries({ queries });
+  const queries = useQueries({ queries: queriesConfig });
+
+  return {
+    projectsData: getQueriesResults(queries),
+    isLoading: isQueriesLoading(queries),
+    isFetching: isQueriesFetching(queries),
+  };
 };

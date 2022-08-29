@@ -11,7 +11,8 @@ import TypographyNeon from "../../../commons/TypographyNeon";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import theme from "../../../theme";
 import { formatFiatValue } from "../../../utils/Number.util";
-import { getQueriesResults, isQueriesFetching } from "../../../utils/QueriesUtil";
+import { getFiatValuesMap } from "../../../utils/QueriesUtil";
+import { sortComponentsByValueMap } from "../../../utils/Sort.util";
 import EmptyWallet from "./EmptyWallet";
 import WalletDataTable from "./WalletDataTable";
 
@@ -23,11 +24,11 @@ const WalletCard = (props: Props) => {
   const { handleNetWorthUpdate } = props;
 
   const { walletAddresses } = usePageLayoutContext();
-  const walletQueries = useGetWalletData(walletAddresses, true);
-  const isFetching = useMemo(() => isQueriesFetching(walletQueries), [walletQueries]);
-  const walletsData = useMemo(() => getQueriesResults(walletQueries), [walletQueries]);
-  const isDataAvailable = useMemo(() => !isFetching && walletsData.length > 0, [isFetching, walletsData.length]);
+  const { walletsData, isLoading, isFetching } = useGetWalletData(walletAddresses, true);
+  const isDataAvailable = useMemo(() => !isLoading && walletsData.length > 0, [isLoading, walletsData.length]);
   const isMultiWallet = useMemo(() => (walletAddresses ? walletAddresses.length > 1 : false), [walletAddresses]);
+  const { addresses, valuesMap } = useMemo(() => getFiatValuesMap(walletsData), [walletsData]);
+
   const totalWalletValue = useMemo(
     () => walletsData.reduce((acc, current) => acc + current.fiatValue || 0, 0),
     [walletsData],
@@ -37,7 +38,17 @@ const WalletCard = (props: Props) => {
     !isFetching && handleNetWorthUpdate("wallet", totalWalletValue);
   }, [handleNetWorthUpdate, isFetching, totalWalletValue]);
 
-  if (isFetching) {
+  const walletSections = useMemo(() => {
+    const sections = walletsData.map((walletData) => (
+      <WalletDataTable key={`wallet-${walletData.address}`} walletData={walletData} isMultiWallet={isMultiWallet} />
+    ));
+
+    sortComponentsByValueMap(sections, addresses, valuesMap);
+
+    return sections;
+  }, [addresses, isMultiWallet, valuesMap, walletsData]);
+
+  if (isLoading) {
     return <LoadingTableSkeleton />;
   }
 
@@ -52,14 +63,7 @@ const WalletCard = (props: Props) => {
         {totalWalletValue && <WalletTotalValue>{formatFiatValue(totalWalletValue)}</WalletTotalValue>}
       </Container>
       <WalletsContainer>
-        {isDataAvailable &&
-          walletsData.map((walletData) => (
-            <WalletDataTable
-              key={`wallet-${walletData.address}`}
-              walletData={walletData}
-              isMultiWallet={isMultiWallet}
-            />
-          ))}
+        {walletSections}
         {!isDataAvailable && <EmptyWallet />}
       </WalletsContainer>
     </CardWrapper>
