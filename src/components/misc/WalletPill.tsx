@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { Tooltip } from "@mui/material";
 import { shortenWalletAddress } from "../../utils/String.util";
 
 type Props = {
@@ -28,7 +29,7 @@ const WalletPill = (props: Props) => {
   };
 
   if (isPillShape) {
-    return (
+    const pill = (
       <WalletAddressPill isFullWidth={isFullWidth}>
         <AddressContainer isRemovable={isRemovable}>{shortenedWallet}</AddressContainer>
         {isRemovable && (
@@ -37,6 +38,14 @@ const WalletPill = (props: Props) => {
           </RemoveIcon>
         )}
       </WalletAddressPill>
+    );
+
+    return isShortened ? (
+      <Tooltip title={walletAddress} placement="bottom" arrow>
+        {pill}
+      </Tooltip>
+    ) : (
+      pill
     );
   }
 

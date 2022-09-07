@@ -1,8 +1,6 @@
 import CableOutlinedIcon from "@mui/icons-material/CableOutlined";
-import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import { Route } from "../../../enums/Route.enum";
 import { MenuConfigItem } from "../../../types/Menu.type";
 
@@ -27,19 +25,5 @@ export const MENU_CONFIG: MenuConfigItem[] = [
     route: Route.Integrations,
     isWalletSearch: false,
     isDisabled: false,
-  },
-  {
-    title: "Project History",
-    icon: <TimelineOutlinedIcon />,
-    route: null,
-    isWalletSearch: false,
-    isDisabled: true,
-  },
-  {
-    title: "Tools",
-    icon: <ConstructionOutlinedIcon />,
-    route: null,
-    isWalletSearch: false,
-    isDisabled: true,
   },
 ];

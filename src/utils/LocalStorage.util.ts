@@ -16,6 +16,22 @@ const getLocalStorageArray = (key: string) => {
   return arr;
 };
 
+const getLocalStorageJsonObj = (key: string) => {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  const lsItem = localStorage.getItem(key);
+
+  let obj = {};
+
+  if (lsItem) {
+    obj = JSON.parse(lsItem);
+  }
+
+  return obj;
+};
+
 export const getRecentWalletsLS = () => {
   return getLocalStorageArray(LS_RECENT_SEARCHES_KEY);
 };
@@ -50,6 +66,35 @@ export const arrayLocalStorage = (key: string) => {
     },
     destroy: () => {
       localStorage.removeItem(key);
+    },
+  };
+};
+
+const LS_BOOKMARK_KEY = "LS_BOOKMARK_KEY";
+
+export const bookmarkLS = () => {
+  return {
+    get: () => {
+      return getLocalStorageJsonObj(LS_BOOKMARK_KEY);
+    },
+    addBookmark: (bookmarkName: string, walletAddresses: string[]) => {
+      const bookmarks: { [k: string]: string[] } = getLocalStorageJsonObj(LS_BOOKMARK_KEY);
+
+      bookmarks[bookmarkName] = walletAddresses;
+
+      localStorage.setItem(LS_BOOKMARK_KEY, JSON.stringify(bookmarks));
+    },
+    removeBookmark: (bookmarkName: string) => {
+      const bookmarks: { [k: string]: string[] } = getLocalStorageJsonObj(LS_BOOKMARK_KEY);
+
+      if (bookmarkName in bookmarks) {
+        delete bookmarks[bookmarkName];
+      }
+
+      localStorage.setItem(LS_BOOKMARK_KEY, JSON.stringify(bookmarks));
+    },
+    destroy: () => {
+      localStorage.removeItem(LS_BOOKMARK_KEY);
     },
   };
 };

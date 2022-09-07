@@ -35,8 +35,8 @@ const WalletCard = (props: Props) => {
   );
 
   useEffect(() => {
-    !isFetching && handleNetWorthUpdate("wallet", totalWalletValue);
-  }, [handleNetWorthUpdate, isFetching, totalWalletValue]);
+    !isLoading && handleNetWorthUpdate("wallet", totalWalletValue);
+  }, [handleNetWorthUpdate, isFetching, isLoading, totalWalletValue]);
 
   const walletSections = useMemo(() => {
     const sections = walletsData.map((walletData) => (

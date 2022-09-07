@@ -6,6 +6,7 @@ import { useCurrentMenu } from "../../../hooks/useCurrentMenu";
 import theme from "../../../theme";
 import { KadefiLogo } from "../../nav-bar/KadefiLogo";
 import SearchWalletInput from "../../nav-bar/SearchWalletInput";
+import BookmarkSelection from "./BookmarkSelection";
 
 type Props = {
   handleSideBarToggle: () => void;
@@ -28,7 +29,8 @@ const NavBar = (props: Props) => {
       </LeftNavBar>
       {isWalletSearch && (
         <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
-          <SearchWalletInput isLoading={isPageFetching} />
+          <BookmarkSelection />
+          <SearchWalletInput isLoading={isPageFetching} customBorderRadius="0 10rem 10rem 0" />
         </RightNavBar>
       )}
     </NavBarContainer>
@@ -42,7 +44,9 @@ const HamburgerMenu = styled(MenuSharpIcon)`
 const RightNavBar = styled(Container)`
   flex-grow: 1;
   display: flex;
+  flex-direction: row;
   align-items: center;
+  gap: 4px;
 
   ${theme.breakpoints.down("md")} {
     padding-bottom: 1rem;

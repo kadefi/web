@@ -16,6 +16,10 @@ type PageLayoutContextType = {
   setNftCollectionsList: Dispatch<SetStateAction<NftCollectionsList | undefined>>;
   selectedNftModules: string[];
   handleNftModuleToggle: (module: string) => void;
+
+  // Bookmarks
+  bookmarks: { [k: string]: string[] };
+  refreshBookmarks: () => void;
 };
 
 export const PageLayoutContext = createContext<PageLayoutContextType>({} as PageLayoutContextType);

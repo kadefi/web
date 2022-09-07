@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { PageLayoutContext } from "../../../contexts/PageLayoutContext";
+import useBookmarks from "../../../hooks/useBookmarks";
 import { useNftCollectionsList } from "../../../hooks/useNftCollectionsList";
 import { useProjectsList } from "../../../hooks/useProjectsList";
 import { useWalletAddresses } from "../../../hooks/useWalletAddress";
@@ -19,6 +20,7 @@ const PageLayout = (props: Props) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // Default to close sidebar (only for mobile)
   const projectListStates = useProjectsList();
   const nftCollectionsListStates = useNftCollectionsList();
+  const bookmarkStates = useBookmarks();
   const { walletAddresses } = useWalletAddresses();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -42,6 +44,7 @@ const PageLayout = (props: Props) => {
         walletAddresses,
         ...projectListStates,
         ...nftCollectionsListStates,
+        ...bookmarkStates,
       }}
     >
       <Wrapper>

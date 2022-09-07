@@ -14,10 +14,11 @@ type CustomTextFieldProps = {
     component: ReactNode;
     onClick?: (value: string) => void;
   };
+  customBorderRadius?: string;
 } & TextFieldProps;
 
 const TextField = (props: CustomTextFieldProps) => {
-  const { input, onInputChange, startIcon, endIcon, ...textFieldProps } = props;
+  const { input, onInputChange, startIcon, endIcon, customBorderRadius, ...textFieldProps } = props;
 
   const handleEndIconClick = () => {
     if (input && endIcon && endIcon.onClick) {
@@ -48,6 +49,7 @@ const TextField = (props: CustomTextFieldProps) => {
       onChange={(e) => onInputChange(e.target.value)}
       disabled={additionalTextFieldProps.disabled}
       $hasStartIcon={Boolean(startIcon)}
+      $borderRadius={customBorderRadius}
       {...additionalTextFieldProps}
     />
   );
@@ -56,13 +58,14 @@ const TextField = (props: CustomTextFieldProps) => {
 type StyledProps = {
   disabled?: boolean;
   $hasStartIcon?: boolean;
+  $borderRadius?: string;
 };
 
 const StyledTextField = styled(MuiTextField, transientOptions)<StyledProps>`
   opacity: ${(props) => (props.disabled ? 0.9 : 1)};
   & .MuiInputBase-root {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 10rem;
+    border-radius: ${(props) => (props.$borderRadius ? props.$borderRadius : "10rem")};
   }
   & .MuiInputBase-input {
     padding: ${(props) => (props.$hasStartIcon ? "0.5rem 0.25rem" : "0.5rem 1rem")};

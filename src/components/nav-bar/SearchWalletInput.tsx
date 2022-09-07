@@ -10,10 +10,11 @@ import { isValidWalletAddress } from "../../utils/String.util";
 
 type Props = {
   isLoading?: boolean;
+  customBorderRadius?: string;
 };
 
 const SearchWalletInput = (props: Props) => {
-  const { isLoading = false } = props;
+  const { isLoading = false, customBorderRadius } = props;
   const [isErrorNotiOpen, setIsErrorNotiOpen] = useState(false);
   const [input, setInput] = useState("");
   const router = useRouter();
@@ -77,6 +78,7 @@ const SearchWalletInput = (props: Props) => {
           component: endIconComponent,
           onClick: handleSearchWallet,
         }}
+        customBorderRadius={customBorderRadius}
       />
       <SnackBarAlert
         isOpen={isErrorNotiOpen}

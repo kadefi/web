@@ -55,8 +55,8 @@ const ProjectCard = (props: Props) => {
   );
 
   useEffect(() => {
-    !isFetching && handleProjectNetWorthUpdate(projectModule, totalProjectValue);
-  }, [totalProjectValue, projectModule, handleProjectNetWorthUpdate, isFetching]);
+    !isLoading && handleProjectNetWorthUpdate(projectModule, totalProjectValue);
+  }, [totalProjectValue, projectModule, handleProjectNetWorthUpdate, isFetching, isLoading]);
 
   if (!isDataAvailable) {
     return null;

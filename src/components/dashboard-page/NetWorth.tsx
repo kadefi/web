@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import { Skeleton, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useIsFetching } from "@tanstack/react-query";
 import CountUp from "react-countup";
+import FetchLoadingIndicator from "../../commons/FetchLoadingIndicator";
 import TypographyNeon from "../../commons/TypographyNeon";
 import theme from "../../theme";
 import { ProjectsNetWorth } from "../../types/DashboardData.type";
@@ -20,23 +21,18 @@ const NetWorth = (props: Props) => {
 
   return (
     <>
-      <NetWorthTitle>Net Worth</NetWorthTitle>
+      <NetWorthTitle>
+        Net Worth
+        {isPageFetching && <FetchLoadingIndicator />}
+      </NetWorthTitle>
       <NetWorthAmount>
-        {isPageFetching ? (
-          <NetWorthAmountSkeleton />
-        ) : (
-          <div>
-            <CountUp end={getNetWorthValue(projectsNetWorth)} prefix="$ " separator="," decimals={2} duration={0.3} />
-          </div>
-        )}
+        <div>
+          <CountUp end={getNetWorthValue(projectsNetWorth)} prefix="$ " separator="," decimals={2} duration={0.3} />
+        </div>
       </NetWorthAmount>
     </>
   );
 };
-
-const NetWorthAmountSkeleton = styled(Skeleton)({
-  width: "10rem",
-});
 
 const NetWorthAmount = styled(TypographyNeon)`
   font-size: 52px;
@@ -51,6 +47,10 @@ const NetWorthAmount = styled(TypographyNeon)`
 const NetWorthTitle = styled(Typography)`
   font-size: 24px;
   font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
 
   ${theme.breakpoints.down("sm")} {
     font-size: 20px;

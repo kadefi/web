@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import TextField from "../../../commons/TextField";
 import theme from "../../../theme";
+import { bookmarkLS } from "../../../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../../../utils/String.util";
 import WalletPill from "../../misc/WalletPill";
 
@@ -18,20 +19,21 @@ const checkValidWallet = (wallet: string) => {
 const MAX_NUM_WALLETS = 5;
 
 type Props = {
+  bookmarkName: string;
   walletAddresses: string[];
   isModalOpen: boolean;
   handleClose: () => void;
 };
 
-const AddWalletModal = (props: Props) => {
-  const { isModalOpen, handleClose, walletAddresses } = props;
+const ConfigureBookmarkModal = (props: Props) => {
+  const { bookmarkName, isModalOpen, handleClose, walletAddresses } = props;
   const [wallets, setWallets] = useState<string[]>(walletAddresses);
   const [isInvalidAddress, setIsInvalidAddress] = useState(false);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>();
-  const router = useRouter();
   const isMaxWalletsReached = wallets.length >= MAX_NUM_WALLETS;
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const router = useRouter();
 
   useEffect(() => {
     if (isModalOpen) {
@@ -73,10 +75,11 @@ const AddWalletModal = (props: Props) => {
     }
   };
 
-  const handleUpdateButtonClick = () => {
+  const handleSaveButtonClick = () => {
     if (input.length === 0) {
       handleClose();
-      router.push({ pathname: router.pathname, query: { wallet: wallets } });
+      bookmarkLS().addBookmark(bookmarkName, uniq(wallets));
+      router.push({ pathname: router.pathname, query: { wallet: uniq(wallets) } });
     }
 
     const { isValid, cleanedAddress } = checkValidWallet(input);
@@ -86,53 +89,68 @@ const AddWalletModal = (props: Props) => {
       return;
     }
 
+    const newWallets = uniq([...wallets, cleanedAddress]);
+
+    bookmarkLS().addBookmark(bookmarkName, newWallets);
+
     if (router.isReady) {
-      handleClose();
-      router.push({ pathname: router.pathname, query: { wallet: uniq([...wallets, cleanedAddress]) } });
+      router.push({ pathname: router.pathname, query: { wallet: newWallets } });
     }
+
+    handleClose();
+  };
+
+  const handleDeleteButtonClick = () => {
+    bookmarkLS().removeBookmark(bookmarkName);
+    handleClose();
   };
 
   return (
-    <Modal open={isModalOpen} onClose={handleClose}>
-      <Container>
-        <ModalTitle>Configure Wallets</ModalTitle>
-        <WalletListContainer>
-          {wallets.map((address) => (
-            <WalletPill
-              key={`modal-wallet-selector-${address}`}
-              walletAddress={address}
-              isShortened={false}
-              isPillShape
-              isRemovable
-              isFullWidth
-              onRemove={handleWalletRemove}
+    <>
+      <Modal open={isModalOpen} onClose={handleClose}>
+        <Container>
+          <ModalTitle>Configure Bookmark: {bookmarkName}</ModalTitle>
+          <WalletListContainer>
+            {wallets.map((address) => (
+              <WalletPill
+                key={`modal-wallet-selector-${address}`}
+                walletAddress={address}
+                isShortened={false}
+                isPillShape
+                isRemovable
+                isFullWidth
+                onRemove={handleWalletRemove}
+              />
+            ))}
+            <TextField
+              disabled={isMaxWalletsReached}
+              inputRef={inputRef}
+              error={isInvalidAddress}
+              helperText={isInvalidAddress ? "Invalid address" : ""}
+              input={input}
+              onInputChange={handleInputChange}
+              type="text"
+              autoFocus={!isMobile}
+              onKeyDown={handleWalletInputEnter}
+              endIcon={{
+                component: <AddWalletIcon />,
+                onClick: handleWalletAdd,
+              }}
+              fullWidth
+              placeholder={isMaxWalletsReached ? `Max ${MAX_NUM_WALLETS} wallets added` : "Add a new wallet address"}
             />
-          ))}
-          <TextField
-            disabled={isMaxWalletsReached}
-            inputRef={inputRef}
-            error={isInvalidAddress}
-            helperText={isInvalidAddress ? "Invalid address" : ""}
-            input={input}
-            onInputChange={handleInputChange}
-            type="text"
-            autoFocus={!isMobile}
-            onKeyDown={handleWalletInputEnter}
-            endIcon={{
-              component: <AddWalletIcon />,
-              onClick: handleWalletAdd,
-            }}
-            fullWidth
-            placeholder={isMaxWalletsReached ? `Max ${MAX_NUM_WALLETS} wallets added` : "Add a new wallet address"}
-          />
-        </WalletListContainer>
-        <ButtonContainer>
-          <Button variant="contained" onClick={handleUpdateButtonClick}>
-            Update Dashboard
-          </Button>
-        </ButtonContainer>
-      </Container>
-    </Modal>
+          </WalletListContainer>
+          <ButtonContainer>
+            <Button color="warning" variant="contained" onClick={handleDeleteButtonClick}>
+              Delete
+            </Button>
+            <Button variant="contained" onClick={handleSaveButtonClick}>
+              Save
+            </Button>
+          </ButtonContainer>
+        </Container>
+      </Modal>
+    </>
   );
 };
 
@@ -146,6 +164,7 @@ const ButtonContainer = styled.div`
   display: flex;
   margin-top: 1.5rem;
   justify-content: center;
+  gap: 1rem;
 `;
 
 const WalletListContainer = styled.div`
@@ -180,4 +199,4 @@ const Container = styled.div`
   }
 `;
 
-export default AddWalletModal;
+export default ConfigureBookmarkModal;
