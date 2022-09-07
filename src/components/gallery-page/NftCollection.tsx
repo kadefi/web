@@ -119,7 +119,7 @@ const CollectionDescription = styled(Typography)`
 `;
 
 const CollectionContainer = styled.div`
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 `;
 
 const CollectionName = styled(TypographyNeon)`

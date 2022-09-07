@@ -48,7 +48,7 @@ const NftGallery: CustomNextPage = () => {
 };
 
 const Container = styled(MuiContainer)`
-  padding: 2rem;
+  padding: 1rem;
 `;
 
 NftGallery.getLayout = getPageLayout;
