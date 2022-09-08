@@ -47,7 +47,7 @@ const BookmarkSelection = () => {
             Object.keys(bookmarks).map((bookmarkName) => (
               <BookmarkItemContainer key={`bookmark-dropdown-${bookmarkName}`}>
                 <BookmarkItem onClick={() => handleBookmarkItemClick(bookmarkName)}>{bookmarkName}</BookmarkItem>
-                <DeleteBookmarkIcon fontSize="small" onClick={() => setOpenBookmarkName(bookmarkName)} />
+                <ConfigureBookmarkIcon fontSize="small" onClick={() => setOpenBookmarkName(bookmarkName)} />
               </BookmarkItemContainer>
             ))
           ) : (
@@ -68,17 +68,17 @@ const BookmarkSelection = () => {
 };
 
 const NoBookmarkText = styled.div`
-  padding: 6px 8px;
+  padding: 8px 16px;
 `;
 
 const BookmarkItemContainer = styled.div`
   position: relative;
 `;
 
-const DeleteBookmarkIcon = styled(SettingsRoundedIcon)`
+const ConfigureBookmarkIcon = styled(SettingsRoundedIcon)`
   position: absolute;
   right: 6px;
-  top: 7px;
+  top: 9px;
   border-radius: 16px;
   padding: 2px;
   transition: 150ms;
@@ -89,7 +89,7 @@ const DeleteBookmarkIcon = styled(SettingsRoundedIcon)`
 `;
 
 const BookmarkItem = styled.div`
-  padding: 6px 8px;
+  padding: 8px 16px;
   border-radius: 4px;
   transition: 150ms;
   display: flex;
@@ -112,7 +112,7 @@ type BookmarksDropdownProps = {
 
 const BookmarksDropdown = styled.div<BookmarksDropdownProps>`
   transition: height 300ms;
-  height: ${(props) => (props.$isOpen ? `${(props.$itemsCount || 1) * 33}px` : "0")};
+  height: ${(props) => (props.$isOpen ? `${(props.$itemsCount || 1) * 37}px` : "0")};
   position: absolute;
   width: 100px;
   background-color: rgb(117 53 87);
@@ -143,7 +143,7 @@ const BookmarkButton = styled.div`
   padding: 7.5px 8px 7.5px 16px;
   color: #ffffff9e;
   font-size: 15px;
-  border-radius: 32px 0 0 32px;
+  border-radius: 10rem;
   white-space: nowrap;
   display: flex;
   align-items: center;

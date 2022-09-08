@@ -76,10 +76,16 @@ const ConfigureBookmarkModal = (props: Props) => {
   };
 
   const handleSaveButtonClick = () => {
+    if (wallets.length === 0) {
+      handleDeleteButtonClick();
+      return;
+    }
+
     if (input.length === 0) {
       handleClose();
       bookmarkLS().addBookmark(bookmarkName, uniq(wallets));
       router.push({ pathname: router.pathname, query: { wallet: uniq(wallets) } });
+      return;
     }
 
     const { isValid, cleanedAddress } = checkValidWallet(input);

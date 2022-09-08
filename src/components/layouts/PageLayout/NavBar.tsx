@@ -30,7 +30,7 @@ const NavBar = (props: Props) => {
       {isWalletSearch && (
         <RightNavBar maxWidth="md" onClick={handleSideBarClose}>
           <BookmarkSelection />
-          <SearchWalletInput isLoading={isPageFetching} customBorderRadius="0 10rem 10rem 0" />
+          <SearchWalletInput isLoading={isPageFetching} />
         </RightNavBar>
       )}
     </NavBarContainer>
