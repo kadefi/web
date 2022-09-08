@@ -27,7 +27,7 @@ const MultiWalletPills = () => {
           <WalletsHeaderContainer></WalletsHeaderContainer>
           <Container>
             <TopActions>
-              <FavouriteButton />
+              <BookmarkButton />
               <CopyUrlButton />
             </TopActions>
             <WalletPillsContainer>
@@ -73,7 +73,7 @@ const CopyUrlButton = () => {
   );
 };
 
-const FavouriteButton = () => {
+const BookmarkButton = () => {
   const { walletAddresses, bookmarks, refreshBookmarks } = usePageLayoutContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openBookmarkName, setOpenBookmarkName] = useState<string | null>(null);
@@ -83,12 +83,9 @@ const FavouriteButton = () => {
     : [];
 
   const isBookmarked = currentBookmark.length > 0;
-
   const currentBookmarkName = isBookmarked ? currentBookmark[0] : undefined;
-
   const icon = isBookmarked ? <StarIcon color="primary" /> : <StarBorderOutlinedIcon />;
-
-  const tooltipText = isBookmarked ? "Bookmarked" : "Bookmark Search Config";
+  const tooltipText = isBookmarked ? "Bookmarked" : "Bookmark Dashboard";
 
   useEffect(() => {
     refreshBookmarks();
