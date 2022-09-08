@@ -6,13 +6,13 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import { useIsOpen } from "../../../hooks/useIsOpen";
-import useOffsetHeight from "../../../hooks/useOffsetHeight";
+import useOffsetDimension from "../../../hooks/useOffsetDimension";
 import ConfigureBookmarkModal from "./ConfigureBookmarkModal";
 
 const BookmarkSelection = () => {
   const { bookmarks, refreshBookmarks } = usePageLayoutContext();
   const { ref: bookmarkOpenRef, isOpen, setIsOpen } = useIsOpen(false);
-  const { ref: bookmarkButtonRef, offsetHeight } = useOffsetHeight<HTMLDivElement>();
+  const { ref: bookmarkButtonRef, offsetHeight, offsetWidth } = useOffsetDimension<HTMLDivElement>();
   const router = useRouter();
   const [openBookmarkName, setOpenBookmarkName] = useState<string | null>(null);
 
@@ -37,7 +37,12 @@ const BookmarkSelection = () => {
           Bookmarks
           <ArrowDropDownIcon />
         </BookmarkButton>
-        <BookmarksDropdown $isOpen={isOpen} $itemsCount={Object.keys(bookmarks).length} $offsetHeight={offsetHeight}>
+        <BookmarksDropdown
+          $isOpen={isOpen}
+          $itemsCount={Object.keys(bookmarks).length}
+          $offsetHeight={offsetHeight}
+          $offsetWidth={offsetWidth}
+        >
           {!isEmpty(bookmarks) ? (
             Object.keys(bookmarks).map((bookmarkName) => (
               <BookmarkItemContainer key={`bookmark-dropdown-${bookmarkName}`}>
@@ -102,6 +107,7 @@ type BookmarksDropdownProps = {
   $isOpen: boolean;
   $itemsCount: number;
   $offsetHeight: number | null;
+  $offsetWidth: number | null;
 };
 
 const BookmarksDropdown = styled.div<BookmarksDropdownProps>`
@@ -110,12 +116,11 @@ const BookmarksDropdown = styled.div<BookmarksDropdownProps>`
   position: absolute;
   width: 100px;
   background-color: rgb(117 53 87);
-  /* background-color: rgb(39 0 37); */
   color: white;
   font-size: 14px;
   white-space: nowrap;
   width: fit-content;
-  min-width: 130px;
+  min-width: ${(props) => (props.$offsetWidth ? `${props.$offsetWidth}px` : 0)};
   max-width: 500px;
   top: ${(props) => (props.$offsetHeight ? `${props.$offsetHeight + 4}px` : 0)};
   border-radius: 4px;

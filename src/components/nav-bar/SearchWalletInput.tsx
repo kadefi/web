@@ -69,7 +69,6 @@ const SearchWalletInput = (props: Props) => {
         onInputChange={handleInputChange}
         type="text"
         inputRef={ref}
-        disabled={isLoading}
         onKeyDown={handleWalletInputEnter}
         fullWidth
         placeholder="Search a wallet address"

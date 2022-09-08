@@ -51,8 +51,7 @@ const Dashboard: CustomNextPage = () => {
 };
 
 const Content = styled(Container)({
-  marginTop: "1rem",
-  marginBottom: "80px",
+  marginTop: "0 1rem",
 });
 
 Dashboard.getLayout = getPageLayout;

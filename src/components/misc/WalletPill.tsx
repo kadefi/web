@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Tooltip } from "@mui/material";
+import { useRef, useState } from "react";
 import { shortenWalletAddress } from "../../utils/String.util";
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
   isRemovable?: boolean;
   isShortened?: boolean;
   isFullWidth?: boolean;
+  isCopiable?: boolean;
   onRemove?: (walletAddress: string) => void;
 };
 
@@ -19,8 +21,29 @@ const WalletPill = (props: Props) => {
     isRemovable = false,
     isShortened = true,
     isFullWidth = false,
+    isCopiable = false,
     onRemove,
   } = props;
+
+  const [tooltipText, setTooltipText] = useState(walletAddress);
+  const tooltipRef = useRef<NodeJS.Timeout>();
+
+  const handleCopyWallet = () => {
+    if (!isCopiable) {
+      return;
+    }
+
+    if (tooltipRef.current) {
+      clearTimeout(tooltipRef.current);
+    }
+
+    navigator.clipboard.writeText(walletAddress);
+    setTooltipText("Copied");
+
+    tooltipRef.current = setTimeout(() => {
+      setTooltipText(walletAddress);
+    }, 1000);
+  };
 
   const shortenedWallet = isShortened ? shortenWalletAddress(walletAddress) : walletAddress;
 
@@ -30,7 +53,7 @@ const WalletPill = (props: Props) => {
 
   if (isPillShape) {
     const pill = (
-      <WalletAddressPill isFullWidth={isFullWidth}>
+      <WalletAddressPill isFullWidth={isFullWidth} isCopiable={isCopiable} onClick={handleCopyWallet}>
         <AddressContainer isRemovable={isRemovable}>{shortenedWallet}</AddressContainer>
         {isRemovable && (
           <RemoveIcon onClick={handleRemove}>
@@ -41,7 +64,7 @@ const WalletPill = (props: Props) => {
     );
 
     return isShortened ? (
-      <Tooltip title={walletAddress} placement="bottom" arrow>
+      <Tooltip title={tooltipText} placement="bottom" arrow>
         {pill}
       </Tooltip>
     ) : (
@@ -76,6 +99,7 @@ const RemoveIcon = styled.div`
 
 type WalletAddressPillProps = {
   isFullWidth: boolean;
+  isCopiable: boolean;
 };
 
 const WalletAddressPill = styled.div<WalletAddressPillProps>`
@@ -86,6 +110,7 @@ const WalletAddressPill = styled.div<WalletAddressPillProps>`
   font-weight: 500;
   font-size: 0.875rem;
   width: ${(props) => (props.isFullWidth ? "100%" : "fit-content")};
+  cursor: ${(props) => (props.isCopiable ? "pointer" : "auto")};
   justify-content: space-between;
 `;
 

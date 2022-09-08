@@ -4,7 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import { Container as MuiContainer, Tooltip, useMediaQuery } from "@mui/material";
-import { isEqual } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 import { ReactElement, useEffect, useState } from "react";
 import SnackBarAlert from "../../../commons/SnackBarAlert";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
@@ -13,6 +13,7 @@ import theme from "../../../theme";
 import WalletPill from "../../misc/WalletPill";
 import AddBookmarkModal from "./AddBookmarkModal";
 import AddWalletModal from "./AddWalletModal";
+import ConfigureBookmarkModal from "./ConfigureBookmarkModal";
 
 const MultiWalletPills = () => {
   const { currentMenu } = useCurrentMenu();
@@ -25,11 +26,18 @@ const MultiWalletPills = () => {
         <>
           <WalletsHeaderContainer></WalletsHeaderContainer>
           <Container>
-            <WalletPillsContainer>
+            <TopActions>
               <FavouriteButton />
               <CopyUrlButton />
+            </TopActions>
+            <WalletPillsContainer>
               {walletAddresses?.map((walletAddress) => (
-                <WalletPill key={`wallet-selector-${walletAddress}`} walletAddress={walletAddress} isPillShape />
+                <WalletPill
+                  key={`wallet-selector-${walletAddress}`}
+                  walletAddress={walletAddress}
+                  isPillShape
+                  isCopiable
+                />
               ))}
               <ConfigureWalletsButton />
             </WalletPillsContainer>
@@ -68,6 +76,7 @@ const CopyUrlButton = () => {
 const FavouriteButton = () => {
   const { walletAddresses, bookmarks, refreshBookmarks } = usePageLayoutContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openBookmarkName, setOpenBookmarkName] = useState<string | null>(null);
 
   const currentBookmark = walletAddresses
     ? Object.keys(bookmarks).filter((bookmarkKey) => isEqual(walletAddresses.sort(), bookmarks[bookmarkKey].sort()))
@@ -83,10 +92,11 @@ const FavouriteButton = () => {
 
   useEffect(() => {
     refreshBookmarks();
-  }, [isModalOpen, refreshBookmarks]);
+  }, [isModalOpen, refreshBookmarks, openBookmarkName]);
 
   const handleOpenBookmarkModal = () => {
     if (isBookmarked) {
+      currentBookmarkName && setOpenBookmarkName(currentBookmarkName);
       return;
     }
 
@@ -107,6 +117,14 @@ const FavouriteButton = () => {
           walletAddresses={walletAddresses}
           isModalOpen={isModalOpen}
           handleClose={() => setIsModalOpen(false)}
+        />
+      )}
+      {openBookmarkName && !isEmpty(bookmarks) && (
+        <ConfigureBookmarkModal
+          bookmarkName={openBookmarkName}
+          walletAddresses={bookmarks[openBookmarkName]}
+          isModalOpen={openBookmarkName !== null}
+          handleClose={() => setOpenBookmarkName(null)}
         />
       )}
     </>
@@ -165,9 +183,13 @@ const ActionButton = (props: {
   );
 };
 
-const Container = styled.div`
+const Container = styled.div``;
+
+const TopActions = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 `;
 
 const WalletsHeaderContainer = styled.div`
@@ -178,7 +200,6 @@ const WalletsHeaderContainer = styled.div`
 `;
 
 const Wrapper = styled(MuiContainer)`
-  margin-top: 0.5rem;
   margin-bottom: 1rem;
 `;
 
