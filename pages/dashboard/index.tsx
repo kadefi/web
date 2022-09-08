@@ -39,19 +39,17 @@ const Dashboard: CustomNextPage = () => {
   }, [handleNetWorthUpdate, netWorthMap, selectedProjectModules]);
 
   return (
-    <div>
-      <Content maxWidth="md">
-        <NetWorth netWorthMap={netWorthMap} />
-        <WalletCard handleNetWorthUpdate={handleNetWorthUpdate} />
-        {projectCards}
-        {isPageFetching && <FetchLoadingIndicator text="Retrieving latest projects data" />}
-      </Content>
-    </div>
+    <Content maxWidth="md">
+      <NetWorth netWorthMap={netWorthMap} />
+      <WalletCard handleNetWorthUpdate={handleNetWorthUpdate} />
+      {projectCards}
+      {isPageFetching && <FetchLoadingIndicator text="Retrieving latest projects data" />}
+    </Content>
   );
 };
 
 const Content = styled(Container)({
-  marginTop: "0 1rem",
+  marginTop: "1.5rem",
 });
 
 Dashboard.getLayout = getPageLayout;
