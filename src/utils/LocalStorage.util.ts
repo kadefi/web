@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import _ from "underscore";
 import { trackLocalStorageUpdate } from "../analytics/Analytics.util";
 import { LS_RECENT_SEARCHES_KEY } from "../constants/LocalStorage.constant";
@@ -79,6 +80,14 @@ export const bookmarkLS = () => {
     },
     addBookmark: (bookmarkName: string, walletAddresses: string[]) => {
       const bookmarks: { [k: string]: string[] } = getLocalStorageJsonObj(LS_BOOKMARK_KEY);
+
+      const existingBookmark = walletAddresses
+        ? Object.keys(bookmarks).filter((bookmarkKey) => isEqual(walletAddresses.sort(), bookmarks[bookmarkKey].sort()))
+        : [];
+
+      if (existingBookmark.length > 0) {
+        delete bookmarks[existingBookmark[0]];
+      }
 
       bookmarks[bookmarkName] = walletAddresses;
 
