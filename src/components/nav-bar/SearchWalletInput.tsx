@@ -38,7 +38,7 @@ const SearchWalletInput = (props: Props) => {
     setInput("");
 
     if (router.pathname === Route.Home) {
-      router.push({ pathname: router.pathname, query: { wallet: [cleanedAddress] } });
+      router.push({ pathname: Route.Dashboard, query: { wallet: [cleanedAddress] } });
       return;
     }
 
