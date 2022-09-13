@@ -92,49 +92,47 @@ const AddNewBookmarkModal = (props: Props) => {
     <Modal open={isModalOpen} onClose={handleClose}>
       <Container>
         <ModalTitle>Create New Bookmark</ModalTitle>
-        <ActionsWrapper>
-          <TextField
-            input={bookmarkNameInput}
-            onInputChange={(value: string) => setBookmarkNameInput(value.slice(0, 20))}
-            type="text"
-            autoFocus={!isMobile}
-            fullWidth
-            placeholder="Enter bookmark name"
-            endIcon={{
-              component: <WordCounter>{`${bookmarkNameInput.length} / 20`}</WordCounter>,
-            }}
-          />
-          <ActionContainer>
-            <TypographyNeon>Wallets</TypographyNeon>
-            <WalletListContainer>
-              {wallets.map((address) => (
-                <WalletPill
-                  key={`modal-wallet-selector-${address}`}
-                  walletAddress={address}
-                  isShortened={false}
-                  isPillShape
-                  isRemovable
-                  isFullWidth
-                  onRemove={handleWalletRemove}
-                />
-              ))}
-              <TextField
-                disabled={isMaxWalletsReached}
-                inputRef={inputRef}
-                input={walletInput}
-                onInputChange={(value: string) => setWalletInput(value)}
-                type="text"
-                onKeyDown={handleWalletInputEnter}
-                endIcon={{
-                  component: <AddWalletIcon />,
-                  onClick: handleWalletAdd,
-                }}
-                fullWidth
-                placeholder={isMaxWalletsReached ? `Max ${MAX_NUM_WALLETS} wallets added` : "Add a new wallet address"}
+        <TextField
+          input={bookmarkNameInput}
+          onInputChange={(value: string) => setBookmarkNameInput(value.slice(0, 20))}
+          type="text"
+          autoFocus={!isMobile}
+          fullWidth
+          placeholder="Enter bookmark name"
+          endIcon={{
+            component: <WordCounter>{`${bookmarkNameInput.length} / 20`}</WordCounter>,
+          }}
+        />
+        <ActionContainer>
+          <TypographyNeon>Wallets</TypographyNeon>
+          <WalletListContainer>
+            {wallets.map((address) => (
+              <WalletPill
+                key={`modal-wallet-selector-${address}`}
+                walletAddress={address}
+                isShortened={false}
+                isPillShape
+                isRemovable
+                isFullWidth
+                onRemove={handleWalletRemove}
               />
-            </WalletListContainer>
-          </ActionContainer>
-        </ActionsWrapper>
+            ))}
+            <TextField
+              disabled={isMaxWalletsReached}
+              inputRef={inputRef}
+              input={walletInput}
+              onInputChange={(value: string) => setWalletInput(value)}
+              type="text"
+              onKeyDown={handleWalletInputEnter}
+              endIcon={{
+                component: <AddWalletIcon />,
+                onClick: handleWalletAdd,
+              }}
+              fullWidth
+              placeholder={isMaxWalletsReached ? `Max ${MAX_NUM_WALLETS} wallets added` : "Add a new wallet address"}
+            />
+          </WalletListContainer>
+        </ActionContainer>
         <ButtonContainer>
           <Button variant="contained" onClick={handleBookmarkAdd}>
             Create Bookmark
@@ -150,13 +148,6 @@ const WordCounter = styled.div`
   color: grey;
 `;
 
-const ActionsWrapper = styled.div`
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
-`;
-
 const ActionContainer = styled.div`
   position: relative;
   display: flex;
@@ -167,6 +158,8 @@ const ActionContainer = styled.div`
   padding: 1rem;
   padding-bottom: 1.5rem;
   gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
 
   ${theme.breakpoints.down("md")} {
     min-height: 0;

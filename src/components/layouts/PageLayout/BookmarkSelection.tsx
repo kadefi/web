@@ -46,29 +46,23 @@ const BookmarkSelection = () => {
           $offsetHeight={offsetHeight}
           $offsetWidth={offsetWidth}
         >
-          {!isEmpty(bookmarks) ? (
-            <>
-              {Object.keys(bookmarks).map((bookmarkName) => (
-                <BookmarkItemContainer key={`bookmark-dropdown-${bookmarkName}`}>
-                  <BookmarkItem
-                    onClick={() => handleBookmarkItemClick(bookmarkName)}
-                    isActive={bookmarkName === currentBookmarkName}
-                  >
-                    {bookmarkName}
-                  </BookmarkItem>
-                  <ConfigureBookmarkIcon fontSize="small" onClick={() => setOpenBookmarkName(bookmarkName)} />
-                </BookmarkItemContainer>
-              ))}
-              <BookmarkItemContainer>
-                <CreateBookmarkButton onClick={() => setIsAddBookmarkModalOpen(true)}>
-                  <AddRoundedIcon fontSize="small" />
-                  New Bookmark
-                </CreateBookmarkButton>
-              </BookmarkItemContainer>
-            </>
-          ) : (
-            <NoBookmarkText>You have no bookmark</NoBookmarkText>
-          )}
+          {Object.keys(bookmarks).map((bookmarkName) => (
+            <BookmarkItemContainer key={`bookmark-dropdown-${bookmarkName}`}>
+              <BookmarkItem
+                onClick={() => handleBookmarkItemClick(bookmarkName)}
+                isActive={bookmarkName === currentBookmarkName}
+              >
+                {bookmarkName}
+              </BookmarkItem>
+              <ConfigureBookmarkIcon fontSize="small" onClick={() => setOpenBookmarkName(bookmarkName)} />
+            </BookmarkItemContainer>
+          ))}
+          <BookmarkItemContainer>
+            <CreateBookmarkButton onClick={() => setIsAddBookmarkModalOpen(true)} isBorderShown={!isEmpty(bookmarks)}>
+              <AddRoundedIcon fontSize="small" />
+              New Bookmark
+            </CreateBookmarkButton>
+          </BookmarkItemContainer>
         </BookmarksDropdown>
       </BookmarkBar>
       {openBookmarkName && !isEmpty(bookmarks) && (
@@ -89,10 +83,6 @@ const BookmarkSelection = () => {
   );
 };
 
-const NoBookmarkText = styled.div`
-  padding: 8px 16px;
-`;
-
 const BookmarkItemContainer = styled.div`
   position: relative;
 `;
@@ -110,7 +100,11 @@ const ConfigureBookmarkIcon = styled(SettingsRoundedIcon)`
   }
 `;
 
-const CreateBookmarkButton = styled.div`
+type CreateBookmarkButtonProps = {
+  isBorderShown: boolean;
+};
+
+const CreateBookmarkButton = styled.div<CreateBookmarkButtonProps>`
   padding: 8px 16px;
   border-radius: 0 0 4px 4px;
   transition: 150ms;
@@ -119,7 +113,7 @@ const CreateBookmarkButton = styled.div`
   justify-content: flex-start;
   gap: 2px;
   width: 100%;
-  border-top: 1px dotted #888888;
+  border-top: ${(props) => (props.isBorderShown ? "1px dotted #888888" : "none")};
   color: lightgrey;
 
   &:hover {
