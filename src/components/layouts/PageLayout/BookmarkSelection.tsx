@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import { isEmpty, uniq } from "lodash";
@@ -7,18 +8,20 @@ import { useState, useEffect } from "react";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import { useIsOpen } from "../../../hooks/useIsOpen";
 import useOffsetDimension from "../../../hooks/useOffsetDimension";
+import AddNewBookmarkModal from "./AddNewBookmarkModal";
 import ConfigureBookmarkModal from "./ConfigureBookmarkModal";
 
 const BookmarkSelection = () => {
-  const { bookmarks, refreshBookmarks } = usePageLayoutContext();
+  const { bookmarks, refreshBookmarks, currentBookmarkName } = usePageLayoutContext();
   const { ref: bookmarkOpenRef, isOpen, setIsOpen } = useIsOpen(false);
   const { ref: bookmarkButtonRef, offsetHeight, offsetWidth } = useOffsetDimension<HTMLDivElement>();
   const router = useRouter();
   const [openBookmarkName, setOpenBookmarkName] = useState<string | null>(null);
+  const [isAddBookmarkModalOpen, setIsAddBookmarkModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     refreshBookmarks();
-  }, [openBookmarkName, refreshBookmarks]);
+  }, [openBookmarkName, isAddBookmarkModalOpen, refreshBookmarks]);
 
   const handleDropdownToggle = () => {
     setIsOpen(!isOpen);
@@ -44,12 +47,25 @@ const BookmarkSelection = () => {
           $offsetWidth={offsetWidth}
         >
           {!isEmpty(bookmarks) ? (
-            Object.keys(bookmarks).map((bookmarkName) => (
-              <BookmarkItemContainer key={`bookmark-dropdown-${bookmarkName}`}>
-                <BookmarkItem onClick={() => handleBookmarkItemClick(bookmarkName)}>{bookmarkName}</BookmarkItem>
-                <ConfigureBookmarkIcon fontSize="small" onClick={() => setOpenBookmarkName(bookmarkName)} />
+            <>
+              {Object.keys(bookmarks).map((bookmarkName) => (
+                <BookmarkItemContainer key={`bookmark-dropdown-${bookmarkName}`}>
+                  <BookmarkItem
+                    onClick={() => handleBookmarkItemClick(bookmarkName)}
+                    isActive={bookmarkName === currentBookmarkName}
+                  >
+                    {bookmarkName}
+                  </BookmarkItem>
+                  <ConfigureBookmarkIcon fontSize="small" onClick={() => setOpenBookmarkName(bookmarkName)} />
+                </BookmarkItemContainer>
+              ))}
+              <BookmarkItemContainer>
+                <CreateBookmarkButton onClick={() => setIsAddBookmarkModalOpen(true)}>
+                  <AddRoundedIcon fontSize="small" />
+                  New Bookmark
+                </CreateBookmarkButton>
               </BookmarkItemContainer>
-            ))
+            </>
           ) : (
             <NoBookmarkText>You have no bookmark</NoBookmarkText>
           )}
@@ -61,6 +77,12 @@ const BookmarkSelection = () => {
           walletAddresses={bookmarks[openBookmarkName]}
           isModalOpen={openBookmarkName !== null}
           handleClose={() => setOpenBookmarkName(null)}
+        />
+      )}
+      {isAddBookmarkModalOpen && (
+        <AddNewBookmarkModal
+          isModalOpen={isAddBookmarkModalOpen}
+          handleClose={() => setIsAddBookmarkModalOpen(false)}
         />
       )}
     </>
@@ -88,7 +110,29 @@ const ConfigureBookmarkIcon = styled(SettingsRoundedIcon)`
   }
 `;
 
-const BookmarkItem = styled.div`
+const CreateBookmarkButton = styled.div`
+  padding: 8px 16px;
+  border-radius: 0 0 4px 4px;
+  transition: 150ms;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  width: 100%;
+  border-top: 1px dotted #888888;
+  color: lightgrey;
+
+  &:hover {
+    background-color: #ff007f;
+    color: white;
+  }
+`;
+
+type BookmarkItemProps = {
+  isActive: boolean;
+};
+
+const BookmarkItem = styled.div<BookmarkItemProps>`
   padding: 8px 16px;
   border-radius: 4px;
   transition: 150ms;
@@ -97,9 +141,11 @@ const BookmarkItem = styled.div`
   justify-content: space-between;
   gap: 1.5rem;
   padding-right: 3rem;
+  background-color: ${(props) => (props.isActive ? "#ff008066" : "none")};
+  cursor: ${(props) => (props.isActive ? "default" : "pointer")};
 
   &:hover {
-    background-color: #ff007f;
+    background-color: ${(props) => !props.isActive && "#ff007f"};
   }
 `;
 
@@ -112,7 +158,7 @@ type BookmarksDropdownProps = {
 
 const BookmarksDropdown = styled.div<BookmarksDropdownProps>`
   transition: height 300ms;
-  height: ${(props) => (props.$isOpen ? `${(props.$itemsCount || 1) * 37}px` : "0")};
+  height: ${(props) => (props.$isOpen ? `${(props.$itemsCount + 1 || 1) * 37}px` : "0")};
   position: absolute;
   width: 100px;
   background-color: rgb(117 53 87);

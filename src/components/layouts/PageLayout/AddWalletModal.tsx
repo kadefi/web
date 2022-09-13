@@ -6,6 +6,7 @@ import { uniq } from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import TextField from "../../../commons/TextField";
+import { showToast, ToastType } from "../../../commons/Toast";
 import theme from "../../../theme";
 import { isValidWalletAddress } from "../../../utils/String.util";
 import WalletPill from "../../misc/WalletPill";
@@ -26,7 +27,6 @@ type Props = {
 const AddWalletModal = (props: Props) => {
   const { isModalOpen, handleClose, walletAddresses } = props;
   const [wallets, setWallets] = useState<string[]>(walletAddresses);
-  const [isInvalidAddress, setIsInvalidAddress] = useState(false);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>();
   const router = useRouter();
@@ -37,7 +37,6 @@ const AddWalletModal = (props: Props) => {
     if (isModalOpen) {
       setInput("");
       setWallets(walletAddresses);
-      setIsInvalidAddress(false);
     }
   }, [isModalOpen, walletAddresses]);
 
@@ -53,11 +52,10 @@ const AddWalletModal = (props: Props) => {
     const { isValid, cleanedAddress } = checkValidWallet(value);
 
     if (!isValid) {
-      setIsInvalidAddress(true);
+      showToast(ToastType.Error, "Invalid wallet address");
       return;
     }
 
-    setIsInvalidAddress(false);
     setInput("");
 
     if (inputRef.current) {
@@ -82,7 +80,7 @@ const AddWalletModal = (props: Props) => {
     const { isValid, cleanedAddress } = checkValidWallet(input);
 
     if (!isValid) {
-      setIsInvalidAddress(true);
+      showToast(ToastType.Error, "Invalid wallet address");
       return;
     }
 
@@ -95,7 +93,7 @@ const AddWalletModal = (props: Props) => {
   return (
     <Modal open={isModalOpen} onClose={handleClose}>
       <Container>
-        <ModalTitle>Configure Wallets</ModalTitle>
+        <ModalTitle>Add / Remove Wallets</ModalTitle>
         <WalletListContainer>
           {wallets.map((address) => (
             <WalletPill
@@ -111,8 +109,6 @@ const AddWalletModal = (props: Props) => {
           <TextField
             disabled={isMaxWalletsReached}
             inputRef={inputRef}
-            error={isInvalidAddress}
-            helperText={isInvalidAddress ? "Invalid address" : ""}
             input={input}
             onInputChange={handleInputChange}
             type="text"

@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import DesktopBackground from "../public/assets/desktop-background.svg";
 import MobileBackground from "../public/assets/mobile-background.svg";
 import { initializeAmplitude } from "../src/analytics/Analytics.util";
+import { Toast } from "../src/commons/Toast";
 import createEmotionCache from "../src/createEmotionCache";
 import theme from "../src/theme";
 import { Page } from "../src/types/Page.type";
@@ -94,6 +95,7 @@ export default function MyApp(props: MyAppProps) {
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           {getLayout(<Component {...pageProps} />)}
+          <Toast />
         </ThemeProvider>
       </CacheProvider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}

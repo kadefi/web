@@ -25,7 +25,9 @@ const WalletPill = (props: Props) => {
     onRemove,
   } = props;
 
-  const [tooltipText, setTooltipText] = useState(walletAddress);
+  const DEFAULT_TOOLTIP = `Click to copy: ${walletAddress}`;
+
+  const [tooltipText, setTooltipText] = useState(DEFAULT_TOOLTIP);
   const tooltipRef = useRef<NodeJS.Timeout>();
 
   const handleCopyWallet = () => {
@@ -41,7 +43,7 @@ const WalletPill = (props: Props) => {
     setTooltipText("Copied");
 
     tooltipRef.current = setTimeout(() => {
-      setTooltipText(walletAddress);
+      setTooltipText(DEFAULT_TOOLTIP);
     }, 1000);
   };
 

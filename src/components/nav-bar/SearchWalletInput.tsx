@@ -3,8 +3,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import CircularProgress from "../../commons/CircularProgress";
-import SnackBarAlert from "../../commons/SnackBarAlert";
 import TextField from "../../commons/TextField";
+import { showToast, ToastType } from "../../commons/Toast";
 import { Route } from "../../enums/Route.enum";
 import { isValidWalletAddress } from "../../utils/String.util";
 
@@ -15,7 +15,6 @@ type Props = {
 
 const SearchWalletInput = (props: Props) => {
   const { isLoading = false, customBorderRadius } = props;
-  const [isErrorNotiOpen, setIsErrorNotiOpen] = useState(false);
   const [input, setInput] = useState("");
   const router = useRouter();
   const ref = useRef<HTMLInputElement>();
@@ -28,7 +27,7 @@ const SearchWalletInput = (props: Props) => {
     const cleanedAddress = value.toLowerCase().trim();
 
     if (!isValidWalletAddress(cleanedAddress)) {
-      setIsErrorNotiOpen(true);
+      showToast(ToastType.Error, "Wallet syntax is invalid");
       return;
     }
 
@@ -50,10 +49,6 @@ const SearchWalletInput = (props: Props) => {
     if (e && e.target && e.key == "Enter") {
       handleSearchWallet(e.target.value);
     }
-  };
-
-  const handleErrorNotiClose = () => {
-    setIsErrorNotiOpen(false);
   };
 
   const endIconComponent = isLoading ? (
@@ -78,12 +73,6 @@ const SearchWalletInput = (props: Props) => {
           onClick: handleSearchWallet,
         }}
         customBorderRadius={customBorderRadius}
-      />
-      <SnackBarAlert
-        isOpen={isErrorNotiOpen}
-        handleClose={handleErrorNotiClose}
-        message="Wallet address syntax looks invalid"
-        severity="error"
       />
     </>
   );

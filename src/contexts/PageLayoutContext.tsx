@@ -20,6 +20,7 @@ type PageLayoutContextType = {
   // Bookmarks
   bookmarks: { [k: string]: string[] };
   refreshBookmarks: () => void;
+  currentBookmarkName: string | undefined;
 };
 
 export const PageLayoutContext = createContext<PageLayoutContextType>({} as PageLayoutContextType);

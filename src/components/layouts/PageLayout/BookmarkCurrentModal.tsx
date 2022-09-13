@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import { isEmpty } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import TextField from "../../../commons/TextField";
+import { showToast, ToastType } from "../../../commons/Toast";
 import TypographyNeon from "../../../commons/TypographyNeon";
 import theme from "../../../theme";
 import { bookmarkLS } from "../../../utils/LocalStorage.util";
@@ -15,7 +16,7 @@ type Props = {
   handleClose: () => void;
 };
 
-const AddBookmarkModal = (props: Props) => {
+const BookmarkCurrentModal = (props: Props) => {
   const { walletAddresses, isModalOpen, handleClose } = props;
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>();
@@ -31,6 +32,7 @@ const AddBookmarkModal = (props: Props) => {
     bookmarkLS().addBookmark(name, walletAddresses);
     setInput("");
     handleClose();
+    showToast(ToastType.Success, "Bookmark created");
   };
 
   const handleInputChange = (value: string) => {
@@ -46,7 +48,7 @@ const AddBookmarkModal = (props: Props) => {
   return (
     <Modal open={isModalOpen} onClose={handleClose}>
       <Container>
-        <ModalTitle>Save Bookmark</ModalTitle>
+        <ModalTitle>Bookmark Current Dashboard</ModalTitle>
         <ActionsWrapper>
           <ActionContainer>
             <TypographyNeon>Create New</TypographyNeon>
@@ -82,7 +84,6 @@ const AddBookmarkModal = (props: Props) => {
                 <NoExistingBookmark>You have no existing bookmark</NoExistingBookmark>
               )}
             </ExistingBookmarksContainer>
-            {/* <Typography>You have no existing bookmark</Typography> */}
           </ActionContainer>
         </ActionsWrapper>
       </Container>
@@ -102,7 +103,7 @@ const WordCounter = styled.div`
 
 const ExistingBookmarksContainer = styled.div`
   max-height: 300px;
-  overflow: scroll;
+  overflow: auto;
   width: 100%;
   display: flex;
   gap: 1rem;
@@ -182,4 +183,4 @@ const Container = styled.div`
   }
 `;
 
-export default AddBookmarkModal;
+export default BookmarkCurrentModal;

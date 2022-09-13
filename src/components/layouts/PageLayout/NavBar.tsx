@@ -44,7 +44,6 @@ const HamburgerMenu = styled(MenuSharpIcon)`
 const RightNavBar = styled(Container)`
   flex-grow: 1;
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 4px;
 

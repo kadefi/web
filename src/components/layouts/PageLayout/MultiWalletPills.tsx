@@ -1,18 +1,16 @@
 import styled from "@emotion/styled";
-import LinkRoundedIcon from "@mui/icons-material/LinkRounded";
-import SettingsIcon from "@mui/icons-material/Settings";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import { Container as MuiContainer, Tooltip, useMediaQuery } from "@mui/material";
-import { isEmpty, isEqual } from "lodash";
+import { isEmpty } from "lodash";
 import { ReactElement, useEffect, useState } from "react";
-import SnackBarAlert from "../../../commons/SnackBarAlert";
 import { usePageLayoutContext } from "../../../contexts/PageLayoutContext";
 import { useCurrentMenu } from "../../../hooks/useCurrentMenu";
 import theme from "../../../theme";
 import WalletPill from "../../misc/WalletPill";
-import AddBookmarkModal from "./AddBookmarkModal";
 import AddWalletModal from "./AddWalletModal";
+import BookmarkCurrentModal from "./BookmarkCurrentModal";
 import ConfigureBookmarkModal from "./ConfigureBookmarkModal";
 
 const MultiWalletPills = () => {
@@ -28,7 +26,6 @@ const MultiWalletPills = () => {
           <Container>
             <TopActions>
               <BookmarkButton />
-              <CopyUrlButton />
             </TopActions>
             <WalletPillsContainer>
               {walletAddresses?.map((walletAddress) => (
@@ -48,52 +45,21 @@ const MultiWalletPills = () => {
   );
 };
 
-const CopyUrlButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleClick = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setIsOpen(true);
-  };
-
-  return (
-    <>
-      <ActionButton
-        icon={<LinkRoundedIcon sx={{ transform: "rotate(135deg)" }} />}
-        onClick={handleClick}
-        tooltip="Copy Dashboard URL"
-      />
-      <SnackBarAlert
-        isOpen={isOpen}
-        handleClose={() => setIsOpen(false)}
-        message="Dashboard URL Copied to Clipboard"
-        severity="success"
-      />
-    </>
-  );
-};
-
 const BookmarkButton = () => {
-  const { walletAddresses, bookmarks, refreshBookmarks } = usePageLayoutContext();
+  const { walletAddresses, bookmarks, refreshBookmarks, currentBookmarkName } = usePageLayoutContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openBookmarkName, setOpenBookmarkName] = useState<string | null>(null);
 
-  const currentBookmark = walletAddresses
-    ? Object.keys(bookmarks).filter((bookmarkKey) => isEqual(walletAddresses.sort(), bookmarks[bookmarkKey].sort()))
-    : [];
-
-  const isBookmarked = currentBookmark.length > 0;
-  const currentBookmarkName = isBookmarked ? currentBookmark[0] : undefined;
-  const icon = isBookmarked ? <StarIcon color="primary" /> : <StarBorderOutlinedIcon />;
-  const tooltipText = isBookmarked ? "Bookmarked" : "Bookmark Dashboard";
+  const icon = currentBookmarkName ? <StarIcon color="primary" /> : <StarBorderOutlinedIcon />;
+  const tooltipText = currentBookmarkName ? "Bookmarked" : "Bookmark Current Dashboard";
 
   useEffect(() => {
     refreshBookmarks();
   }, [isModalOpen, refreshBookmarks, openBookmarkName]);
 
   const handleOpenBookmarkModal = () => {
-    if (isBookmarked) {
-      currentBookmarkName && setOpenBookmarkName(currentBookmarkName);
+    if (currentBookmarkName) {
+      setOpenBookmarkName(currentBookmarkName);
       return;
     }
 
@@ -110,7 +76,7 @@ const BookmarkButton = () => {
         isTextCollapsible={false}
       />
       {walletAddresses && (
-        <AddBookmarkModal
+        <BookmarkCurrentModal
           walletAddresses={walletAddresses}
           isModalOpen={isModalOpen}
           handleClose={() => setIsModalOpen(false)}
@@ -134,12 +100,7 @@ const ConfigureWalletsButton = () => {
 
   return (
     <>
-      <ActionButton
-        icon={<SettingsIcon />}
-        text="Configure"
-        onClick={() => setIsModalOpen(true)}
-        tooltip="Add / Remove Wallets"
-      />
+      <ActionButton icon={<AddRoundedIcon />} onClick={() => setIsModalOpen(true)} tooltip="Add / Remove Wallets" />
       {walletAddresses && (
         <AddWalletModal
           walletAddresses={walletAddresses}

@@ -6,6 +6,7 @@ import { uniq } from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import TextField from "../../../commons/TextField";
+import { showToast, ToastType } from "../../../commons/Toast";
 import theme from "../../../theme";
 import { bookmarkLS } from "../../../utils/LocalStorage.util";
 import { isValidWalletAddress } from "../../../utils/String.util";
@@ -28,7 +29,6 @@ type Props = {
 const ConfigureBookmarkModal = (props: Props) => {
   const { bookmarkName, isModalOpen, handleClose, walletAddresses } = props;
   const [wallets, setWallets] = useState<string[]>(walletAddresses);
-  const [isInvalidAddress, setIsInvalidAddress] = useState(false);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>();
   const isMaxWalletsReached = wallets.length >= MAX_NUM_WALLETS;
@@ -39,7 +39,6 @@ const ConfigureBookmarkModal = (props: Props) => {
     if (isModalOpen) {
       setInput("");
       setWallets(walletAddresses);
-      setIsInvalidAddress(false);
     }
   }, [isModalOpen, walletAddresses]);
 
@@ -55,11 +54,10 @@ const ConfigureBookmarkModal = (props: Props) => {
     const { isValid, cleanedAddress } = checkValidWallet(value);
 
     if (!isValid) {
-      setIsInvalidAddress(true);
+      showToast(ToastType.Error, "Invalid wallet address");
       return;
     }
 
-    setIsInvalidAddress(false);
     setInput("");
 
     if (inputRef.current) {
@@ -85,13 +83,14 @@ const ConfigureBookmarkModal = (props: Props) => {
       handleClose();
       bookmarkLS().addBookmark(bookmarkName, uniq(wallets));
       router.push({ pathname: router.pathname, query: { wallet: uniq(wallets) } });
+      showToast(ToastType.Success, "Bookmark changes saved");
       return;
     }
 
     const { isValid, cleanedAddress } = checkValidWallet(input);
 
     if (!isValid) {
-      setIsInvalidAddress(true);
+      showToast(ToastType.Error, "Invalid wallet address");
       return;
     }
 
@@ -100,6 +99,7 @@ const ConfigureBookmarkModal = (props: Props) => {
     bookmarkLS().addBookmark(bookmarkName, newWallets);
 
     if (router.isReady) {
+      showToast(ToastType.Success, "Bookmark changes saved");
       router.push({ pathname: router.pathname, query: { wallet: newWallets } });
     }
 
@@ -107,6 +107,7 @@ const ConfigureBookmarkModal = (props: Props) => {
   };
 
   const handleDeleteButtonClick = () => {
+    showToast(ToastType.Success, "Bookmark deleted");
     bookmarkLS().removeBookmark(bookmarkName);
     handleClose();
   };
@@ -115,7 +116,7 @@ const ConfigureBookmarkModal = (props: Props) => {
     <>
       <Modal open={isModalOpen} onClose={handleClose}>
         <Container>
-          <ModalTitle>Configure Bookmark: {bookmarkName}</ModalTitle>
+          <ModalTitle>{bookmarkName}</ModalTitle>
           <WalletListContainer>
             {wallets.map((address) => (
               <WalletPill
@@ -131,8 +132,6 @@ const ConfigureBookmarkModal = (props: Props) => {
             <TextField
               disabled={isMaxWalletsReached}
               inputRef={inputRef}
-              error={isInvalidAddress}
-              helperText={isInvalidAddress ? "Invalid address" : ""}
               input={input}
               onInputChange={handleInputChange}
               type="text"
@@ -147,18 +146,26 @@ const ConfigureBookmarkModal = (props: Props) => {
             />
           </WalletListContainer>
           <ButtonContainer>
-            <Button color="warning" variant="contained" onClick={handleDeleteButtonClick}>
-              Delete
-            </Button>
-            <Button variant="contained" onClick={handleSaveButtonClick}>
-              Save
-            </Button>
+            <StyledButton color="warning" variant="contained" onClick={handleDeleteButtonClick}>
+              Delete Bookmark
+            </StyledButton>
+            <StyledButton variant="contained" onClick={handleSaveButtonClick}>
+              Save Changes
+            </StyledButton>
           </ButtonContainer>
         </Container>
       </Modal>
     </>
   );
 };
+
+const StyledButton = styled(Button)`
+  font-size: 14px;
+
+  ${theme.breakpoints.down("sm")} {
+    font-size: 11px;
+  }
+`;
 
 const AddWalletIcon = styled(AddRoundedIcon)`
   background-color: #ff007f;

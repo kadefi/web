@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const SnackBarAlert = (props: Props) => {
-  const { isOpen, handleClose, message, severity, autoHideDuration = 3000 } = props;
+  const { isOpen, handleClose, message, severity, autoHideDuration = 2000 } = props;
 
   return (
     <Snackbar
