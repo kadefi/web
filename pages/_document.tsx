@@ -15,8 +15,8 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
             rel="stylesheet"
           />
-
-          {/* Inject MUI styles first to match with the prepend: true configuration. */}
+          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+          <script src="/static/datafeeds/udf/dist/bundle.js" />
           {(this.props as any).emotionStyleTags}
         </Head>
         <body>
