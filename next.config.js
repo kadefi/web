@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    minimumCacheTTL: 300,
+    minimumCacheTTL: 60,
     domains: ["gateway.pinata.cloud", "cdn2.kadefi.money", "ipfs.io", "firebasestorage.googleapis.com"],
   },
   async redirects() {
