@@ -122,7 +122,7 @@ export type NftCollectionData = {
 };
 
 export type NftData = {
-  id: string;
+  id: string | null;
   type: "base64" | "PNG" | "WEBP";
   url: string;
 };
