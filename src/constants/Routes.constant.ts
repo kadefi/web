@@ -3,4 +3,5 @@ export enum ROUTE {
   DASHBOARD = "/dashboard",
   NFT_GALLERY = "/gallery",
   INTEGRATIONS = "/integrations",
+  DONATE = "/donate",
 }

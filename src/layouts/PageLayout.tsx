@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
 import CableOutlinedIcon from "@mui/icons-material/CableOutlined";
-import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
+import CandlestickChartOutlinedIcon from "@mui/icons-material/CandlestickChartOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import LaunchIcon from "@mui/icons-material/Launch";
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
@@ -31,8 +32,8 @@ enum MENU_TITLE {
   DASHBOARD = "Dashboard",
   NFT = "NFT Gallery",
   INTEGRATIONS = "Integrations",
-  PROJECT_HISTORY = "Portfolio History",
-  TOOLS = "Tools",
+  DONATE = "Support Us",
+  DEXSCAN = "DEXScan",
 }
 
 const MENU_CONFIG = {
@@ -41,30 +42,35 @@ const MENU_CONFIG = {
     route: ROUTE.DASHBOARD,
     isWalletSearch: true,
     isDisabled: false,
+    isExternal: false,
   },
   [MENU_TITLE.NFT]: {
     icon: <PhotoLibraryOutlinedIcon />,
     route: ROUTE.NFT_GALLERY,
     isWalletSearch: true,
     isDisabled: false,
+    isExternal: false,
   },
   [MENU_TITLE.INTEGRATIONS]: {
     icon: <CableOutlinedIcon />,
     route: ROUTE.INTEGRATIONS,
     isWalletSearch: false,
     isDisabled: false,
+    isExternal: false,
   },
-  [MENU_TITLE.PROJECT_HISTORY]: {
-    icon: <TimelineOutlinedIcon />,
-    route: "",
+  [MENU_TITLE.DONATE]: {
+    icon: <FavoriteBorderIcon />,
+    route: ROUTE.DONATE,
     isWalletSearch: false,
-    isDisabled: true,
+    isDisabled: false,
+    isExternal: false,
   },
-  [MENU_TITLE.TOOLS]: {
-    icon: <ConstructionOutlinedIcon />,
-    route: "",
+  [MENU_TITLE.DEXSCAN]: {
+    icon: <CandlestickChartOutlinedIcon />,
+    route: "https://dexscan.kadefi.money",
     isWalletSearch: false,
-    isDisabled: true,
+    isDisabled: false,
+    isExternal: true,
   },
 };
 
@@ -117,7 +123,9 @@ const PageLayout = (props: Props) => {
       }
     }
 
-    if (MENU_CONFIG[title].isWalletSearch) {
+    if (MENU_CONFIG[title].isExternal) {
+      window.open(MENU_CONFIG[title].route, "_blank", "noopener,noreferrer");
+    } else if (MENU_CONFIG[title].isWalletSearch) {
       router.push(`${MENU_CONFIG[title].route}/${redirectWallet}`);
     } else {
       router.push(`${MENU_CONFIG[title].route}`);
@@ -153,8 +161,11 @@ const PageLayout = (props: Props) => {
         isDisabled={MENU_CONFIG[title].isDisabled}
         onClick={(e) => handleMenuClick(e, title)}
       >
-        {MENU_CONFIG[title].icon}
-        {title}
+        <MenuButtonText>
+          {MENU_CONFIG[title].icon}
+          {title}
+        </MenuButtonText>
+        {MENU_CONFIG[title].isExternal ? <LaunchIcon fontSize="small" /> : null}
       </MenuButton>
     );
 
@@ -329,6 +340,7 @@ const MenuButton = styled.div<MenuButtonProps>`
   transition-property: background, background-color;
   display: flex;
   gap: 8px;
+  justify-content: space-between;
   align-items: center;
   white-space: nowrap;
   opacity: ${(props) => (props.isDisabled ? "0.3" : "1")};
@@ -336,6 +348,12 @@ const MenuButton = styled.div<MenuButtonProps>`
   &:hover {
     background-color: ${(props) => (props.isDisabled ? "none" : "rgb(255, 255, 255, 0.1)")};
   }
+`;
+
+const MenuButtonText = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
 `;
 
 const MenuButtons = styled.div`

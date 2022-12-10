@@ -126,3 +126,9 @@ export type NftData = {
   type: "base64" | "PNG" | "WEBP";
   url: string;
 };
+
+export type IntegrationInfo = {
+  tokens: number;
+  nfts: number;
+  projects: number;
+};
