@@ -51,7 +51,7 @@ const Donate = (props: Props) => {
   return (
     <Container maxWidth="md">
       <ContentContainer>
-        <h1 style={{ color: "#ff007f", margin: 0 }}>Donate to support Kadefi.Money</h1>
+        <MainHeader>Donate to keep Kadefi.Money running</MainHeader>
         {donationButton}
         <div>👋 Hey there,</div>
         <div>
@@ -96,6 +96,14 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   };
 };
 
+const MainHeader = styled.h1`
+  color: #ff007f;
+  margin: 0;
+  ${theme.breakpoints.down("md")} {
+    font-size: 1.5rem;
+  }
+`;
+
 const Container = styled(MuiContainer)`
   padding: 1rem 2rem;
 `;
@@ -113,11 +121,9 @@ const DonateContainer = styled.div`
 `;
 
 const DonationAddress = styled.span`
-  ${theme.breakpoints.down("md")} {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ContentContainer = styled.div`
