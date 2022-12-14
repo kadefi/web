@@ -96,7 +96,7 @@ export type ProjectsList = ProjectsListItem[];
 export type ProjectsListItem = {
   name: string;
   module: string;
-  social: string;
+  social?: string;
   image: string;
   description?: string;
 };
@@ -106,7 +106,7 @@ export type NftCollectionsList = NftCollectionsListItem[];
 export type NftCollectionsListItem = {
   name: string;
   module: string;
-  social: string;
+  social?: string;
   description: string;
   image?: string;
 };

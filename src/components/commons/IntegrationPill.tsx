@@ -6,7 +6,7 @@ import PngLogo from "./PngLogo";
 type Props = {
   name: string;
   module: string;
-  socialLink: string;
+  socialLink?: string;
   isSelected: boolean;
   handleToggle: (module: string) => void;
   description?: string;
@@ -21,6 +21,18 @@ const IntegrationPill = (props: Props) => {
     handleToggle(module);
   };
 
+  const getSocialLink = (social?: string) => {
+    if (!social || social === "#") {
+      return null;
+    }
+
+    return (
+      <SocialButton target="__blank" href={social}>
+        <OpenInNewRoundedIcon fontSize="small" sx={{ fill: "#9e9e9e" }} />
+      </SocialButton>
+    );
+  };
+
   return (
     <Container isSelected={isSelected}>
       <LeftPill onClick={handleIntegrationToggle}>
@@ -30,9 +42,7 @@ const IntegrationPill = (props: Props) => {
           {description && <ProjectDescription>{description}</ProjectDescription>}
         </NameContainer>
       </LeftPill>
-      <SocialButton target="__blank" href={socialLink}>
-        <OpenInNewRoundedIcon fontSize="small" sx={{ fill: "#9e9e9e" }} />
-      </SocialButton>
+      {getSocialLink(socialLink)}
     </Container>
   );
 };
